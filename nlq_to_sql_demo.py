@@ -131,11 +131,17 @@ def encoder_decoder_2(query_sentence, database_name, highest_matching_table_name
     output_text_1 = tokenizer_decoder.decode(
         output_1[0], skip_special_tokens=True)
 
+    print("嗯嗯", output_text_1)
+
     # Output: IMDB | select title from movie where rating > 6 and year =2018
 
     # split the output into two parts (sql and table name)
     output_text_1 = output_text_1.split("|")
-    sql_query = output_text_1[1].strip()
+    # sql_query = output_text_1[1].strip()
+    if len(output_text_1) >= 2:
+        sql_query = output_text_1[1].strip()
+    else:
+        sql_query = "No SQL query found"  # 或者您可以采取其他适当的措施
 
     # return the sql query
     return sql_query
@@ -178,7 +184,7 @@ def main():
     query_sentence = input("Enter question: ")
 
     # Connect to database and fetch table names and column names
-    conn = sqlite3.connect('actor_database.db')
+    conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
 
     # Get the filename that is connected above
