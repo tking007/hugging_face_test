@@ -20,13 +20,21 @@ import os
 # Load Model
 
 # Load model from HuggingFace Hub
-tokenizer = AutoTokenizer.from_pretrained(
-    'sentence-transformers/all-MiniLM-L6-v2')
+tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 
 # Load the model and tokenizer
-tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/2jrayxos')
-model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
+tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/1zha5ono')
+model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/1zha5ono")
+
+'''
+第一个模型：
+这部分代码加载了名为 "sentence-transformers/all-MiniLM-L6-v2" 的预训练模型，该模型通常用于文本嵌入（text embedding）任务，例如文本相似度比较或信息检索。
+这个模型由 Sentence Transformers 库提供，用于将文本转换为向量表示，以便进行各种自然语言处理任务。
+第二个模型：
+该模型是一个序列到序列（seq2seq）的语言模型，通常用于生成任务，例如问答、摘要生成、翻译等。它可以接受一个输入序列并生成一个相关的输出序列，因此适用于各种生成性任务。
+原因是您可能需要同时处理文本嵌入和生成任务，所以需要加载两个不同的模型。这使您可以在同一应用程序中执行不同类型的自然语言处理任务。如果您只对其中一个任务感兴趣，可以只加载相关模型。
+'''
 
 # Function for Meanpooling
 
@@ -169,11 +177,15 @@ def sql_executor(sql_query, highest_matching_table_column_names, cursor):
     print(" ")
 
     # Execute the sql
-    cursor.execute(sql_query)
-    result = cursor.fetchall()
+    try:
+        cursor.execute(sql_query)
+        result = cursor.fetchall()
 
-    # print the result
-    print(result)
+        # print the result
+        print(result)
+    except Exception:
+        print("SQL query is not valid\n please try again!")
+        raise Exception
 
 
 # Main Function
@@ -184,7 +196,7 @@ def main():
     query_sentence = input("Enter question: ")
 
     # Connect to database and fetch table names and column names
-    conn = sqlite3.connect('merged.db')
+    conn = sqlite3.connect('actor_database.db')
     cursor = conn.cursor()
 
     # Get the filename that is connected above
