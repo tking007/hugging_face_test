@@ -192,45 +192,42 @@ def sql_executor(sql_query, highest_matching_table_column_names, cursor):
 
 
 def main():
-    # Query sentence
-    query_sentence = input("Enter question: ")
+    while True:
+        try:
+            # Query sentence
+            query_sentence = input("Enter question: ")
 
-    # Connect to database and fetch table names and column names
-    conn = sqlite3.connect('actor_database.db')
-    cursor = conn.cursor()
+            # Connect to database and fetch table names and column names
+            conn = sqlite3.connect('actor_database.db')
+            cursor = conn.cursor()
 
-    # Get the filename that is connected above
-    filename = conn.cursor().execute("PRAGMA database_list;").fetchall()[0][2]
-    # print(filename)
+            # Get the filename that is connected above
+            filename = conn.cursor().execute("PRAGMA database_list;").fetchall()[0][2]
 
-    # filename = '/content/Db-IMDB.db'
-    # split the filename to get the database name
-    # database_name = filename.split('/')[-1].split('.')[0]
-    # print(database_name)
+            # Extract file name from file path
+            database_name = os.path.basename(filename).split('.')[0]
 
-    # 从文件路径中提取文件名  Extract file name from file path
-    database_name = os.path.basename(filename).split('.')[0]
-    # print(database_name)
+            table_names = [table_info[0] for table_info in cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table';").fetchall()]
 
-    table_names = [table_info[0] for table_info in cursor.execute(
-        "SELECT name FROM sqlite_master WHERE type='table';").fetchall()]
-    # print(table_names)
-    column_names = []
-    for table_name in table_names:
-        cursor.execute(f"PRAGMA table_info(`{table_name}`);")
-        column_names.extend([column_info[1]
-                             for column_info in cursor.fetchall()])
+            column_names = []
+            for table_name in table_names:
+                cursor.execute(f"PRAGMA table_info(`{table_name}`);")
+                column_names.extend([column_info[1]
+                                     for column_info in cursor.fetchall()])
 
-    highest_matching_table_name, highest_matching_table_column_names = encoder_decoder_1(
-        query_sentence, table_names, tokenizer, model, cursor)
+            highest_matching_table_name, highest_matching_table_column_names = encoder_decoder_1(
+                query_sentence, table_names, tokenizer, model, cursor)
 
-    sql_query = encoder_decoder_2(query_sentence, database_name, highest_matching_table_name,
-                                  highest_matching_table_column_names, tokenizer_decoder, model_decoder)
+            sql_query = encoder_decoder_2(query_sentence, database_name, highest_matching_table_name,
+                                          highest_matching_table_column_names, tokenizer_decoder, model_decoder)
 
-    sql_executor(sql_query, highest_matching_table_column_names, cursor)
+            sql_executor(sql_query, highest_matching_table_column_names, cursor)
 
-    # Close database connection
-    conn.close()
+            # Close database connection
+            conn.close()
+        except Exception:
+            print("Error occurred. Please try again.")
 
 
 # Test with Natural Language Query
