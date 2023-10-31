@@ -184,7 +184,7 @@ def sql_executor(sql_query, highest_matching_table_column_names, cursor):
         # print the result
         print(result)
     except Exception:
-        print("SQL query is not valid\n please try again!")
+        print("SQL query is not valid.")
         raise Exception
 
 
@@ -227,11 +227,10 @@ def main():
             # Close database connection
             conn.close()
         except Exception:
-            print("Error occurred. Please try again.")
+            print("Please try again!")
 
 
 # Test with Natural Language Query
 
 if __name__ == "__main__":
-    while 1:
-        main()
+    main()
