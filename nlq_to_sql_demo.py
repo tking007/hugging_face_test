@@ -17,6 +17,52 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from sklearn.metrics.pairwise import cosine_similarity
 import os
 
+import requests
+import random
+import json
+from hashlib import md5
+
+
+# Generate salt and sign
+def make_md5(s, encoding='utf-8'):
+    return md5(s.encode(encoding)).hexdigest()
+
+
+def translate(query):
+    # Set your own appid/appkey.
+    appid = '20231031001865589'
+    appkey = 'HCaP53JoPIIw6urzCyAj'
+
+    # For list of language codes, please refer to `https://api.fanyi.baidu.com/doc/21`
+    # from_lang = 'zh'
+    # to_lang = 'en'
+    from_lang = 'auto'
+    to_lang = 'auto'
+
+    endpoint = 'http://api.fanyi.baidu.com'
+    path = '/api/trans/vip/translate'
+    url = endpoint + path
+
+    # query = '我们有多少演员'
+
+    salt = random.randint(32768, 65536)
+    sign = make_md5(appid + query + str(salt) + appkey)
+
+    # Build request
+    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+    payload = {'appid': appid, 'q': query, 'from': from_lang, 'to': to_lang, 'salt': salt, 'sign': sign}
+
+    # Send request
+    r = requests.post(url, params=payload, headers=headers)
+    result = r.json()
+
+    # # Show response
+    # print(json.dumps(result, indent=4, ensure_ascii=False))
+    # print(result['trans_result'][0]['dst'])
+
+    return result['trans_result'][0]['dst']
+
+
 # Load Model
 
 # Load model from HuggingFace Hub
@@ -24,8 +70,11 @@ tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v
 model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 
 # Load the model and tokenizer
-tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/1zha5ono')
-model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/1zha5ono")
+tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/2jrayxos')
+model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
+
+# tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/1zha5ono')
+# model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/1zha5ono")
 
 '''
 第一个模型：
@@ -180,9 +229,10 @@ def sql_executor(sql_query, highest_matching_table_column_names, cursor):
     try:
         cursor.execute(sql_query)
         result = cursor.fetchall()
+        res = translate(result)
 
         # print the result
-        print(result)
+        print(res)
     except Exception:
         print("SQL query is not valid.")
         raise Exception
@@ -195,7 +245,9 @@ def main():
     while True:
         try:
             # Query sentence
-            query_sentence = input("Enter question: ")
+            query = input("Enter question: ")
+
+            query_sentence = translate(query)
 
             # Connect to database and fetch table names and column names
             conn = sqlite3.connect('actor_database.db')
