@@ -21,6 +21,9 @@ import requests
 import random
 import json
 from hashlib import md5
+import pandas as pd
+pd.set_option('display.max_columns', 200)  # 设置显示列数
+pd.set_option('display.max_rows', 100)  # 设置显示行数
 
 
 # Generate salt and sign
@@ -223,18 +226,43 @@ def sql_executor(sql_query, highest_matching_table_column_names, cursor):
     sql_query = sql_query.replace("'", '"')
     # Print the sql query
     print(sql_query)
-    print(" ")
+    print("------")
 
     # Execute the sql
     try:
         cursor.execute(sql_query)
         result = cursor.fetchall()
-        res = translate(result)
+        # Get column names using cursor.description
+        column_names = [description[0] for description in cursor.description]
+        print(column_names)  # Print column names
+        print(result)  # Print the result
+
+        # 创建一个Pandas DataFrame，将结果和列名组合起来
+        # df = pd.DataFrame(result, columns=column_names)
+
+        # res_1 = []
+        # for i in result:
+        #     for x in i:
+        #         res_1.append(translate(str(x)))
+
+        res_1 = []
+        for j in column_names:
+            res_1.append(translate(str(j)))
+
+        # print(res_1)
+        # print(res_2)
+
+        res_2 = result + res_1
+
+        df = pd.DataFrame(result, columns=res_2)
+        # 打印DataFrame
+        print("df:\n", df)
 
         # print the result
         print(res)
-    except Exception:
+    except Exception as e:
         print("SQL query is not valid.")
+        print(e)
         raise Exception
 
 
