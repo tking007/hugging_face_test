@@ -1,0 +1,55 @@
+{
+    "code": "0000",
+    "message": "成功---success",
+    "data": {
+        "item": [
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "长春市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool72/411",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "吉林外国语大学",
+                "nature_name": "民办",
+                "province_name": "吉林",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 411,
+                "tag_name": "",
+                "type_name": "语言类"
+            },
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "绍兴市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool72/2402",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "浙江越秀外国语学院",
+                "nature_name": "民办",
+                "province_name": "浙江",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 2402,
+                "tag_name": "",
+                "type_name": "语言类"
+            }
+        ],
+        "numFound": 12
+    },
+    "location": "",
+    "encrydata": ""
+}

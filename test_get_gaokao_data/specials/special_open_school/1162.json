@@ -1,0 +1,55 @@
+{
+    "code": "0000",
+    "message": "成功---success",
+    "data": {
+        "item": [
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "咸阳市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool1162/366",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "咸阳师范学院",
+                "nature_name": "公办",
+                "province_name": "陕西",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 366,
+                "tag_name": "",
+                "type_name": "师范类"
+            },
+            {
+                "admissions": "2",
+                "central": "中央部委院",
+                "city_name": "威海市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38000",
+                "dual_class_name": "双一流",
+                "f211": 1,
+                "f985": 1,
+                "id": "gkspecialschool1162/1457",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "哈尔滨工业大学（威海）",
+                "nature_name": "公办",
+                "province_name": "山东",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 1457,
+                "tag_name": "",
+                "type_name": "理工类"
+            }
+        ],
+        "numFound": 12
+    },
+    "location": "",
+    "encrydata": ""
+}

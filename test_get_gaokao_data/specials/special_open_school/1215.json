@@ -1,0 +1,55 @@
+{
+    "code": "0000",
+    "message": "成功---success",
+    "data": {
+        "item": [
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "信阳市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool1215/1203",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "信阳农林学院",
+                "nature_name": "公办",
+                "province_name": "河南",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 1203,
+                "tag_name": "",
+                "type_name": "农林类"
+            },
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "秦皇岛市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool1215/1258",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "河北科技师范学院",
+                "nature_name": "公办",
+                "province_name": "河北",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 1258,
+                "tag_name": "",
+                "type_name": "师范类"
+            }
+        ],
+        "numFound": 12
+    },
+    "location": "",
+    "encrydata": ""
+}

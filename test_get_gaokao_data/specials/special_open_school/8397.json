@@ -1,0 +1,55 @@
+{
+    "code": "0000",
+    "message": "成功---success",
+    "data": {
+        "item": [
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "乌鲁木齐市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool8397/2066",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "新疆工程学院",
+                "nature_name": "公办",
+                "province_name": "新疆",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 2066,
+                "tag_name": "",
+                "type_name": "理工类"
+            },
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "宣城市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38000",
+                "dual_class_name": "双一流",
+                "f211": 1,
+                "f985": 2,
+                "id": "gkspecialschool8397/3152",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "合肥工业大学宣城校区",
+                "nature_name": "公办",
+                "province_name": "安徽",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 3152,
+                "tag_name": "",
+                "type_name": "综合类"
+            }
+        ],
+        "numFound": 12
+    },
+    "location": "",
+    "encrydata": ""
+}

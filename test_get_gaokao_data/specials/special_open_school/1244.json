@@ -1,0 +1,55 @@
+{
+    "code": "0000",
+    "message": "成功---success",
+    "data": {
+        "item": [
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "肇庆市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool1244/977",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "广东理工学院",
+                "nature_name": "民办",
+                "province_name": "广东",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 977,
+                "tag_name": "",
+                "type_name": "理工类"
+            },
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "柳州市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool1244/2368",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "柳州工学院",
+                "nature_name": "民办",
+                "province_name": "广西",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 2368,
+                "tag_name": "",
+                "type_name": "理工类"
+            }
+        ],
+        "numFound": 12
+    },
+    "location": "",
+    "encrydata": ""
+}

@@ -1,0 +1,33 @@
+{
+    "code": "0000",
+    "message": "成功---success",
+    "data": {
+        "item": [
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "北京市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38000",
+                "dual_class_name": "双一流",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool144/3145",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "中国科学院大学",
+                "nature_name": "公办",
+                "province_name": "北京",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 3145,
+                "tag_name": "",
+                "type_name": "综合类"
+            }
+        ],
+        "numFound": 11
+    },
+    "location": "",
+    "encrydata": ""
+}

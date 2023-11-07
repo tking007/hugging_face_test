@@ -1,0 +1,55 @@
+{
+    "code": "0000",
+    "message": "成功---success",
+    "data": {
+        "item": [
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "沈阳市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool324/206",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "沈阳音乐学院",
+                "nature_name": "公办",
+                "province_name": "辽宁",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 206,
+                "tag_name": "",
+                "type_name": "艺术类"
+            },
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "呼和浩特市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool324/3215",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "内蒙古艺术学院",
+                "nature_name": "公办",
+                "province_name": "内蒙古",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 3215,
+                "tag_name": "",
+                "type_name": "艺术类"
+            }
+        ],
+        "numFound": 12
+    },
+    "location": "",
+    "encrydata": ""
+}

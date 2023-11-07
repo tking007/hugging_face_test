@@ -1,0 +1,55 @@
+{
+    "code": "0000",
+    "message": "成功---success",
+    "data": {
+        "item": [
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "贵阳市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool1196/2276",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "贵阳信息科技学院",
+                "nature_name": "民办",
+                "province_name": "贵州",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 2276,
+                "tag_name": "",
+                "type_name": "理工类"
+            },
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "锦州市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool1196/2347",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "锦州医科大学医疗学院",
+                "nature_name": "民办",
+                "province_name": "辽宁",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 2347,
+                "tag_name": "",
+                "type_name": "医药类"
+            }
+        ],
+        "numFound": 12
+    },
+    "location": "",
+    "encrydata": ""
+}
