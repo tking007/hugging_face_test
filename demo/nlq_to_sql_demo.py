@@ -293,8 +293,10 @@ def main():
             column_names = []
             for table_name in table_names:
                 cursor.execute(f"PRAGMA table_info(`{table_name}`);")
-                column_names.extend([column_info[1]
-                                     for column_info in cursor.fetchall()])
+                table_column_names = [column_info[1] for column_info in cursor.fetchall()]
+                # 处理列名中的下划线，替换为空格
+                table_column_names = [column_name.replace("_", " ") for column_name in table_column_names]
+                column_names.extend(table_column_names)
 
             highest_matching_table_name, highest_matching_table_column_names = encoder_decoder_1(
                 query_sentence, table_names, tokenizer, model, cursor)
