@@ -32,10 +32,8 @@
 
 import json
 import time
-from tecent_fanyi import fanyi
+from tencent_fanyi import fanyi
 
-with open(r"../CSpider/train.json", "r", encoding="utf-8") as f:
-    cspider_data = json.load(f)
 
 with open("sql_create_context_v4.json", "r", encoding="utf-8") as f:
     v4_data = json.load(f)

@@ -25,7 +25,7 @@ def translate(query):
     from_lang = 'zh'
     to_lang = 'en'
 
-    endpoint = 'http://api.fanyi.baidu.com'
+    endpoint = 'https://api.fanyi.baidu.com'
     path = '/api/trans/vip/translate'
     url = endpoint + path
 
@@ -49,6 +49,6 @@ def translate(query):
     return result['trans_result'][0]['dst']
 
 
-if __name__ == '__main__':
-    r = translate('我在哪里')
-    print(r)
+# if __name__ == '__main__':
+#     r = translate('我在哪里')
+#     print(r)
