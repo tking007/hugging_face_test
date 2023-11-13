@@ -22,6 +22,7 @@ import random
 import json
 from hashlib import md5
 import pandas as pd
+
 pd.set_option('display.max_columns', 200)  # 设置显示列数
 pd.set_option('display.max_rows', 100)  # 设置显示行数
 
@@ -42,7 +43,7 @@ def translate(query):
     from_lang = 'auto'
     to_lang = 'auto'
 
-    endpoint = 'http://api.fanyi.baidu.com'
+    endpoint = 'https://api.fanyi.baidu.com'
     path = '/api/trans/vip/translate'
     url = endpoint + path
 
@@ -93,6 +94,7 @@ model_decoder = AutoModelForCausalLM.from_pretrained("defog/sqlcoder-7b")
 该模型是一个序列到序列（seq2seq）的语言模型，通常用于生成任务，例如问答、摘要生成、翻译等。它可以接受一个输入序列并生成一个相关的输出序列，因此适用于各种生成性任务。
 原因是您可能需要同时处理文本嵌入和生成任务，所以需要加载两个不同的模型。这使您可以在同一应用程序中执行不同类型的自然语言处理任务。如果您只对其中一个任务感兴趣，可以只加载相关模型。
 '''
+
 
 # Function for Meanpooling
 
