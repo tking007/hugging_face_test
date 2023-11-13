@@ -13,7 +13,7 @@ import torch.nn.functional as F
 import torch
 from transformers import AutoTokenizer, AutoModel
 import sqlite3
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForMaskedLM, AutoModelForCausalLM
 from sklearn.metrics.pairwise import cosine_similarity
 import os
 
@@ -73,11 +73,17 @@ tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v
 model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 
 # Load the model and tokenizer
-tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/2jrayxos')
-model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
+# tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/2jrayxos')
+# model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
 
-# tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/1zha5ono')
-# model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/1zha5ono")
+tokenizer_decoder = AutoTokenizer.from_pretrained('defog/sqlcoder-7b')
+model_decoder = AutoModelForCausalLM.from_pretrained("defog/sqlcoder-7b")
+
+# tokenizer_decoder = AutoTokenizer.from_pretrained('jtjt520j/test_chinese_base_bert_text2sql')
+# model_decoder = AutoModelForMaskedLM.from_pretrained("jtjt520j/test_chinese_base_bert_text2sql")
+
+# tokenizer_decoder = AutoTokenizer.from_pretrained('jtjt520j/Text_to_SQL_BART_CSpider-three-ep-mrking')
+# model_decoder = AutoModelForSeq2SeqLM.from_pretrained("jtjt520j/Text_to_SQL_BART_CSpider-three-ep-mrking")
 
 '''
 第一个模型：
@@ -191,7 +197,7 @@ def encoder_decoder_2(query_sentence, database_name, highest_matching_table_name
     output_text_1 = tokenizer_decoder.decode(
         output_1[0], skip_special_tokens=True)
 
-    print("嗯嗯", output_text_1)
+    print("This is output_text_1", output_text_1)
 
     # Output: IMDB | select title from movie where rating > 6 and year =2018
 
@@ -278,7 +284,8 @@ def main():
             query_sentence = translate(query)
 
             # Connect to database and fetch table names and column names
-            conn = sqlite3.connect('actor_database.db')
+            conn = sqlite3.connect('../test_get_gaokao_data/test.db')
+            # conn = sqlite3.connect('actor_database.db')
             cursor = conn.cursor()
 
             # Get the filename that is connected above
@@ -308,8 +315,9 @@ def main():
 
             # Close database connection
             conn.close()
-        except Exception:
+        except Exception as e:
             print("Please try again!")
+            print(e)
 
 
 # Test with Natural Language Query

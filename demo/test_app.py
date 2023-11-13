@@ -8,26 +8,20 @@ def intro():
 
     st.markdown(
         """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
+        请尽管向我提出问题！
 
-        **👈 Select a demo from the dropdown on the left** to see some examples
-        of what Streamlit can do!
+        **👈 你会得到你想要的!
 
-        ### Want to learn more?
+        ### 想要了解更多?
 
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-
-        ### See more complex demos
-
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
+        - 这是关于我的文档(https://streamlit.io)
+        - 这是关于我是用的模型文档(https://docs.streamlit.io)
+        - 这是关于更多Text_to_sql的一些开源内容(https://discuss.streamlit.io)
     """
     )
+    title = st.text_input("输入一些问题吧 👇", "在这里向我提问哦！")
+    st.button("确认", type="primary")
+
 
 def mapping_demo():
     import streamlit as st
