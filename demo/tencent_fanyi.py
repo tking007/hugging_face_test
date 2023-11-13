@@ -33,7 +33,7 @@ def fanyi(query):
         data = json.loads(resp.to_json_string())
         # print(query)
         # print(data['TargetTextList'])
-        print("翻译成功", time.strptime(time.localtime(), "%H:%M:%S"))
+        # print("翻译成功", time.strptime(time.localtime(), "%H:%M:%S"))
 
     except TencentCloudSDKException as err:
         print(err)
