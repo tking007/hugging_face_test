@@ -6,6 +6,7 @@ from tencentcloud.tmt.v20180321 import tmt_client, models
 import json
 import os
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 SecretId = os.getenv("SecretId")
@@ -32,7 +33,7 @@ def fanyi(query):
         data = json.loads(resp.to_json_string())
         # print(query)
         # print(data['TargetTextList'])
-        print("翻译成功")
+        print("翻译成功", time.strptime(time.localtime(), "%H:%M:%S"))
 
     except TencentCloudSDKException as err:
         print(err)
