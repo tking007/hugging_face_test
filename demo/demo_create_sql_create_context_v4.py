@@ -42,7 +42,6 @@ v4_questions = [entry["question"] for entry in v4_data]
 
 # 分批进行翻译
 batch_size = 5  # 根据 QPS 限制设置合适的批量大小
-total_batches = len(v4_questions) // batch_size + (1 if len(v4_questions) % batch_size != 0 else 0)
 
 start_time = time.time()  # 记录开始时间
 for i in range(0, len(v4_questions), batch_size):
@@ -62,7 +61,10 @@ for i in range(0, len(v4_questions), batch_size):
     progress = i / len(v4_questions) * 100
     elapsed_time = time.time() - start_time
     remaining_progress = 100 - progress
-    remaining_time = remaining_progress * elapsed_time / progress
+    if progress > 0:
+        remaining_time = remaining_progress * elapsed_time / progress
+    else:
+        remaining_time = 0
     print(f"Progress: {progress:.2f}%, Elapsed Time: {elapsed_time:.2f} seconds, Remaining Time: {remaining_time:.2f} seconds")
     # 输出总翻译次数
     print(f"translations: {i}")
@@ -70,7 +72,3 @@ for i in range(0, len(v4_questions), batch_size):
 # 将修改后的 v4_data 写回文件
 with open("data_sql.json", "w", encoding="utf-8") as f:
     json.dump(v4_data, f, ensure_ascii=False, indent=2)
-
-
-
-
