@@ -74,11 +74,11 @@ tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v
 model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 
 # Load the model and tokenizer
-# tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/2jrayxos')
-# model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
+tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/2jrayxos')
+model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
 
-tokenizer_decoder = AutoTokenizer.from_pretrained('defog/sqlcoder-7b')
-model_decoder = AutoModelForCausalLM.from_pretrained("defog/sqlcoder-7b")
+# tokenizer_decoder = AutoTokenizer.from_pretrained('defog/sqlcoder-7b')
+# model_decoder = AutoModelForCausalLM.from_pretrained("defog/sqlcoder-7b")
 
 # tokenizer_decoder = AutoTokenizer.from_pretrained('jtjt520j/test_chinese_base_bert_text2sql')
 # model_decoder = AutoModelForMaskedLM.from_pretrained("jtjt520j/test_chinese_base_bert_text2sql")
@@ -253,21 +253,21 @@ def sql_executor(sql_query, highest_matching_table_column_names, cursor):
         #     for x in i:
         #         res_1.append(translate(str(x)))
 
-        res_1 = []
-        for j in column_names:
-            res_1.append(translate(str(j)))
-
-        # print(res_1)
-        # print(res_2)
-
-        res_2 = result + res_1
-
-        df = pd.DataFrame(result, columns=res_2)
-        # 打印DataFrame
-        print("df:\n", df)
-
-        # print the result
-        print(res)
+        # res_1 = []
+        # for j in column_names:
+        #     res_1.append(translate(str(j)))
+        #
+        # # print(res_1)
+        # # print(res_2)
+        #
+        # res_2 = result + res_1
+        #
+        # df = pd.DataFrame(result, columns=res_2)
+        # # 打印DataFrame
+        # print("df:\n", df)
+        #
+        # # print the result
+        # print(res)
     except Exception as e:
         print("SQL query is not valid.")
         print(e)
