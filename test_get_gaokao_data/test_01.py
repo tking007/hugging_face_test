@@ -9,29 +9,37 @@ def extract_table_name(from_clause):
         return extract_table_name(from_clause.right)
 
 
-def infer_data_type(projection, query):
-    if '<=' in query:
-        return 'INTEGER'
-    elif '>=' in query:
-        return 'INTEGER'
-    elif '<' in query:
-        return 'INTEGER'
-    elif '>' in query:
-        return 'INTEGER'
-
-    if 'min' in str(projection) or "MIN" in str(projection):
-        return 'INTEGER'
-    elif 'max' in str(projection) or "MAX" in str(projection):
-        return 'INTEGER'
-    elif 'avg' in str(projection):
-        return 'INTEGER'
-    elif 'sum' in str(projection):
-        return 'INTEGER'
+def infer_data_type(parsed_query):
+    for clause in parsed_query.find_all((exp.Avg, exp.Sum, exp.Max, exp.Min)):
+        # Basically checking for numeric operations
+        key = clause.this.name
+        for column in columns:
+            if column.get('column_name') == key:
+                # Further checks to infer if type is an integer or float
+                column['type'] = 'INTEGER'
+                return column['type']
+    # if '<=' in query:
+    #     return 'INTEGER'
+    # elif '>=' in query:
+    #     return 'INTEGER'
+    # elif '<' in query:
+    #     return 'INTEGER'
+    # elif '>' in query:
+    #     return 'INTEGER'
+    #
+    # if 'min' in str(projection) or "MIN" in str(projection):
+    #     return 'INTEGER'
+    # elif 'max' in str(projection) or "MAX" in str(projection):
+    #     return 'INTEGER'
+    # elif 'avg' in str(projection):
+    #     return 'INTEGER'
+    # elif 'sum' in str(projection):
+    #     return 'INTEGER'
     # 如果是数字类型的字面值，返回整数类型
     # if any(char.isdigit() for char in expression):
     #     return 'INTEGER'
     # 默认为VARCHAR类型
-    return 'VARCHAR'
+    # return 'VARCHAR'
 
 
 def generate_create_table(query):
@@ -40,15 +48,23 @@ def generate_create_table(query):
         table_name = None
         columns = []
 
-        for from_clause in parsed_query.find_all(exp.Table):
-            table_name = extract_table_name(from_clause)
+        for table in parsed_query.find_all(exp.Table):
+            for column in parsed_query.find_all(exp.Column):
+                if column.table == table.alias:
+                    if '"' in str(column.this):
+                        # sometimes things like "Terrence Ross" is thought of as a column, we ignore those
+                        continue
+                    columns.append(column.name)
 
-        for select_clause in parsed_query.find_all(exp.Select):
-            for projection in select_clause.expressions:
-                data_type = infer_data_type(projection, query)
-        for column in parsed_query.find_all(exp.Column):
-            col_name = column.alias_or_name
-            columns.append((column.this, data_type))
+            table_name = extract_table_name(table)
+                    # columns.append(column.name)
+
+        # for select_clause in parsed_query.find_all(exp.Select):
+        #     for projection in select_clause.expressions:
+        data_type = infer_data_type(parsed_query)
+        # for column in parsed_query.find_all(exp.Column):
+        #     col_name = column.alias_or_name
+        columns.extend((table_name, data_type))
 
         create_table_statement = f"CREATE TABLE {table_name} ("
 
@@ -93,6 +109,6 @@ def generate_create_table(query):
 # for entry in datas[:10]:
 #     print(entry["context"])
 #     # print(entry)
-
-datas = "SELECT Status FROM city WHERE Population > 1500 INTERSECT SELECT Status FROM city WHERE Population < 500"
-print(generate_create_table(datas))
+if __name__ == '__main__':
+    datas = "SELECT avg(Working_Horses) FROM farm WHERE Total_Horses  >  5000"
+    print(generate_create_table(datas))
