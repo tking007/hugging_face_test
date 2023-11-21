@@ -47,8 +47,6 @@ https://github.com/tobymao/sqlglot#run-tests-and-lint
 参照以上方法将cspider数据集转换成sql-create-context数据集格式
 """
 
-from sqlglot import parse_one, exp, transpile
-
 
 def infer_data_type(column, parsed_query):
     for binary in parsed_query.find_all(exp.Binary):
