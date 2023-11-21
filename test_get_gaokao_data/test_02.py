@@ -97,7 +97,16 @@ for clause in parsed_query.find_all((exp.Avg, exp.Sum, exp.Max, exp.Min)):
     if column.get('column_name') == key:
       # Further checks to infer if type is an integer or float
       column['type'] = inferred_type
-From there you'll have the basics you need for the CREATE TABLE statement. tables, columns, and their datatypes. Which you can use to generate "CREATE TABLE" strings in regular python and pass them to SQLGlot transpile() to see if it errors. The SQLGlot library is huge and I'm definitely not an expert in it so there's probably a lot of better ways worth exploring to get datatypes of columns or parsing it all. My method consisted of mostly navigating the syntax tree for columns and table names and then inferring datatypes from the query. I then just built the CREATE statement as a regular python string, but you could also use SQLGlot expressions or try using ctas but I wasn't able to get that to work the way I wanted and opted for just building as a string.
+From there you'll have the basics you need for the CREATE TABLE statement. tables, columns, 
+and their datatypes. Which you can use to generate "CREATE TABLE" strings in 
+regular python and pass them to SQLGlot transpile() to see if it errors. 
+The SQLGlot library is huge and I'm definitely not an expert in it so there's 
+probably a lot of better ways worth exploring to get datatypes of
+ columns or parsing it all. My method consisted of mostly navigating 
+ the syntax tree for columns and table names and then inferring datatypes 
+ from the query. I then just built the CREATE statement as a regular python string, 
+ but you could also use SQLGlot expressions or try using ctas 
+ but I wasn't able to get that to work the way I wanted and opted for just building as a string.
 
 Hope that helps. 
 """
