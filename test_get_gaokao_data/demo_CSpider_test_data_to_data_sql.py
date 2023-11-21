@@ -2,7 +2,7 @@ import json
 import time
 import re
 from demo.tencent_fanyi import fanyi
-import sqlglot
+from sqlglot import parse_one, exp, transpile
 
 '''
 只需要CSpider数据集中的两个字段，question和query
@@ -40,85 +40,91 @@ import sqlglot
 # with open("v1_data_sql.json", "w", encoding="utf-8") as f:
 #     json.dump(datas, f, ensure_ascii=False, indent=2)
 
-'''
+"""
 https://huggingface.co/datasets/b-mc2/sql-create-context
+
 https://github.com/tobymao/sqlglot#run-tests-and-lint
 参照以上方法将cspider数据集转换成sql-create-context数据集格式
-'''
+"""
 
-from sqlglot import parse_one, exp
-
-
-def extract_table_name(from_clause):
-    if isinstance(from_clause, exp.Table):
-        return from_clause.name
-    elif isinstance(from_clause, exp.Join):
-        # 如果是JOIN，递归调用提取子表的表名
-        return extract_table_name(from_clause.right)
+from sqlglot import parse_one, exp, transpile
 
 
-def infer_data_type(expression):
-    if isinstance(expression, exp.Binary):
-        # 如果是二元运算符，可以根据运算符类型判断数据类型
-        if expression.operator in ('<', '>'):
+def infer_data_type(column, parsed_query):
+    for binary in parsed_query.find_all(exp.Binary):
+        if isinstance(binary, (exp.GT, exp.LT, exp.GTE, exp.LTE)) and column.name in {binary.left.name,
+                                                                                      binary.right.name}:
             return 'INTEGER'
-        elif isinstance(expression, exp.Aggregate):
-            #  如果是聚合函数，可以根据函数类型判断数据类型
-            if expression.name.lower() in ('min', 'max', 'avg', 'sum'):
-                # 获取函数作用的列
-                column_expression = expression.args[0]
-                # 推断数据类型
-                if isinstance(column_expression, exp.Column):
-                    return 'INTEGER'
-    # 默认为VARCHAR类型
+    for between in parsed_query.find_all(exp.Between):
+        if column.name == between.args['this'].name:
+            try:
+                float(between.args['low'].this)
+                float(between.args['high'].this)
+                return 'INTEGER'
+            except ValueError:
+                pass
+    for aggregate in parsed_query.find_all((exp.Avg, exp.Sum, exp.Max, exp.Min)):
+        if column.name == aggregate.this.name:
+            return 'INTEGER'
     return 'VARCHAR'
 
 
-def generate_create_table(query):
-    # 使用SQLGlot解析SQL查询
-    parsed_query = parse_one(query)
+def generate_create_table(query_or_expr):
+    parsed_query = parse_one(query_or_expr) if isinstance(query_or_expr, str) else query_or_expr
+    tables = {}
 
-    # 提取表名和列信息
-    table_name = None
-    columns = []
+    for table_expr in parsed_query.find_all((exp.From, exp.Join)):
+        table_name = table_expr.this.this
+        tables[table_name] = set()
 
-    # 提取表名
-    for from_clause in parsed_query.find_all(exp.Table):
-        table_name = extract_table_name(from_clause)
-        print(table_name)
-        if table_name:
-            break
+        for column in parsed_query.find_all(exp.Column):
+            if column.table == table_expr.this.alias and '"' not in str(column.this):
+                column_name = column.name
+                data_type = infer_data_type(column, parsed_query)
+                tables[table_name].add((column_name, data_type))
 
-    # 提取列信息
-    for select_clause in parsed_query.find_all(exp.Column):
-        # print("****", select_clause.alias_or_name)
-        col_name = select_clause.alias_or_name
-        print(col_name)
-        expression = select_clause.expression
-        data_type = infer_data_type(expression)
-        columns.append((select_clause.alias_or_name, data_type))
-        # columns.append((select_clause.alias_or_name, 'VARCHAR'))  # 默认为VARCHAR类型
+    for union in parsed_query.find_all(exp.Union):
+        generate_create_table(union.left)
+        generate_create_table(union.right)
 
-    # 生成CREATE TABLE语句
-    create_table_statement = f"CREATE TABLE {table_name} ({', '.join([f'{col} {data_type}' for col, data_type in columns])});"
+    for from_expr in parsed_query.find_all(exp.From):
+        table_name = from_expr.this.this
+        if table_name not in tables:
+            tables[table_name] = {('Id', 'VARCHAR')}
 
-    # 再次使用 SQLGlot 来确保 SQL 查询和 CREATE TABLE 语句解析没有错误
-    try:
-        parse_one(create_table_statement)
-    except Exception as e:
-        print(f"Error parsing CREATE TABLE statement: {e}")
+    if isinstance(parsed_query, exp.Select):
+        for from_expr in parsed_query.find_all(exp.From):
+            table_name = from_expr.this.this
+            if table_name not in tables:
+                tables[table_name] = {('Id', 'VARCHAR')}
 
-    return create_table_statement
+    create_table_statements = []
+    for table_name, columns_info in tables.items():
+        columns_info = columns_info or {('Id', 'VARCHAR')}
+        create_table_statement = f"CREATE TABLE {table_name} ("
+        create_table_statement += ', '.join(f"{column_info[0]} {column_info[1]}" for column_info in columns_info)
+        create_table_statement += ");"
+        create_table_statements.append(create_table_statement)
+
+    return create_table_statements
 
 
-with open("test_CSpider.json", "r", encoding="utf-8") as f:
-    datas = json.load(f)
+if __name__ == '__main__':
+    with open("test_CSpider.json", "r", encoding="utf-8") as f:
+        datas = json.load(f)
 
-# 处理数据集
-for entry in datas[:10]:
-    entry["context"] = generate_create_table(entry["query"])
+    sentences = []
 
-# 打印处理后的数据集
-for entry in datas[:10]:
-    print(entry["context"])
-    print(entry)
+    # 处理数据集
+    for entry in datas[:10]:
+        entry["context"] = generate_create_table(entry["query"])
+
+        if entry["context"]:
+            for statement in entry["context"]:
+                sentences.append(statement)
+        else:
+            print("未生成 create table 语句。")
+
+    print(sentences)
+    s = transpile("\n".join(sentences), identity=True)
+    print(s)
