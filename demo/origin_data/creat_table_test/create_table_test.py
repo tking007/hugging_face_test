@@ -1,4 +1,5 @@
 from sqlglot import parse_one, exp, transpile
+import sqlglot
 
 
 def infer_data_type(column, parsed_query):
@@ -74,18 +75,19 @@ def generate_create_table(query_or_expr):
 
 if __name__ == '__main__':
     queries = [
-
-        "SELECT T2.title, T2.film_id, T2.description FROM film_actor AS T1 JOIN film AS T2 ON T1.film_id = T2.film_id GROUP BY T2.film_id ORDER BY COUNT(*) DESC LIMIT 1"
-
+    "SELECT COUNT ( * ) FROM restaurant AS t1 JOIN LOCATION AS t2 ON t1.id  =  t2.restaurant_id WHERE t2.city_name  =  \"深圳\" AND t1.name  =  \"日本料理\";"
 
 
 
     ]
 
-    sentences = [statement for query in queries for statement in generate_create_table(query)]
-    print(sentences)
+
     # s = transpile("\n".join(sentences), identity=True)
     # print(s)
+    # print(sqlglot.transpile(sql[0], identify=True)[0])
+    # queries = sqlglot.transpile(sql[0], identify=True)[0]
+    sentences = [statement for query in queries for statement in generate_create_table(query)]
+    print(sentences)
 
 """
 请教博主给出的解决方案

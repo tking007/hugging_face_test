@@ -1,6 +1,9 @@
 import json
 import time
 import re
+
+import sqlglot
+
 from demo.origin_data.motherd_fanyi.tencent_fanyi import fanyi
 from sqlglot import parse_one, exp, transpile
 from collections import OrderedDict
@@ -123,16 +126,17 @@ def generate_create_table(query_or_expr):
 
 
 if __name__ == '__main__':
-    with open("test_CSpider.json", "r", encoding="utf-8") as f:
+    with open("../CSpider/train.json", "r", encoding="utf-8") as f:
         datas = json.load(f)
 
     new_datas = []  # 创建一个新的列表来存储修改后的数据
 
     # 处理数据集
     for entry in datas:
+        origin_query = sqlglot.transpile(entry["query"], identity=True)[0]
         # print(entry["query"])
         # 生成创建表语句
-        sentences = generate_create_table(entry["query"])
+        sentences = generate_create_table(origin_query)
         # 重命名"query"字段为"answer"
         answer = entry.pop("query")
 
