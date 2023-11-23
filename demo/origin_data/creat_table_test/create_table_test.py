@@ -75,7 +75,8 @@ def generate_create_table(query_or_expr):
 
 if __name__ == '__main__':
     queries = [
-    "SELECT COUNT ( * ) FROM restaurant AS t1 JOIN LOCATION AS t2 ON t1.id  =  t2.restaurant_id WHERE t2.city_name  =  \"深圳\" AND t1.name  =  \"日本料理\";"
+   "SELECT T2.名称, MAX(T1.观众人数) FROM 二零一八年具体赛事 AS T1 JOIN 中国体育赛事 AS T2 ON 二零一八年具体赛事.赛事类型id = 中国体育赛事.词条id GROUP BY T1.赛事类型id HAVING COUNT(*) = 5"
+
 
 
 
