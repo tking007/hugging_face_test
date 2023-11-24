@@ -1,4 +1,3 @@
-from sqlglot import parse_one, exp
 import sqlglot
 import re
 import json
@@ -20,12 +19,21 @@ def preprocess_query(query, pattern):
     # 如果查询中包含 "40城"，则将其替换为 "四十城"
     query = query.replace('40城', '四十城')
     query = query.replace('(亿)', '（亿）')
+    query = query.replace('一零零', '一百')
+    query = query.replace('~', '-')
+    query = query.replace('limit3', 'limit 3')
+    query = query.replace('5A', '五A')
+
+    # 使用正则表达式匹配select后面的三个连续的列名
+    pattern_select = re.compile(r"(select\s+[\u4e00-\u9fa5]+\s+[\u4e00-\u9fa5]+\s+[\u4e00-\u9fa5]+)")
+    # 使用正则表达式的sub方法替换匹配的字符串，将空格替换为逗号和空格
+    query = pattern_select.sub(lambda m: m.group(1).replace(" ", ", "), query)
     processed_query = re.sub(pattern, lambda m: ''.join(num_map[i] for i in m.group(1)) + m.group(2), query)
     return processed_query
 
 
 # Adjust the pattern to consider periods as valid following characters
-pattern = re.compile(r'(?<=\s|\.)(\d+)([\u4e00-\u9fa5]+)(?=\s|\.|$)')
+pattern = re.compile(r'(?<=\w|\s|\.)(\d+)([\u4e00-\u9fa5]+)(?=\s|\.|$)')
 
 with open("train.json", "r", encoding="utf-8") as f:
     data = json.load(f)
@@ -36,10 +44,11 @@ with open("train.json", "r", encoding="utf-8") as f:
         if pattern.search(query):
             # 使用中文字符和映射表替换匹配到的部分
             processed_query = preprocess_query(query, pattern)
-            # prnt = sqlglot.transpile(processed_query, identify=True)[0]
+            print("####", query)
             try:
+                print("!!!!", query)
+                print("%%%%", processed_query)
                 res = sqlglot.transpile(processed_query, identity=True)[0]
-                print(res)
             except sqlglot.errors.ParseError as e:
                 error_message = str(e)
                 if "Invalid expression / Unexpected token" in error_message:
@@ -49,6 +58,16 @@ with open("train.json", "r", encoding="utf-8") as f:
                     if query[col - 1] in '()':
                         # 将指定位置的英文括号替换为中文括号
                         origin_query = replace_brackets_at_position(query)
+                        print("$$$", origin_query)
                         processed_query = preprocess_query(origin_query, pattern)
+                        print("###", query)
                         res = sqlglot.transpile(processed_query, identity=True)[0]
                         print("@@@" , res)
+        else:
+            if ":" in query:
+                res = sqlglot.transpile(processed_query, identity=True)[0]
+            else:
+                processed_query = preprocess_query(query, pattern)
+                res = sqlglot.transpile(processed_query, identity=True)[0]
+
+

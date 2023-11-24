@@ -75,20 +75,20 @@ def generate_create_table(query_or_expr):
 
 if __name__ == '__main__':
     queries = [
-   "SELECT T2.名称, MAX(T1.观众人数) FROM 二零一八年具体赛事 AS T1 JOIN 中国体育赛事 AS T2 ON 二零一八年具体赛事.赛事类型id = 中国体育赛事.词条id GROUP BY T1.赛事类型id HAVING COUNT(*) = 5"
-
+    "select 中文队名 所属地区 赛区 from 篮球俱乐部 where TIME_NOW - 成立时间 == 13"
 
 
 
     ]
 
 
-    # s = transpile("\n".join(sentences), identity=True)
-    # print(s)
+
+    print(sqlglot.transpile(queries[0], identify=True)[0])
     # print(sqlglot.transpile(sql[0], identify=True)[0])
     # queries = sqlglot.transpile(sql[0], identify=True)[0]
     sentences = [statement for query in queries for statement in generate_create_table(query)]
     print(sentences)
+    print(transpile("\n".join(queries), identity=True))
 
 """
 请教博主给出的解决方案
