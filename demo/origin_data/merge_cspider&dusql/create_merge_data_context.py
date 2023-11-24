@@ -105,5 +105,5 @@ if __name__ == '__main__':
         new_datas.append(new_entry)  # 将新的字典添加到新的列表中
 
     # 将修改后的数据写回文件
-    with open("merged_data_sql.json", "w", encoding="utf-8") as f:
+    with open("merged_data_sql_create_contex.json", "w", encoding="utf-8") as f:
         json.dump(new_datas, f, ensure_ascii=False, indent=2)

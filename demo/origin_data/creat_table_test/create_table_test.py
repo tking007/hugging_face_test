@@ -75,7 +75,7 @@ def generate_create_table(query_or_expr):
 
 if __name__ == '__main__':
     queries = [
-    "select 中文队名 所属地区 赛区 from 篮球俱乐部 where TIME_NOW - 成立时间 == 13"
+    "( select 名称 from 列车 order by 出发时间 asc limit 3 ) union ( select 名称 from 列车 where 到达时间 > 17:30:00 )"
 
 
 
