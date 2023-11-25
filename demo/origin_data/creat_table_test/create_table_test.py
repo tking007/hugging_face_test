@@ -75,7 +75,7 @@ def generate_create_table(query_or_expr):
 
 if __name__ == '__main__':
     queries = [
-    "( select 名称 from 列车 order by 出发时间 asc limit 3 ) union ( select 名称 from 列车 where 到达时间 > 17:30:00 )"
+    'select 所属省份 from 国家旅游城市 group by 所属省份 order by avg ( "5A级景点数量" / 景点数量 ) desc limit 3'
 
 
 

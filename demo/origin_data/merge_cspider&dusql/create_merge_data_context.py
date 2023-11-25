@@ -77,7 +77,7 @@ def generate_create_table(query_or_expr):
 
 
 if __name__ == '__main__':
-    with open("merged_data.json", "r", encoding="utf-8") as f:
+    with open("merged_data_v2.0.json", "r", encoding="utf-8") as f:
         datas = json.load(f)
 
     new_datas = []  # 创建一个新的列表来存储修改后的数据
