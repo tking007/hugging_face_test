@@ -157,5 +157,5 @@ if __name__ == '__main__':
         new_datas.append(new_entry)  # 将新的字典添加到新的列表中
 
     # 将修改后的数据写回文件
-    with open("cspider_sql_create_context.json", "w", encoding="utf-8") as f:
+    with open("cspider_sql_create_context.jsonl", "w", encoding="utf-8") as f:
         json.dump(new_datas, f, ensure_ascii=False, indent=2)
