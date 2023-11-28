@@ -1,0 +1,2 @@
+{"input": "部门中有多少人年龄大于56岁 ?", "context": "CREATE TABLE head (age INTEGER)"}
+{"input": "列出按年龄排序的部门负责人的姓名、出生地和年龄。", "context": "CREATE TABLE head (name VARCHAR, born_state VARCHAR, age VARCHAR)"}
