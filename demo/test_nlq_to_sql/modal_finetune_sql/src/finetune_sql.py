@@ -230,7 +230,7 @@ def _train(
 )
 def finetune(data_dir: str = "data_sql", model_dir: str = "data_sql"):
     import wandb
-    wandb.login(key="fa69742cc362f813324cdd7150ef288cc0104947")
+    wandb.init(project="tutorial")
 
     from datasets import load_dataset
 
