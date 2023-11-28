@@ -46,10 +46,10 @@ def _train(
     add_eos_token: bool = True,
     group_by_length: bool = True,  # faster, but produces an odd training loss curve
     # wandb params
-    wandb_project: str = "",
-    wandb_run_name: str = "",
-    wandb_watch: str = "",  # options: false | gradients | all
-    wandb_log_model: str = "",  # options: false | true
+    wandb_project: str = "mrking_test",
+    wandb_run_name: str = "demo",
+    wandb_watch: str = "gradients",  # options: false | gradients | all
+    wandb_log_model: str = "true",  # options: false | true
     resume_from_checkpoint: str = None,  # either training checkpoint or final adapter
 ):
     import os
