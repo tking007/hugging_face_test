@@ -24,7 +24,7 @@ from llama_index.llms.base import llm_completion_callback
 from typing import Any
 
 @stub.cls(
-    gpu=gpu.A100(memory=20),
+    gpu=gpu.A100(memory=40),
     network_file_systems={VOL_MOUNT_PATH: output_vol},
 )
 class OpenLlamaLLM(CustomLLM, ClsMixin):
