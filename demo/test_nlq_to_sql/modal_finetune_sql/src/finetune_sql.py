@@ -229,9 +229,6 @@ def _train(
     allow_cross_region_volumes=True,
 )
 def finetune(data_dir: str = "data_sql", model_dir: str = "data_sql"):
-    import wandb
-    wandb.init(project="tutorial")
-
     from datasets import load_dataset
 
     data_path = get_data_path(data_dir).as_posix()
