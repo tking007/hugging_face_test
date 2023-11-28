@@ -222,7 +222,7 @@ def _train(
 @stub.function(
     gpu="A100",
     # TODO: Modal should support optional secrets.
-    secret=Secret.from_name("my-wandb-secret") if WANDB_PROJECT else None,
+    secret=Secret.from_name("mrking_huggingface_secrets") if WANDB_PROJECT else None,
     timeout=60 * 60 * 2,
     network_file_systems={VOL_MOUNT_PATH: output_vol},
     cloud="oci",
