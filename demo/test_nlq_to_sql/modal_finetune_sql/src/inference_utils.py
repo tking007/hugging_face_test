@@ -27,7 +27,8 @@ from typing import Any
     gpu=gpu.A100(memory=40),
     network_file_systems={VOL_MOUNT_PATH: output_vol},
 )
-class OpenLlamaLLM(CustomLLM, ClsMixin):
+# class OpenLlamaLLM(CustomLLM, ClsMixin):
+class OpenLlamaLLM(CustomLLM):
     """OpenLlamaLLM is a custom LLM that uses the OpenLlamaModel."""
 
    
