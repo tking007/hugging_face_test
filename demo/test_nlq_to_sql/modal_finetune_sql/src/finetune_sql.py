@@ -3,10 +3,6 @@ from datetime import datetime
 import os
 from math import ceil
 
-import wandb
-
-wandb.login(key="fa69742cc362f813324cdd7150ef288cc0104947")
-
 from .common import (
     MODEL_PATH,
     VOL_MOUNT_PATH,
@@ -50,10 +46,10 @@ def _train(
     add_eos_token: bool = True,
     group_by_length: bool = True,  # faster, but produces an odd training loss curve
     # wandb params
-    wandb_project: str = "mrking_test",
+    wandb_project: str = "",
     wandb_run_name: str = "",
-    wandb_watch: str = "gradients",  # options: false | gradients | all
-    wandb_log_model: str = "true",  # options: false | true
+    wandb_watch: str = "",  # options: false | gradients | all
+    wandb_log_model: str = "",  # options: false | true
     resume_from_checkpoint: str = None,  # either training checkpoint or final adapter
 ):
     import os
@@ -233,6 +229,9 @@ def _train(
     allow_cross_region_volumes=True,
 )
 def finetune(data_dir: str = "data_sql", model_dir: str = "data_sql"):
+    import wandb
+    wandb.login(key="fa69742cc362f813324cdd7150ef288cc0104947")
+
     from datasets import load_dataset
 
     data_path = get_data_path(data_dir).as_posix()
