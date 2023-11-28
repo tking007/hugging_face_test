@@ -5,7 +5,7 @@ from math import ceil
 
 import wandb
 
-wandb.login()
+wandb.login(key="fa69742cc362f813324cdd7150ef288cc0104947")
 
 from .common import (
     MODEL_PATH,
