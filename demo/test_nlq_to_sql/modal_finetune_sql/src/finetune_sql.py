@@ -3,6 +3,10 @@ from datetime import datetime
 import os
 from math import ceil
 
+import wandb
+
+wandb.login()
+
 from .common import (
     MODEL_PATH,
     VOL_MOUNT_PATH,
@@ -65,10 +69,6 @@ def _train(
         set_peft_model_state_dict,
     )
     from transformers import LlamaForCausalLM, LlamaTokenizer
-
-    # Add these lines
-    import wandb
-    wandb.login()
 
     gradient_accumulation_steps = batch_size // micro_batch_size
 
