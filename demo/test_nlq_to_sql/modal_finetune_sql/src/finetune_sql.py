@@ -66,6 +66,10 @@ def _train(
     )
     from transformers import LlamaForCausalLM, LlamaTokenizer
 
+    # Add these lines
+    import wandb
+    wandb.login()
+
     gradient_accumulation_steps = batch_size // micro_batch_size
 
     device_map = "auto"
