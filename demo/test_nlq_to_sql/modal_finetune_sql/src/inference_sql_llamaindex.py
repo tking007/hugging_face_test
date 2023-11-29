@@ -93,11 +93,11 @@ def main(query: str, sqlite_file_path: str, model_dir: str = "data_sql", use_fin
 
     if use_finetuned_model == "None":
         # try both
-        response_0 = run_query.call(query, model_dir=model_dir, use_finetuned_model=True)
+        response_0 = run_query.remote(query, model_dir=model_dir, use_finetuned_model=True)
         print_response(response_0)
-        response_1 = run_query.call(query, model_dir=model_dir, use_finetuned_model=False)
+        response_1 = run_query.remote(query, model_dir=model_dir, use_finetuned_model=False)
         print_response(response_1)
     else:
         bool_toggle = use_finetuned_model == "True"
-        response = run_query.call(query, model_dir=model_dir, use_finetuned_model=bool_toggle)
+        response = run_query.remote(query, model_dir=model_dir, use_finetuned_model=bool_toggle)
         print_response(response)

@@ -22,8 +22,8 @@ from .inference_utils import OpenLlamaLLM
     cloud="gcp",
 )
 def run_evals(
-    sample_data, 
-    model_dir: str = "data_sql", 
+    sample_data,
+    model_dir: str = "data_sql",
     use_finetuned_model: bool = True
 ):
     llm = OpenLlamaLLM(
@@ -58,9 +58,9 @@ def run_evals(
     cloud="gcp",
 )
 def run_evals_all(
-    data_dir: str = "data_sql", 
-    model_dir: str = "data_sql", 
-    num_samples: int = 10, 
+    data_dir: str = "data_sql",
+    model_dir: str = "data_sql",
+    num_samples: int = 10,
 ):
     # evaluate a sample from the same training set
     from datasets import load_dataset
@@ -72,16 +72,16 @@ def run_evals_all(
     sample_data = data["train"].shuffle().select(range(num_samples))
 
     print('*** Running inference with finetuned model ***')
-    inputs_outputs_0 = run_evals(
-        sample_data=sample_data, 
-        model_dir=model_dir, 
+    inputs_outputs_0 = run_evals.remote(  # change here
+        sample_data=sample_data,
+        model_dir=model_dir,
         use_finetuned_model=True
     )
 
     print('*** Running inference with base model ***')
-    input_outputs_1 = run_evals(
-        sample_data=sample_data, 
-        model_dir=model_dir, 
+    input_outputs_1 = run_evals.remote(  # and here
+        sample_data=sample_data,
+        model_dir=model_dir,
         use_finetuned_model=False
     )
 
@@ -92,7 +92,7 @@ def run_evals_all(
 @stub.local_entrypoint()
 def main(data_dir: str = "data_sql", model_dir: str = "data_sql", num_samples: int = 10):
     """Main function."""
-    inputs_outputs_0, input_outputs_1 = run_evals_all.call(
+    inputs_outputs_0, input_outputs_1 = run_evals_all.remote(  # Deprecated on 2023-08-16: `f.call(...)` is deprecated. It has been renamed to `f.remote(...)`
         data_dir=data_dir,
         model_dir=model_dir,
         num_samples=num_samples

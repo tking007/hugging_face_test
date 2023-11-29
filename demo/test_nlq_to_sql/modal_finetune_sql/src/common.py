@@ -11,16 +11,18 @@ MODEL_PATH = "/model"
 
 
 def download_models():
-    from transformers import LlamaForCausalLM, LlamaTokenizer
-
-    # model_name = "openlm-research/open_llama_7b_v2"
+    # from transformers import LlamaForCausalLM, LlamaTokenizer
+    #
+    # # model_name = "openlm-research/open_llama_7b_v2"
+    from transformers import AutoModelForCausalLM, AutoTokenizer
     model_name = "FlagAlpha/Atom-7B"
-    
 
-    model = LlamaForCausalLM.from_pretrained(model_name)
+    # model = LlamaForCausalLM.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(model_name)
     model.save_pretrained(MODEL_PATH)
 
-    tokenizer = LlamaTokenizer.from_pretrained(model_name)
+    # tokenizer = LlamaTokenizer.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
     tokenizer.save_pretrained(MODEL_PATH)
 
 
@@ -47,6 +49,9 @@ openllama_image = (
         "sentencepiece==0.1.97",
         "llama-index==0.8.1",
         "sentence-transformers",
+        "pydantic==1.10.9",  # add this to fix a bug in llama-index
+        "openai==0.28.0",  # add this to fix a bug in llama-index
+        "langchain"  # add this to fix a bug in llama-index
     )
     .run_function(download_models)
     .pip_install("wandb==0.15.0")
