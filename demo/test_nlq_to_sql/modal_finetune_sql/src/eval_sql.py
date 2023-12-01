@@ -88,11 +88,10 @@ def run_evals_all(
     return inputs_outputs_0, input_outputs_1
 
 
-
 @stub.local_entrypoint()
 def main(data_dir: str = "data_sql", model_dir: str = "data_sql", num_samples: int = 10):
     """Main function."""
-    inputs_outputs_0, input_outputs_1 = run_evals_all.remote(  # Deprecated on 2023-08-16: `f.call(...)` is deprecated. It has been renamed to `f.remote(...)`
+    inputs_outputs_0, input_outputs_1 = run_evals_all.remote(
         data_dir=data_dir,
         model_dir=model_dir,
         num_samples=num_samples

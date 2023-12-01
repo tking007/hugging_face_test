@@ -30,7 +30,7 @@ def load_model(model_dir: str = "data_sql"):
 @stub.local_entrypoint()
 def main(output_dir: str, model_dir: str = "data_sql"):
     # copy adapter_config.json and adapter_model.bin files into dict
-    load_model.call(model_dir=model_dir)
+    load_model.remote(model_dir=model_dir)
     model_data = stub.model_dict["model"]
     config_data = stub.model_dict["config"]
 

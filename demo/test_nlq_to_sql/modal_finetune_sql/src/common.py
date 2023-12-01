@@ -47,7 +47,7 @@ openllama_image = (
         "torch==2.0.0",
         "torchvision==0.15.1",
         "sentencepiece==0.1.97",
-        "llama-index==0.8.1",
+        "llama-index",  # try to fix a bug in llama-index
         "sentence-transformers",
         "pydantic==1.10.9",  # add this to fix a bug in llama-index
         "openai==0.28.0",  # add this to fix a bug in llama-index
@@ -81,6 +81,7 @@ You must output the SQL query that answers the question.
 
 def get_data_path(data_dir: str = "data_sql") -> Path:
     return VOL_MOUNT_PATH / data_dir / "data_sql.jsonl"
+
 
 def get_model_path(data_dir: str = "data_sql", checkpoint: Optional[str] = None) -> Path:
     path = VOL_MOUNT_PATH / data_dir
