@@ -1,7 +1,7 @@
-import io
-import sys
-
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8')  # Windows系统默认的编码方式（GBK）无法正确编码某些Unicode字符
+# import io
+# import sys
+#
+# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8')  # Windows系统默认的编码方式（GBK）无法正确编码某些Unicode字符
 
 from modal import Image, Stub, NetworkFileSystem, Dict
 import random
