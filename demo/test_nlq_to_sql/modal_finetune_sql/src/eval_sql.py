@@ -72,6 +72,9 @@ def run_evals_all(
     # load sample data
     sample_data = data["train"].shuffle().select(range(num_samples))
 
+    print("@@@", data_path)
+    print("@@@", data_dir, model_dir)
+
     print('*** Running inference with finetuned model ***')
     inputs_outputs_0 = run_evals.remote(  # change here
         sample_data=sample_data,
