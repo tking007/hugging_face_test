@@ -4,7 +4,7 @@ import re
 
 import sqlglot
 
-from demo.origin_data.motherd_fanyi.tencent_fanyi import fanyi
+from demo.origin_data.method_fanyi.tencent_fanyi import fanyi
 from sqlglot import parse_one, exp, transpile
 from collections import OrderedDict
 from sqlglot.errors import ParseError
