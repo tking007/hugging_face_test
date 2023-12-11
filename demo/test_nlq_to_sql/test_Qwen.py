@@ -1,6 +1,7 @@
 # from transformers import AutoModelForCausalLM, AutoTokenizer
 # from transformers.generation import GenerationConfig
 
+
 from modelscope import AutoModelForCausalLM, AutoTokenizer
 from modelscope import GenerationConfig
 
