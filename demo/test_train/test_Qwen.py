@@ -13,4 +13,3 @@ model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen-1_8B-Chat", revision='ma
 
 response, _ = model.chat(tokenizer, "列出按年龄排序的部门负责人的姓名、出生地和年龄。", history=None, system="你是一名有着二十年工作经验的资深数据分析师身份擅长写SQL语句，请根据问题给出相应的SQL语句，需要保证SQL的正确性。")
 print(response)
-
