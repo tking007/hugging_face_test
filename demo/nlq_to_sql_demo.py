@@ -74,8 +74,11 @@ tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v
 model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 
 # Load the model and tokenizer
-tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/2jrayxos')
-model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
+# tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/2jrayxos')
+# model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
+
+tokenizer_decoder = AutoTokenizer.from_pretrained(r"D:\checkpoint-73691")
+model_decoder = AutoModelForSeq2SeqLM.from_pretrained(r"D:\checkpoint-73691")
 
 # tokenizer_decoder = AutoTokenizer.from_pretrained('defog/sqlcoder-7b')
 # model_decoder = AutoModelForCausalLM.from_pretrained("defog/sqlcoder-7b")
