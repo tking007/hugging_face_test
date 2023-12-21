@@ -81,7 +81,7 @@ model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 # model_decoder = AutoModelForSeq2SeqLM.from_pretrained(r"D:\checkpoint-73691")
 
 tokenizer_decoder = AutoTokenizer.from_pretrained('seeklhy/codes-1b-spider')
-model_decoder = AutoModelForSeq2SeqLM.from_pretrained('seeklhy/codes-1b-spider')
+model_decoder = AutoModelForCausalLM.from_pretrained('seeklhy/codes-1b-spider')
 
 
 # tokenizer_decoder = AutoTokenizer.from_pretrained('defog/sqlcoder-7b')
