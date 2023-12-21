@@ -74,8 +74,11 @@ tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v
 model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 
 # Load the model and tokenizer
-tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/2jrayxos')
-model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
+# tokenizer_decoder = AutoTokenizer.from_pretrained('tscholak/2jrayxos')
+# model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
+
+tokenizer_decoder = AutoTokenizer.from_pretrained(r"D:\checkpoint-73691")
+model_decoder = AutoModelForSeq2SeqLM.from_pretrained(r"D:\checkpoint-73691")
 
 # tokenizer_decoder = AutoTokenizer.from_pretrained('defog/sqlcoder-7b')
 # model_decoder = AutoModelForCausalLM.from_pretrained("defog/sqlcoder-7b")
@@ -104,8 +107,7 @@ model_decoder = AutoModelForSeq2SeqLM.from_pretrained("tscholak/2jrayxos")
 def mean_pooling(model_output, attention_mask):
     # First element of model_output contains all token embeddings
     token_embeddings = model_output[0]
-    input_mask_expanded = attention_mask.unsqueeze(
-        -1).expand(token_embeddings.size()).float()
+    input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
     return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
 
 
@@ -114,10 +116,8 @@ def mean_pooling(model_output, attention_mask):
 
 def encoder_decoder_1(query_sentence, table_names, tokenizer, model, cursor):
     # Tokenize query sentence, table names
-    query_sentence_encoded = tokenizer(
-        [query_sentence], padding=True, truncation=True, return_tensors='pt')
-    table_names_encoded = tokenizer(
-        table_names, padding=True, truncation=True, return_tensors='pt')
+    query_sentence_encoded = tokenizer([query_sentence], padding=True, truncation=True, return_tensors='pt')
+    table_names_encoded = tokenizer(table_names, padding=True, truncation=True, return_tensors='pt')
 
     # Compute token embeddings for query sentence, table names
     with torch.no_grad():
@@ -125,23 +125,17 @@ def encoder_decoder_1(query_sentence, table_names, tokenizer, model, cursor):
         table_names_output = model(**table_names_encoded)
 
     # Perform pooling for query sentence, table names
-    query_sentence_embedding = mean_pooling(
-        query_sentence_output, query_sentence_encoded['attention_mask'])
-    table_names_embeddings = mean_pooling(
-        table_names_output, table_names_encoded['attention_mask'])
+    query_sentence_embedding = mean_pooling(query_sentence_output, query_sentence_encoded['attention_mask'])
+    table_names_embeddings = mean_pooling(table_names_output, table_names_encoded['attention_mask'])
 
     # Normalize embeddings for query sentence, table names
-    query_sentence_embedding = F.normalize(
-        query_sentence_embedding, p=2, dim=1)
+    query_sentence_embedding = F.normalize(query_sentence_embedding, p=2, dim=1)
     table_names_embeddings = F.normalize(table_names_embeddings, p=2, dim=1)
 
     # Find the most similar table names by computing the cosine similarity between
-    cosine_similarities_tables = torch.nn.functional.cosine_similarity(
-        query_sentence_embedding, table_names_embeddings, dim=1)
-    most_similar_table_names_indices = cosine_similarities_tables.argsort(
-        descending=True)
-    most_similar_table_names = [table_names[i]
-                                for i in most_similar_table_names_indices]
+    cosine_similarities_tables = torch.nn.functional.cosine_similarity(query_sentence_embedding, table_names_embeddings, dim=1)
+    most_similar_table_names_indices = cosine_similarities_tables.argsort(descending=True)
+    most_similar_table_names = [table_names[i] for i in most_similar_table_names_indices]
 
     # Find the index of the highest matching table name by finding the maximum value
     max_similarity_table_index = cosine_similarities_tables.argmax()
@@ -163,17 +157,13 @@ def encoder_decoder_1(query_sentence, table_names, tokenizer, model, cursor):
     # cursor.execute(f"PRAGMA table_info({highest_matching_table_name});")
     # 使用反引号 ` 或双引号 " 来引用表名和列名避免来与SQL关键字冲突
     cursor.execute(f"PRAGMA table_info(`{highest_matching_table_name}`);")
-    highest_matching_table_column_names = [
-        column_info[1] for column_info in cursor.fetchall()]
+    highest_matching_table_column_names = [column_info[1] for column_info in cursor.fetchall()]
 
-    highest_matching_table_column_names = ", ".join(
-        highest_matching_table_column_names)
+    highest_matching_table_column_names = ", ".join(highest_matching_table_column_names)
 
-    highest_matching_table_column_names = list(
-        highest_matching_table_column_names.split(", "))
+    highest_matching_table_column_names = list(highest_matching_table_column_names.split(", "))
 
-    highest_matching_table_column_names = [column_name.replace(
-        ' ', '_') for column_name in highest_matching_table_column_names]
+    highest_matching_table_column_names = [column_name.replace(' ', '_') for column_name in highest_matching_table_column_names]
 
     return highest_matching_table_name, highest_matching_table_column_names
 
@@ -192,13 +182,12 @@ def encoder_decoder_2(query_sentence, database_name, highest_matching_table_name
     input_ids_1 = tokenizer_decoder.encode(input_text_1, return_tensors='pt')
 
     # Generate the output
-    output_1 = model_decoder.generate(
-        input_ids_1, max_length=128, num_beams=4, early_stopping=True)
+    output_1 = model_decoder.generate(input_ids_1, max_length=128, num_beams=4, early_stopping=True)
 
     # Decode the output
-    output_text_1 = tokenizer_decoder.decode(
-        output_1[0], skip_special_tokens=True)
+    output_text_1 = tokenizer_decoder.decode(output_1[0], skip_special_tokens=True)
 
+    print("This is output_1", output_1)
     print("This is output_text_1", output_text_1)
 
     # Output: IMDB | select title from movie where rating > 6 and year =2018
@@ -220,8 +209,7 @@ def encoder_decoder_2(query_sentence, database_name, highest_matching_table_name
 
 def sql_executor(sql_query, highest_matching_table_column_names, cursor):
     # convert list to lower case
-    highest_matching_table_column_names = [
-        x.lower() for x in highest_matching_table_column_names]
+    highest_matching_table_column_names = [x.lower() for x in highest_matching_table_column_names]
 
     # if s3 contains any of the words in lst1 then replace it with double quotes
     for i in highest_matching_table_column_names:
