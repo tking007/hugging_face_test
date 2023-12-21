@@ -286,7 +286,7 @@ def main():
             query_sentence = translate(query)
 
             # Connect to database and fetch table names and column names
-            conn = sqlite3.connect('../test_get_gaokao_data/test.db')
+            conn = sqlite3.connect('../test_get_gaokao_data/test.sqlite')
             # conn = sqlite3.connect('actor_database.db')
             cursor = conn.cursor()
 

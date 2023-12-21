@@ -2,7 +2,7 @@ import sqlite3
 import json
 
 # 连接到数据库（如果不存在，则创建）
-conn = sqlite3.connect('test_get_gaokao_data/schools/test.db')
+conn = sqlite3.connect('test_get_gaokao_data/schools/test.sqlite')
 cursor = conn.cursor()
 
 # 创建专业信息表

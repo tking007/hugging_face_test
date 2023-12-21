@@ -10,7 +10,7 @@ with open('school_name.json', 'r', encoding='utf-8') as json_file:
     data_name = json.load(json_file)
 
 # 连接到 SQLite 数据库
-conn = sqlite3.connect('../test.db')
+conn = sqlite3.connect('../test.sqlite')
 cursor = conn.cursor()
 
 # 创建数据库表（如果不存在）
