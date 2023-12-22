@@ -191,7 +191,7 @@ def encoder_decoder_2(query_sentence, database_name, highest_matching_table_name
     # Decode the output
     output_text_1 = tokenizer_decoder.decode(output_1[0], skip_special_tokens=True)
 
-    print("This is output_1", output_1)
+    # print("This is output_1", output_1)
     print("This is output_text_1", output_text_1)
 
     # Output: IMDB | select title from movie where rating > 6 and year =2018
