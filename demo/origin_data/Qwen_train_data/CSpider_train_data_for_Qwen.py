@@ -91,7 +91,7 @@ def get_schema(db):
         schema[table] = {}
 
         for column in columns:
-            # print(f"Table: {table}, Column: {column}")  # Print table schema
+            print(f"Table: {table}, Column: {column}")  # Print table schema
             try:
                 cursor.execute(f"SELECT DISTINCT {column} FROM {table}")
                 values = [row[0] for row in cursor.fetchall()]
@@ -115,7 +115,7 @@ def get_schema(db):
 #     return values
 
 
-def convert_to_training_data(input_data, tables_data, instruction, output_format):
+def convert_to_training_data(input_data, instruction, output_format):
     db_path = "/home/susu/CSpider/database"
     all_db_infos = json.load(open("../CSpider/tables.json", "r", encoding="utf-8"))
 
@@ -139,11 +139,12 @@ def convert_to_training_data(input_data, tables_data, instruction, output_format
         # print(column_info)
 
         schema_column = ""
-        for column_name in column_info:
-            schema_column += f"The {column_names_original} field of {table_name} means {column_name} and has possible values as: {column_info}.\n"
+        for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
+            possible_values = schema[table_name_original][column_name_original]
+            schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {possible_values}.\n"
 
         schema_info = f"""
-        CREATE TABLE {table_name_original} ({column_names_original} {column_types});
+        CREATE TABLE {table_name_original} ({', '.join([f'{name} {type}' for name, type in zip(column_names_original, column_types)])});
         /*The table {table_name_original} description is: '{table_name}'.
         {schema_column}
         */
@@ -173,8 +174,6 @@ def convert_to_training_data(input_data, tables_data, instruction, output_format
 if __name__ == '__main__':
     with open("../CSpider/train.json", "r", encoding="utf-8") as f:
         origin_data = json.load(f)
-    with open("../CSpider/tables.json", "r", encoding="utf-8") as f:
-        tables_data = json.load(f)
 
     instruction = """
     You are a MySQL expert. Given an input question, first create a syntactically correct SQL
@@ -200,7 +199,7 @@ if __name__ == '__main__':
     """
 
     # Convert to training data
-    training_data = convert_to_training_data(origin_data, tables_data, instruction, output_format)
+    training_data = convert_to_training_data(origin_data, instruction, output_format)
 
     # Write the training data to a new JSON file
     with open("CSpider_for_Qwen_v2.json", "w", encoding="utf-8") as f:
