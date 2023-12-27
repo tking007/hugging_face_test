@@ -91,9 +91,9 @@ def get_schema(db):
         schema[table] = {}
 
         for column in columns:
-            print(f"Table: {table}, Column: {column}")  # Print table schema
+            # print(f"Table: {table}, Column: {column}")  # Print table schema
             try:
-                cursor.execute(f"SELECT DISTINCT {column} FROM {table}")
+                cursor.execute(f"SELECT DISTINCT `{column}` FROM `{table}`")
                 values = [row[0] for row in cursor.fetchall()]
                 schema[table][column] = values
             except sqlite3.OperationalError as e:
@@ -120,46 +120,36 @@ def convert_to_training_data(input_data, instruction, output_format):
     all_db_infos = json.load(open("../CSpider/tables.json", "r", encoding="utf-8"))
 
     training_data = []
+    db_schemas = get_db_schemas(all_db_infos)
     for item in input_data:
         db_id = item['db_id']
         schema = get_schema(db_path + "/{}/{}.sqlite".format(db_id, db_id))
-        db_schemas = get_db_schemas(all_db_infos)
-        # print(list(db_schemas.items())[:10])
+        schema_info = ""
+        for table in db_schemas[db_id]["schema_items"]:
+            table_name_original = table["table_name_original"]
+            table_name = table["table_name"]
+            column_names = table["column_names"]
+            column_names_original = table["column_names_original"]
+            column_types = table["column_types"]
 
-        table_name = db_schemas[db_id]['schema_items'][0]['table_name']
-        table_name_original = db_schemas[db_id]['schema_items'][0]['table_name_original']
-        column_names = db_schemas[db_id]['schema_items'][0]['column_names']
-        column_names_original = db_schemas[db_id]['schema_items'][0]['column_names_original']
-        column_types = db_schemas[db_id]['schema_items'][0]['column_types']
-        # print(table_name)
-        # print(column_names)
-        # print(column_names_original)
-        # print(schema[table_name_original])
-        column_info = schema[table_name_original].keys()
-        # print(column_info)
+            schema_column = ""
+            for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
+                # print("@@", column_name_original, table_name_original, db_id)
+                possible_values = schema[table_name_original][column_name_original]
+                schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {possible_values}.\n"
 
-        schema_column = ""
-        for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
-            possible_values = schema[table_name_original][column_name_original]
-            schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {possible_values}.\n"
+            schema_info += f"""
+            CREATE TABLE {table_name_original} ({', '.join([f'{name} {type_1}' for name, type_1 in zip(column_names_original, column_types)])});
+            /*The table {table_name_original} description is: '{table_name}'.
+            {schema_column}
+            */
+            """
 
-        schema_info = f"""
-        CREATE TABLE {table_name_original} ({', '.join([f'{name} {type}' for name, type in zip(column_names_original, column_types)])});
-        /*The table {table_name_original} description is: '{table_name}'.
-        {schema_column}
-        */
+        conversation = f"""
+        "Question":  {item['question']}
+        "SQLQuery": {item['query']}
         """
 
-        """
-        The {column_names_original} filed of {table_name} means {column_names} and has possible values as: {column_info}.
-        The {col_name} filed of {table_name} means 'name' and has possible values as: {possible_values_str}.
-        The {col_name} filed of {table_name} means 'grade' and has possible values as: {possible_values_str}.
-        """
-
-        conversation = [
-            {"Question": item["question"],
-            "SQLQuery": item["query"]}
-        ]
         training_item = {
             "instructions": instruction,
             "output_format": output_format,
@@ -172,7 +162,7 @@ def convert_to_training_data(input_data, instruction, output_format):
 
 
 if __name__ == '__main__':
-    with open("../CSpider/train.json", "r", encoding="utf-8") as f:
+    with open("/home/susu/下载/CSpider/train.json", "r", encoding="utf-8") as f:
         origin_data = json.load(f)
 
     instruction = """
