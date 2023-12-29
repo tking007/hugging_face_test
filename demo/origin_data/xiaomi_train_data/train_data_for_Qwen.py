@@ -93,7 +93,7 @@ def get_schema(db):
         for column in columns:
             # print(f"Table: {table}, Column: {column}")  # Print table schema
             try:
-                cursor.execute(f"SELECT DISTINCT {column} FROM {table}")
+                cursor.execute(f"SELECT DISTINCT `{column}` FROM `{table}`")
                 values = [row[0] for row in cursor.fetchall()]
                 schema[table][column] = values
             except sqlite3.OperationalError as e:
@@ -110,7 +110,6 @@ def convert_to_training_data(input_data, instruction, output_format):
     training_data = []
     db_schemas = get_db_schemas(all_db_infos)
     for item in input_data:
-        print(item)
         db_id = item['db_id']
         tables_name = item['tables_name']
         question = item['question']
@@ -123,28 +122,13 @@ def convert_to_training_data(input_data, instruction, output_format):
             column_names_original = table["column_names_original"]
             column_types = table["column_types"]
 
-        # for index, table in enumerate(tables_name):
-        #     print(index)
-        #     print(table)
-        #     table_name = tables_name[index]
-        #     try:
-        #         table_name_original = db_schemas[db_id]['schema_items'][index]['table_name_original']
-        #         print("@@", db_schemas[db_id]['schema_items'])
-        #     except:
-        #         print("@@", db_schemas[db_id]['schema_items'])
-        #         raise Exception("Table name not found in schema: {}".format(table_name))
-        #
-        #     column_names = db_schemas[db_id]['schema_items'][index]['column_names']
-        #     column_names_original = db_schemas[db_id]['schema_items'][index]['column_names_original']
-        #     column_types = db_schemas[db_id]['schema_items'][index]['column_types']
-
             schema_column = ""
             for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
                 possible_values = schema[table_name_original][column_name_original]
                 schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {possible_values}.\n"
 
             schema_info = f"""
-            CREATE TABLE {table_name_original} ({', '.join([f'{name} {type}' for name, type in zip(column_names_original, column_types)])});
+            CREATE TABLE {table_name_original} ({', '.join([f'{name} {column_type}' for name, column_type in zip(column_names_original, column_types)])});
             /*The table {table_name_original} description is: '{table_name}'.
             {schema_column}
             */
@@ -201,4 +185,5 @@ if __name__ == '__main__':
     # Write the training data to a new JSON file
     with open("train_data_for_Qwen.json", "w", encoding="utf-8") as f:
         json.dump(training_data, f, ensure_ascii=False, indent=2)
-        print("Done!")
+
+    print("Done!")

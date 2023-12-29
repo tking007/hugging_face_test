@@ -134,16 +134,16 @@ def convert_to_training_data(input_data, instruction, output_format):
 
             schema_column = ""
             for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
-                # print("@@", column_name_original, table_name_original, db_id)
+                print("@@", column_name_original, table_name_original, db_id)
                 possible_values = schema[table_name_original][column_name_original]
                 schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {possible_values}.\n"
 
-            schema_info += f"""
-            CREATE TABLE {table_name_original} ({', '.join([f'{name} {type_1}' for name, type_1 in zip(column_names_original, column_types)])});
-            /*The table {table_name_original} description is: '{table_name}'.
-            {schema_column}
-            */
-            """
+                schema_info += f"""
+                CREATE TABLE {table_name_original} ({', '.join([f'{name} {type_1}' for name, type_1 in zip(column_names_original, column_types)])});
+                /*The table {table_name_original} description is: '{table_name}'.
+                {schema_column}
+                */
+                """
 
         conversation = f"""
         "Question":  {item['question']}
