@@ -70,11 +70,12 @@ def get_db_schemas(all_db_infos):
     return db_schemas
 
 
-def get_schema(db):
+def get_schema(db, table_names):
     """
     Get database's schema, which is a dict with table name as key
     and list of column names as value
     :param db: database path
+    :param table_names: list of table names to open
     :return: schema dict
     """
 
@@ -82,16 +83,12 @@ def get_schema(db):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    tables = [str(table[0].lower()) for table in cursor.fetchall()]
-
-    for table in tables:
+    for table in table_names:
         cursor.execute("PRAGMA table_info({})".format(table))
         columns = [str(col[1].lower()) for col in cursor.fetchall()]
         schema[table] = {}
 
         for column in columns:
-            # print(f"Table: {table}, Column: {column}")  # Print table schema
             try:
                 cursor.execute(f"SELECT DISTINCT `{column}` FROM `{table}`")
                 values = [row[0] for row in cursor.fetchall()]
@@ -104,8 +101,8 @@ def get_schema(db):
 
 
 def convert_to_training_data(input_data, instruction, output_format):
-    # db_path = "/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database"
-    db_path = r"D:\c_question\prep_c_train_data\data\database"
+    db_path = "/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database"
+    # db_path = r"D:\c_question\prep_c_train_data\data\database"
     all_db_infos = json.load(open("tables.json", "r", encoding="utf-8"))
 
     training_data = []
@@ -116,13 +113,21 @@ def convert_to_training_data(input_data, instruction, output_format):
         tables_name = item['tables_name']
         question = item['question']
         query = item['query']
-        schema = get_schema(db_path + "/{}/{}.sqlite".format(db_id, db_id))
+        schema = get_schema(db_path + "/{}/{}.sqlite".format(db_id, db_id), tables_name)
         for table in db_schemas[db_id]["schema_items"]:
+            if table["table_name"] not in tables_name:
+                continue
+            # print("###", table)
             table_name_original = table["table_name_original"]
             table_name = table["table_name"]
             column_names = table["column_names"]
             column_names_original = table["column_names_original"]
             column_types = table["column_types"]
+            # print("$$$", table_name_original)
+            # print("%%%", table_name)
+            # print("&&&", column_names)
+            # print("^^^", column_names_original)
+            # print("&&&", column_types)
 
             schema_column = ""
             for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
