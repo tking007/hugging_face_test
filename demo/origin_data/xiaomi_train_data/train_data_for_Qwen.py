@@ -70,12 +70,11 @@ def get_db_schemas(all_db_infos):
     return db_schemas
 
 
-def get_schema(db, table_names):
+def get_schema(db):
     """
     Get database's schema, which is a dict with table name as key
     and list of column names as value
     :param db: database path
-    :param table_names: list of table names to open
     :return: schema dict
     """
 
@@ -83,12 +82,16 @@ def get_schema(db, table_names):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
 
-    for table in table_names:
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = [str(table[0].lower()) for table in cursor.fetchall()]
+
+    for table in tables:
         cursor.execute("PRAGMA table_info({})".format(table))
         columns = [str(col[1].lower()) for col in cursor.fetchall()]
         schema[table] = {}
 
         for column in columns:
+            # print(f"Table: {table}, Column: {column}")  # Print table schema
             try:
                 cursor.execute(f"SELECT DISTINCT `{column}` FROM `{table}`")
                 values = [row[0] for row in cursor.fetchall()]
@@ -113,7 +116,7 @@ def convert_to_training_data(input_data, instruction, output_format):
         tables_name = item['tables_name']
         question = item['question']
         query = item['query']
-        schema = get_schema(db_path + "/{}/{}.sqlite".format(db_id, db_id), tables_name)
+        schema = get_schema(db_path + "/{}/{}.sqlite".format(db_id, db_id))
         for table in db_schemas[db_id]["schema_items"]:
             if table["table_name"] not in tables_name:
                 continue
