@@ -104,37 +104,45 @@ def get_schema(db):
 
 
 def convert_to_training_data(input_data, instruction, output_format):
-    db_path = "/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database"
-    # db_path = r"D:\c_question\prep_c_train_data\data\database"
     all_db_infos = json.load(open("tables.json", "r", encoding="utf-8"))
 
     training_data = []
     db_schemas = get_db_schemas(all_db_infos)
+
     for item in input_data:
         db_id = item['db_id']
-        print(db_id)
         tables_name = item['tables_name']
         question = item['question']
         query = item['query']
-        schema = get_schema(db_path + "/{}/{}.sqlite".format(db_id, db_id))
+        # print(db_id, tables_name, question, query)
+
+        # Check if the table information is already in memory
+        if db_id not in db_schemas:
+            continue
+
+        # Connect to the database for each item
+        db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        # print(db_path)
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
         for table in db_schemas[db_id]["schema_items"]:
             if table["table_name"] not in tables_name:
                 continue
-            # print("###", table)
+
             table_name_original = table["table_name_original"]
             table_name = table["table_name"]
             column_names = table["column_names"]
             column_names_original = table["column_names_original"]
             column_types = table["column_types"]
-            # print("$$$", table_name_original)
-            # print("%%%", table_name)
-            # print("&&&", column_names)
-            # print("^^^", column_names_original)
-            # print("&&&", column_types)
+            # print(table_name_original, table_name, column_names, column_names_original, column_types)
 
             schema_column = ""
             for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
-                possible_values = schema[table_name_original][column_name_original]
+                # print(column_name_original, table_name_original, column_type)
+                cursor.execute(f"SELECT  DISTINCT `{column_name_original}` FROM `{table_name_original}`")
+                print(column_name_original, table_name_original, db_id)
+                possible_values = [row[0] for row in cursor.fetchall()]
                 schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {possible_values}.\n"
 
             schema_info = f"""
@@ -143,26 +151,7 @@ def convert_to_training_data(input_data, instruction, output_format):
             {schema_column}
             */
             """
-    #     schema = get_schema(db_path + "/{}/{}.sqlite".format(db_id, db_id))
-    #     for table in db_schemas[db_id]["schema_items"]:
-    #         table_name_original = table["table_name_original"]
-    #         table_name = table["table_name"]
-    #         column_names = table["column_names"]
-    #         column_names_original = table["column_names_original"]
-    #         column_types = table["column_types"]
-    #
-    #         schema_column = ""
-    #         for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
-    #             possible_values = schema[table_name_original][column_name_original]
-    #             schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {possible_values}.\n"
-    #
-    #         schema_info = f"""
-    #         CREATE TABLE {table_name_original} ({', '.join([f'{name} {column_type}' for name, column_type in zip(column_names_original, column_types)])});
-    #         /*The table {table_name_original} description is: '{table_name}'.
-    #         {schema_column}
-    #         */
-    #         """
-    #
+
             conversation = f"""
             "Question": {question}
             "SQLQuery": {query}
@@ -175,6 +164,9 @@ def convert_to_training_data(input_data, instruction, output_format):
                 "conversations": conversation
             }
             training_data.append(training_item)
+
+        # Close the database connection after processing the data
+        conn.close()
 
     return training_data
 
