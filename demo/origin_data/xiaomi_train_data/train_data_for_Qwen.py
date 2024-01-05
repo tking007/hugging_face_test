@@ -135,13 +135,13 @@ def convert_to_training_data(input_data, instruction, output_format):
             column_names = table["column_names"]
             column_names_original = table["column_names_original"]
             column_types = table["column_types"]
-            # print(table_name_original, table_name, column_names, column_names_original, column_types)
+            print(table_name_original, table_name, db_id)
 
             schema_column = ""
             for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
                 # print(column_name_original, table_name_original, column_type)
                 cursor.execute(f"SELECT  DISTINCT `{column_name_original}` FROM `{table_name_original}`")
-                print(column_name_original, table_name_original, db_id)
+                # print(column_name_original, table_name_original, db_id)
                 possible_values = [row[0] for row in cursor.fetchall()]
                 schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {possible_values}.\n"
 
@@ -151,6 +151,7 @@ def convert_to_training_data(input_data, instruction, output_format):
             {schema_column}
             */
             """
+            print(table_name_original, table_name, db_id)
 
             conversation = f"""
             "Question": {question}
