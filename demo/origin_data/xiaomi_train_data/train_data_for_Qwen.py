@@ -170,26 +170,26 @@ def mean_pooling(model_output, attention_mask):
     return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
 
 
-def encoder_decoder_1(query_sentence, table_names, tokenizer, model, cursor):
+def encoder_decoder_1(query_sentence, table_column_infos, tokenizer, model, cursor):
     # Tokenize query sentence, table names
     query_sentence_encoded = tokenizer([query_sentence], padding=True, truncation=True, return_tensors='pt')
-    table_names_encoded = tokenizer(table_names, padding=True, truncation=True, return_tensors='pt')
+    table_column_info_encoded = tokenizer(table_column_infos, padding=True, truncation=True, return_tensors='pt')
 
     # Compute token embeddings for query sentence, table names
     with torch.no_grad():
         query_sentence_output = model(**query_sentence_encoded)
-        table_names_output = model(**table_names_encoded)
+        table_names_info_output = model(**table_column_info_encoded)
 
     # Perform pooling for query sentence, table names
     query_sentence_embedding = mean_pooling(query_sentence_output, query_sentence_encoded['attention_mask'])
-    table_names_embeddings = mean_pooling(table_names_output, table_names_encoded['attention_mask'])
+    table_names_info_embeddings = mean_pooling(table_names_info_output, table_column_info_encoded['attention_mask'])
 
     # Normalize embeddings for query sentence, table names
     query_sentence_embedding = F.normalize(query_sentence_embedding, p=2, dim=1)
-    table_names_embeddings = F.normalize(table_names_embeddings, p=2, dim=1)
+    table_names_info_embeddings = F.normalize(table_names_info_embeddings, p=2, dim=1)
 
     # Find the most similar table names by computing the cosine similarity between
-    cosine_similarities_tables = torch.nn.functional.cosine_similarity(query_sentence_embedding, table_names_embeddings, dim=1)
+    cosine_similarities_tables = torch.nn.functional.cosine_similarity(query_sentence_embedding, table_names_info_embeddings, dim=1)
     most_similar_table_names_indices = cosine_similarities_tables.argsort(descending=True)
     most_similar_table_names = [table_names[i] for i in most_similar_table_names_indices]
 
@@ -200,50 +200,37 @@ def encoder_decoder_1(query_sentence, table_names, tokenizer, model, cursor):
     highest_matching_table_name = table_names[max_similarity_table_index]
 
     # Find the column names of the highest matching table by querying the database
-    # cursor.execute(f"PRAGMA table_info({highest_matching_table_name});")
-    # 使用反引号 ` 或双引号 " 来引用表名和列名避免来与SQL关键字冲突
     cursor.execute(f"PRAGMA table_info(`{highest_matching_table_name}`);")
     highest_matching_table_column_names = [column_info[1] for column_info in cursor.fetchall()]
 
-    highest_matching_table_column_names = ", ".join(highest_matching_table_column_names)
+    # Find the unique values of the highest matching column by querying the database
+    highest_matching_column_values = []
+    for column_name in highest_matching_table_column_names:
+        cursor.execute(f"SELECT DISTINCT `{column_name}` FROM `{highest_matching_table_name}`")
+        column_values = [row[0] for row in cursor.fetchall()]
+        highest_matching_column_values.extend(column_values)
 
-    highest_matching_table_column_names = list(highest_matching_table_column_names.split(", "))
+    # Tokenize column values
+    column_values_encoded = tokenizer(highest_matching_column_values, padding=True, truncation=True, return_tensors='pt')
 
-    highest_matching_table_column_names = [column_name.replace(' ', '_') for column_name in highest_matching_table_column_names]
+    # Compute token embeddings for column values
+    with torch.no_grad():
+        column_values_output = model(**column_values_encoded)
 
-    highest_matching_table_column_info = []
-    for table_name in table_names:
-        # Find the column names of the table by querying the database
-        cursor.execute(f"PRAGMA table_info(`{table_name}`);")
-        table_column_infos = cursor.fetchall()
+    # Perform pooling for column values
+    column_values_embedding = mean_pooling(column_values_output, column_values_encoded['attention_mask'])
 
-        for column_info in table_column_infos:
-            column_name = column_info[1]
-            # Query the distinct values of the column
-            cursor.execute(f"SELECT DISTINCT `{column_name}` FROM `{table_name}`")
-            distinct_values = [str(value[0]) for value in cursor.fetchall()]
+    # Normalize embeddings for column values
+    column_values_embedding = F.normalize(column_values_embedding, p=2, dim=1)
 
-            # Compute the cosine similarity between the query sentence and each distinct value
-            distinct_values_encoded = tokenizer(distinct_values, padding=True, truncation=True, return_tensors='pt')
-            with torch.no_grad():
-                distinct_values_output = model(**distinct_values_encoded)
-            distinct_values_embeddings = mean_pooling(distinct_values_output, distinct_values_encoded['attention_mask'])
-            distinct_values_embeddings = F.normalize(distinct_values_embeddings, p=2, dim=1)
-            cosine_similarities_values = torch.nn.functional.cosine_similarity(query_sentence_embedding, distinct_values_embeddings, dim=1)
+    # Find the most similar column value by computing the cosine similarity between
+    cosine_similarities_values = torch.nn.functional.cosine_similarity(query_sentence_embedding, column_values_embedding, dim=1)
+    most_similar_value_index = cosine_similarities_values.argmax()
 
-            # Find the index of the highest matching distinct value
-            max_similarity_value_index = cosine_similarities_values.argmax()
+    # Get the most similar column value
+    most_similar_value = highest_matching_column_values[most_similar_value_index]
 
-            # Get the highest matching distinct value
-            highest_matching_distinct_value = distinct_values[max_similarity_value_index]
-
-            # Add the column name and its highest matching distinct value to the list
-            highest_matching_table_column_info.append({
-                'name': column_name,
-                'highest_matching_distinct_value': highest_matching_distinct_value
-            })
-
-    return highest_matching_table_name, highest_matching_table_column_names, highest_matching_table_column_info
+    return most_similar_value
 
 
 def convert_to_training_data(input_data, instruction, output_format):
@@ -265,8 +252,8 @@ def convert_to_training_data(input_data, instruction, output_format):
             continue
 
         # Connect to the database for each item
-        # db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
-        db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        # db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
         # print(db_path)
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
@@ -286,15 +273,15 @@ def convert_to_training_data(input_data, instruction, output_format):
         # for table_name in table_names:
         for table_name in tables_name:
             cursor.execute(f"PRAGMA table_info(`{table_name}`);")
+            table_column_infos = cursor.fetchall()
             table_column_names = [column_info[1] for column_info in cursor.fetchall()]
             # 处理列名中的下划线，替换为空格
             table_column_names = [column_name.replace("_", " ") for column_name in table_column_names]
             column_names.extend(table_column_names)
 
-        highest_matching_table_name, highest_matching_table_column_names, highest_matching_table_column_info = encoder_decoder_1(
-            query_sentence, tables_name, tokenizer, model, cursor)
+            highest_matching_table_column_info = encoder_decoder_1(query_sentence, table_column_infos, tokenizer, model, cursor)
 
-        print("@@@", query_sentence, highest_matching_table_name, highest_matching_table_column_names, highest_matching_table_column_info)
+            print("@@@", highest_matching_table_column_info)
 
         for table in db_schemas[db_id]["schema_items"]:
             if table["table_name"] not in tables_name:
