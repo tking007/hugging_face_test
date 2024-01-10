@@ -1,6 +1,64 @@
 import json
 import sqlite3
+import os
+import torch
+import torch.nn.functional as F
+from transformers import AutoTokenizer, AutoModel
 
+
+import requests
+import random
+import json
+from hashlib import md5
+import pandas as pd
+
+pd.set_option('display.max_columns', 200)  # 设置显示列数
+pd.set_option('display.max_rows', 100)  # 设置显示行数
+
+
+# Generate salt and sign
+def make_md5(s, encoding='utf-8'):
+    return md5(s.encode(encoding)).hexdigest()
+
+
+def translate(query):
+    # Set your own appid/appkey.
+    appid = '20231031001865589'
+    appkey = 'HCaP53JoPIIw6urzCyAj'
+
+    # For list of language codes, please refer to `https://api.fanyi.baidu.com/doc/21`
+    # from_lang = 'zh'
+    # to_lang = 'en'
+    from_lang = 'auto'
+    to_lang = 'auto'
+
+    endpoint = 'https://api.fanyi.baidu.com'
+    path = '/api/trans/vip/translate'
+    url = endpoint + path
+
+    # query = '我们有多少演员'
+
+    salt = random.randint(32768, 65536)
+    sign = make_md5(appid + query + str(salt) + appkey)
+
+    # Build request
+    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+    payload = {'appid': appid, 'q': query, 'from': from_lang, 'to': to_lang, 'salt': salt, 'sign': sign}
+
+    # Send request
+    r = requests.post(url, params=payload, headers=headers)
+    result = r.json()
+
+    # # Show response
+    # print(json.dumps(result, indent=4, ensure_ascii=False))
+    # print(result['trans_result'][0]['dst'])
+
+    return result['trans_result'][0]['dst']
+
+
+# Load model from HuggingFace Hub
+tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
+model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 
 def get_db_schemas(all_db_infos):
     db_schemas = {}
@@ -103,17 +161,103 @@ def get_schema(db):
     return schema
 
 
+# Mean Pooling - Take attention mask into account for correct averaging
+
+def mean_pooling(model_output, attention_mask):
+    # First element of model_output contains all token embeddings
+    token_embeddings = model_output[0]
+    input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
+    return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
+
+
+def encoder_decoder_1(query_sentence, table_names, tokenizer, model, cursor):
+    # Tokenize query sentence, table names
+    query_sentence_encoded = tokenizer([query_sentence], padding=True, truncation=True, return_tensors='pt')
+    table_names_encoded = tokenizer(table_names, padding=True, truncation=True, return_tensors='pt')
+
+    # Compute token embeddings for query sentence, table names
+    with torch.no_grad():
+        query_sentence_output = model(**query_sentence_encoded)
+        table_names_output = model(**table_names_encoded)
+
+    # Perform pooling for query sentence, table names
+    query_sentence_embedding = mean_pooling(query_sentence_output, query_sentence_encoded['attention_mask'])
+    table_names_embeddings = mean_pooling(table_names_output, table_names_encoded['attention_mask'])
+
+    # Normalize embeddings for query sentence, table names
+    query_sentence_embedding = F.normalize(query_sentence_embedding, p=2, dim=1)
+    table_names_embeddings = F.normalize(table_names_embeddings, p=2, dim=1)
+
+    # Find the most similar table names by computing the cosine similarity between
+    cosine_similarities_tables = torch.nn.functional.cosine_similarity(query_sentence_embedding, table_names_embeddings, dim=1)
+    most_similar_table_names_indices = cosine_similarities_tables.argsort(descending=True)
+    most_similar_table_names = [table_names[i] for i in most_similar_table_names_indices]
+
+    # Find the index of the highest matching table name by finding the maximum value
+    max_similarity_table_index = cosine_similarities_tables.argmax()
+
+    # Get the highest matching table name by using the index obtained above
+    highest_matching_table_name = table_names[max_similarity_table_index]
+
+    # Find the column names of the highest matching table by querying the database
+    # cursor.execute(f"PRAGMA table_info({highest_matching_table_name});")
+    # 使用反引号 ` 或双引号 " 来引用表名和列名避免来与SQL关键字冲突
+    cursor.execute(f"PRAGMA table_info(`{highest_matching_table_name}`);")
+    highest_matching_table_column_names = [column_info[1] for column_info in cursor.fetchall()]
+
+    highest_matching_table_column_names = ", ".join(highest_matching_table_column_names)
+
+    highest_matching_table_column_names = list(highest_matching_table_column_names.split(", "))
+
+    highest_matching_table_column_names = [column_name.replace(' ', '_') for column_name in highest_matching_table_column_names]
+
+    highest_matching_table_column_info = []
+    for table_name in table_names:
+        # Find the column names of the table by querying the database
+        cursor.execute(f"PRAGMA table_info(`{table_name}`);")
+        table_column_infos = cursor.fetchall()
+
+        for column_info in table_column_infos:
+            column_name = column_info[1]
+            # Query the distinct values of the column
+            cursor.execute(f"SELECT DISTINCT `{column_name}` FROM `{table_name}`")
+            distinct_values = [str(value[0]) for value in cursor.fetchall()]
+
+            # Compute the cosine similarity between the query sentence and each distinct value
+            distinct_values_encoded = tokenizer(distinct_values, padding=True, truncation=True, return_tensors='pt')
+            with torch.no_grad():
+                distinct_values_output = model(**distinct_values_encoded)
+            distinct_values_embeddings = mean_pooling(distinct_values_output, distinct_values_encoded['attention_mask'])
+            distinct_values_embeddings = F.normalize(distinct_values_embeddings, p=2, dim=1)
+            cosine_similarities_values = torch.nn.functional.cosine_similarity(query_sentence_embedding, distinct_values_embeddings, dim=1)
+
+            # Find the index of the highest matching distinct value
+            max_similarity_value_index = cosine_similarities_values.argmax()
+
+            # Get the highest matching distinct value
+            highest_matching_distinct_value = distinct_values[max_similarity_value_index]
+
+            # Add the column name and its highest matching distinct value to the list
+            highest_matching_table_column_info.append({
+                'name': column_name,
+                'highest_matching_distinct_value': highest_matching_distinct_value
+            })
+
+    return highest_matching_table_name, highest_matching_table_column_names, highest_matching_table_column_info
+
+
 def convert_to_training_data(input_data, instruction, output_format):
     all_db_infos = json.load(open("tables.json", "r", encoding="utf-8"))
 
     training_data = []
     db_schemas = get_db_schemas(all_db_infos)
 
-    for item in input_data:
+    for item in input_data[:2]:
         db_id = item['db_id']
         tables_name = item['tables_name']
         question = item['question']
         query = item['query']
+        query_sentence = translate(question)
         # print(db_id, tables_name, question, query)
 
         # Check if the table information is already in memory
@@ -121,10 +265,36 @@ def convert_to_training_data(input_data, instruction, output_format):
             continue
 
         # Connect to the database for each item
-        db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        # db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
         # print(db_path)
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
+
+        # Get the filename that is connected above
+        filename = conn.cursor().execute("PRAGMA database_list;").fetchall()[0][2]
+
+        # Extract file name from file path
+        database_name = os.path.basename(filename).split('.')[0]
+
+        table_names = [table_info[0] for table_info in cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table';").fetchall()]
+        print(table_names)
+        print(tables_name)
+
+        column_names = []
+        # for table_name in table_names:
+        for table_name in tables_name:
+            cursor.execute(f"PRAGMA table_info(`{table_name}`);")
+            table_column_names = [column_info[1] for column_info in cursor.fetchall()]
+            # 处理列名中的下划线，替换为空格
+            table_column_names = [column_name.replace("_", " ") for column_name in table_column_names]
+            column_names.extend(table_column_names)
+
+        highest_matching_table_name, highest_matching_table_column_names, highest_matching_table_column_info = encoder_decoder_1(
+            query_sentence, tables_name, tokenizer, model, cursor)
+
+        print("@@@", query_sentence, highest_matching_table_name, highest_matching_table_column_names, highest_matching_table_column_info)
 
         for table in db_schemas[db_id]["schema_items"]:
             if table["table_name"] not in tables_name:
