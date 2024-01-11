@@ -244,7 +244,8 @@ def convert_to_training_data(input_data, instruction, output_format):
         tables_name = item['tables_name']
         question = item['question']
         query = item['query']
-        query_sentence = translate(question)
+        # query_sentence = translate(question)
+        query_sentence = question
         # print(db_id, tables_name, question, query)
 
         # Check if the table information is already in memory
@@ -274,6 +275,7 @@ def convert_to_training_data(input_data, instruction, output_format):
         for table_name in tables_name:
             cursor.execute(f"PRAGMA table_info(`{table_name}`);")
             table_column_infos = cursor.fetchall()
+            print(table_column_infos)
             table_column_names = [column_info[1] for column_info in cursor.fetchall()]
             # 处理列名中的下划线，替换为空格
             table_column_names = [column_name.replace("_", " ") for column_name in table_column_names]
