@@ -170,10 +170,11 @@ def mean_pooling(model_output, attention_mask):
     return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
 
 
-def encoder_decoder_1(query_sentence, table_column_infos, tokenizer, model, cursor):
+def encoder_decoder_1(query_sentence, table_column_infos, tokenizer, model, cursor, tables_name):
     # Tokenize query sentence, table names
     query_sentence_encoded = tokenizer([query_sentence], padding=True, truncation=True, return_tensors='pt')
-    table_column_info_encoded = tokenizer(table_column_infos, padding=True, truncation=True, return_tensors='pt')
+    # table_column_info_encoded = tokenizer(table_column_infos, padding=True, truncation=True, return_tensors='pt')
+    table_column_info_encoded = tokenizer([str(info) for info in table_column_infos], padding=True, truncation=True, return_tensors='pt')
 
     # Compute token embeddings for query sentence, table names
     with torch.no_grad():
@@ -191,7 +192,7 @@ def encoder_decoder_1(query_sentence, table_column_infos, tokenizer, model, curs
     # Find the most similar table names by computing the cosine similarity between
     cosine_similarities_tables = torch.nn.functional.cosine_similarity(query_sentence_embedding, table_names_info_embeddings, dim=1)
     most_similar_table_names_indices = cosine_similarities_tables.argsort(descending=True)
-    most_similar_table_names = [table_names[i] for i in most_similar_table_names_indices]
+    most_similar_table_names = [tables_name[i] for i in most_similar_table_names_indices]
 
     # Find the index of the highest matching table name by finding the maximum value
     max_similarity_table_index = cosine_similarities_tables.argmax()
@@ -253,8 +254,8 @@ def convert_to_training_data(input_data, instruction, output_format):
             continue
 
         # Connect to the database for each item
-        db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
-        # db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        # db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
         # print(db_path)
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
@@ -281,7 +282,7 @@ def convert_to_training_data(input_data, instruction, output_format):
             table_column_names = [column_name.replace("_", " ") for column_name in table_column_names]
             column_names.extend(table_column_names)
 
-            highest_matching_table_column_info = encoder_decoder_1(query_sentence, table_column_infos, tokenizer, model, cursor)
+            highest_matching_table_column_info = encoder_decoder_1(query_sentence, table_column_infos, tokenizer, model, cursor, tables_name)
 
             print("@@@", highest_matching_table_column_info)
 
