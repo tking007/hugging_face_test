@@ -296,45 +296,22 @@ def convert_to_training_data(input_data, instruction, output_format):
         tables_name = item['tables_name']
         question = item['question']
         query = item['query']
-        # query_sentence = translate(question)
         query_sentence = question
-        # print(db_id, tables_name, question, query)
 
         # Check if the table information is already in memory
         if db_id not in db_schemas:
             continue
+        print(db_id, tables_name, question, query)
 
-        # Connect to the database for each item
-        # db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
         db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
-        # print(db_path)
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
-        # Get the filename that is connected above
-        filename = conn.cursor().execute("PRAGMA database_list;").fetchall()[0][2]
-        # print("filename:", filename)
-
-        # Extract file name from file path
-        database_name = os.path.basename(filename).split('.')[0]
-
-        # print("@@", tables_name)
-
-        # column_names = []
-        # # for table_name in table_names:
-        # for table_name in tables_name:
-        #     cursor.execute(f"PRAGMA table_info(`{table_name}`);")
-        #     table_column_names = [columns[1] for columns in cursor.fetchall()]
-        #     # print("!!", table_column_names)
-        #
-        #     table_column_names = [column_info[1] for column_info in cursor.fetchall()]
-        #     # 处理列名中的下划线，替换为空格
-        #     table_column_names = [column_name.replace("_", " ") for column_name in table_column_names]
-        #     column_names.extend(table_column_names)
-        # print("##", column_names)
-
+        # print("yyyyy", db_schemas[db_id]["schema_items"])
+        # print("sss", tables_name)
+        schema_info = ""
         for table in db_schemas[db_id]["schema_items"]:
-            if table["table_name"] not in tables_name:
+            if table["table_name_original"] not in tables_name:
                 continue
 
             table_name_original = table["table_name_original"]
@@ -342,44 +319,38 @@ def convert_to_training_data(input_data, instruction, output_format):
             column_names = table["column_names"]
             column_names_original = table["column_names_original"]
             column_types = table["column_types"]
-            # print(table_name_original, table_name, db_id)
 
             schema_column = ""
             for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
-                # print(column_name_original, table_name_original, column_type)
                 cursor.execute(f"SELECT  DISTINCT `{column_name_original}` FROM `{table_name_original}`")
-                # print(column_name_original, table_name_original, db_id)
                 possible_values = [str(row[0]) for row in cursor.fetchall()]
 
                 if len(possible_values) == 0 or possible_values == ['']:
                     highest_matching_column_info = ''
                 else:
-                    # print("sss", possible_values)
                     highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model, cursor)[:5]
-                    print("@@@", highest_matching_column_info)
 
                 schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {highest_matching_column_info}.\n"
 
-            schema_info = f"""
+            schema_info += f"""
             CREATE TABLE {table_name_original} ({', '.join([f'{name} {column_type}' for name, column_type in zip(column_names_original, column_types)])});
             /*The table {table_name_original} description is: '{table_name}'.
             {schema_column}
             */
             """
-            print(table_name_original, table_name, db_id)
 
-            conversation = f"""
-            "Question": {question}
-            "SQLQuery": {query}
-            """
+        conversation = f"""
+        "Question": {question}
+        "SQLQuery": {query}
+        """
 
-            training_item = {
-                "instructions": instruction,
-                "output_format": output_format,
-                "context": schema_info,
-                "conversations": conversation
-            }
-            training_data.append(training_item)
+        training_item = {
+            "instructions": instruction,
+            "output_format": output_format,
+            "context": schema_info,
+            "conversations": conversation
+        }
+        training_data.append(training_item)
 
         # Close the database connection after processing the data
         conn.close()
