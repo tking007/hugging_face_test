@@ -368,7 +368,7 @@ def convert_to_training_data(input_data, instruction, output_format):
             {schema_column}
             */
             """
-            print(table_name_original, table_name, db_id)
+            print(table_name_original, table_name, db_id, query_sentence)
 
             conversation = f"""
             "Question": {question}
