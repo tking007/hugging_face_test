@@ -286,7 +286,8 @@ def encoder_decoder_1(query_sentence, columns_info, tokenizer, model, cursor):
 
 
 def convert_to_training_data(input_data, instruction, output_format):
-    all_db_infos = json.load(open("tables.json", "r", encoding="utf-8"))
+    # all_db_infos = json.load(open("tables.json", "r", encoding="utf-8"))
+    all_db_infos = json.load(open("/content/hugging_face_test/demo/origin_data/xiaomi_train_data/tables.json", "r", encoding="utf-8"))
 
     training_data = []
     db_schemas = get_db_schemas(all_db_infos)
@@ -306,7 +307,8 @@ def convert_to_training_data(input_data, instruction, output_format):
 
         # Connect to the database for each item
         # db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
-        db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        # db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        db_path = f"/content/drive/MyDrive/database/{db_id}/{db_id}.sqlite"
         # print(db_path)
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
@@ -389,7 +391,8 @@ def convert_to_training_data(input_data, instruction, output_format):
 
 if __name__ == '__main__':
     origin_data = []
-    with open("train.txt", "r", encoding="utf-8") as f:
+    # with open("train.txt", "r", encoding="utf-8") as f:
+    with open("/content/hugging_face_test/demo/origin_data/xiaomi_train_data/train.txt", "r", encoding="utf-8") as f:
         for line in f:
             origin_data.append(json.loads(line))
 
