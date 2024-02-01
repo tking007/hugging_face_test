@@ -127,6 +127,7 @@ def translate(query):
 tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 
+
 def get_db_schemas(all_db_infos):
     db_schemas = {}
 
@@ -284,15 +285,15 @@ def encoder_decoder_1(query_sentence, columns_info, tokenizer, model, cursor):
     return most_similar_columns_info
 
 
-
 def convert_to_training_data(input_data, instruction, output_format):
-    # all_db_infos = json.load(open("tables.json", "r", encoding="utf-8"))
-    all_db_infos = json.load(open("/content/hugging_face_test/demo/origin_data/xiaomi_train_data/tables.json", "r", encoding="utf-8"))
+    all_db_infos = json.load(open("tables.json", "r", encoding="utf-8"))
+    # all_db_infos = json.load(open("/content/hugging_face_test/demo/origin_data/xiaomi_train_data/tables.json", "r", encoding="utf-8"))
 
     training_data = []
     db_schemas = get_db_schemas(all_db_infos)
 
     for item in input_data:
+        # print(item)
         db_id = item['db_id']
         tables_name = item['tables_name']
         question = item['question']
@@ -306,9 +307,9 @@ def convert_to_training_data(input_data, instruction, output_format):
             continue
 
         # Connect to the database for each item
-        # db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
         # db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
-        db_path = f"/content/drive/MyDrive/database/{db_id}/{db_id}.sqlite"
+        # db_path = f"/content/drive/MyDrive/database/{db_id}/{db_id}.sqlite"
         # print(db_path)
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
@@ -336,7 +337,8 @@ def convert_to_training_data(input_data, instruction, output_format):
         # print("##", column_names)
 
         for table in db_schemas[db_id]["schema_items"]:
-            if table["table_name"] not in tables_name:
+            # print(table["table_name_original"])
+            if table["table_name_original"] not in tables_name:
                 continue
 
             table_name_original = table["table_name_original"]
@@ -358,7 +360,7 @@ def convert_to_training_data(input_data, instruction, output_format):
                 else:
                     # print("sss", possible_values)
                     highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model, cursor)[:5]
-                    print("@@@", highest_matching_column_info)
+                    # print("@@@", highest_matching_column_info)
 
                 schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {highest_matching_column_info}.\n"
 
@@ -391,8 +393,8 @@ def convert_to_training_data(input_data, instruction, output_format):
 
 if __name__ == '__main__':
     origin_data = []
-    # with open("train.txt", "r", encoding="utf-8") as f:
-    with open("/content/hugging_face_test/demo/origin_data/xiaomi_train_data/train.txt", "r", encoding="utf-8") as f:
+    with open("train.txt", "r", encoding="utf-8") as f:
+    # with open("/content/hugging_face_test/demo/origin_data/xiaomi_train_data/train.txt", "r", encoding="utf-8") as f:
         for line in f:
             origin_data.append(json.loads(line))
 
