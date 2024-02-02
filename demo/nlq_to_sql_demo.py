@@ -208,7 +208,7 @@ def encoder_decoder_2(query_sentence, database_name, highest_matching_table_name
     return sql_query
 
 
-# Funtion to Execute SQL Query
+# Function to Execute SQL Query
 
 
 def sql_executor(sql_query, highest_matching_table_column_names, cursor):

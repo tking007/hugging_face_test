@@ -262,24 +262,25 @@ def encoder_decoder_1(query_sentence, columns_info, tokenizer, model, cursor):
     most_similar_columns_info = [columns_info[i] for i in most_similar_table_names_indices]
     # print("query_sentence:", query_sentence)
     # print("most_similar_columns_info:", most_similar_columns_info)
-
-    # Find the index of the highest matching table name by finding the maximum value
-    max_similarity_columns_info_index = cosine_similarities_columns_info.argmax()
-
-    # Get the highest matching table name by using the index obtained above
-    highest_matching_table_name = columns_info[max_similarity_columns_info_index]
-
-    # Find the column names of the highest matching table by querying the database
-    # cursor.execute(f"PRAGMA table_info({highest_matching_table_name});")
-    # 使用反引号 ` 或双引号 " 来引用表名和列名避免来与SQL关键字冲突
-    cursor.execute(f"PRAGMA table_info(`{highest_matching_table_name}`);")
-    highest_matching_table_column_names = [column_info[1] for column_info in cursor.fetchall()]
-
-    highest_matching_table_column_names = ", ".join(highest_matching_table_column_names)
-
-    highest_matching_table_column_names = list(highest_matching_table_column_names.split(", "))
-
-    highest_matching_table_column_names = [column_name.replace(' ', '_') for column_name in highest_matching_table_column_names]
+    #
+    # # Find the index of the highest matching table name by finding the maximum value
+    # max_similarity_columns_info_index = cosine_similarities_columns_info.argmax()
+    #
+    # # Get the highest matching table name by using the index obtained above
+    # highest_matching_table_name = columns_info[max_similarity_columns_info_index]
+    # print(highest_matching_table_name)
+    #
+    # # Find the column names of the highest matching table by querying the database
+    # # cursor.execute(f"PRAGMA table_info({highest_matching_table_name});")
+    # # 使用反引号 ` 或双引号 " 来引用表名和列名避免来与SQL关键字冲突
+    # cursor.execute(f"PRAGMA table_info(`{highest_matching_table_name}`);")
+    # highest_matching_table_column_names = [column_info[1] for column_info in cursor.fetchall()]
+    #
+    # highest_matching_table_column_names = ", ".join(highest_matching_table_column_names)
+    #
+    # highest_matching_table_column_names = list(highest_matching_table_column_names.split(", "))
+    #
+    # highest_matching_table_column_names = [column_name.replace(' ', '_') for column_name in highest_matching_table_column_names]
 
     # return highest_matching_table_name, highest_matching_table_column_names
     return most_similar_columns_info
@@ -351,7 +352,7 @@ def convert_to_training_data(input_data, instruction, output_format):
             schema_column = ""
             for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
                 # print(column_name_original, table_name_original, column_type)
-                cursor.execute(f"SELECT  DISTINCT `{column_name_original}` FROM `{table_name_original}`")
+                cursor.execute(f"SELECT  DISTINCT `{column_name_original}` FROM `{table_name_original}` LIMIT 100")
                 # print(column_name_original, table_name_original, db_id)
                 possible_values = [str(row[0]) for row in cursor.fetchall()]
 
@@ -362,7 +363,7 @@ def convert_to_training_data(input_data, instruction, output_format):
                     highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model, cursor)[:5]
                     # print("@@@", highest_matching_column_info)
 
-                schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {highest_matching_column_info}.\n"
+                schema_column += f"The {column_name_original} field of {table_name_original} means {column_name} and has possible values as: {highest_matching_column_info}.\n"
 
             schema_info = f"""
             CREATE TABLE {table_name_original} ({', '.join([f'{name} {column_type}' for name, column_type in zip(column_names_original, column_types)])});
