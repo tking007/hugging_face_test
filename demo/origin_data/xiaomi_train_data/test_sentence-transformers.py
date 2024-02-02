@@ -362,7 +362,7 @@ def convert_to_training_data(input_data, instruction, output_format):
                     highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model, cursor)[:5]
                     # print("@@@", highest_matching_column_info)
 
-                schema_column += f"The {column_name_original} field of {table_name} means {column_name} and has possible values as: {highest_matching_column_info}.\n"
+                schema_column += f"The {column_name_original} field of {table_name_original} means {column_name} and has possible values as: {highest_matching_column_info}.\n"
 
             schema_info = f"""
             CREATE TABLE {table_name_original} ({', '.join([f'{name} {column_type}' for name, column_type in zip(column_names_original, column_types)])});
