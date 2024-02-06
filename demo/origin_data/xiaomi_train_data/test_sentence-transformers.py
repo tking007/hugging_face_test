@@ -293,7 +293,7 @@ def convert_to_training_data(input_data, instruction, output_format):
     training_data = []
     db_schemas = get_db_schemas(all_db_infos)
 
-    for item in input_data:
+    for idx, item in enumerate(input_data):
         # print(item)
         db_id = item['db_id']
         tables_name = item['tables_name']
@@ -337,6 +337,7 @@ def convert_to_training_data(input_data, instruction, output_format):
         #     column_names.extend(table_column_names)
         # print("##", column_names)
 
+        schema_info = ""
         for table in db_schemas[db_id]["schema_items"]:
             # print(table["table_name_original"])
             if table["table_name_original"] not in tables_name:
@@ -365,26 +366,58 @@ def convert_to_training_data(input_data, instruction, output_format):
 
                 schema_column += f"The {column_name_original} field of {table_name_original} means {column_name} and has possible values as: {highest_matching_column_info}.\n"
 
-            schema_info = f"""
+            schema_info += f"""
             CREATE TABLE {table_name_original} ({', '.join([f'{name} {column_type}' for name, column_type in zip(column_names_original, column_types)])});
             /*The table {table_name_original} description is: '{table_name}'.
             {schema_column}
-            */
-            """
+            */"""
             print(table_name_original, table_name, db_id, query_sentence)
 
-            conversation = f"""
-            "Question": {question}
-            "SQLQuery": {query}
-            """
+        # 训练格式：
+        # [
+        #   {
+        #     "id": "identity_0",
+        #     "conversations": [
+        #       {
+        #         "from": "user",
+        #         "value": "你好"
+        #       },
+        #       {
+        #         "from": "assistant",
+        #         "value": "我是一个语言模型，我叫通义千问。"
+        #       }
+        #     ]
+        #   }
+        # ]
 
-            training_item = {
-                "instructions": instruction,
-                "output_format": output_format,
-                "context": schema_info,
-                "conversations": conversation
-            }
-            training_data.append(training_item)
+        conversation = f"""
+        "Question": {question}
+        "SQLQuery": {query}
+        """
+
+        # training_item = {
+        #     "instructions": instruction,
+        #     "output_format": output_format,
+        #     "context": schema_info,
+        #     "conversations": conversation
+        # }
+
+        training_item = {
+            "id": f"identity_{idx}",
+            "conversations": [
+                {
+                    "from": "user",
+                    "value": instruction + output_format + schema_info + conversation
+                },
+                {
+                    "from": "assistant",
+                    "value": query
+                }
+            ]
+        }
+
+        training_data.append(training_item)
+        # print(training_item)
 
         # Close the database connection after processing the data
         conn.close()
@@ -416,7 +449,7 @@ if __name__ == '__main__':
     Output the final SQL query only.
     """
 
-    output_format = """
+    output_format = f"""
     Use the following format:
     SQLQuery:  SQL Query here.
     Only use the following tables:
