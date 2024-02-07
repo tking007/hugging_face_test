@@ -91,3 +91,39 @@ for school_detail in data_detail['data']:
 # 提交更改并关闭数据库连接
 conn.commit()
 conn.close()
+
+
+"""
+admissions: 可能是关于学校的招生信息。
+answerurl: 招生办网址(官方招生咨询平台)。
+belong: 学校可能属于哪个组织或机构。
+central: 可能表示学校是否属于中央直辖。
+city_id 和 city_name: 学校所在城市的ID和名称。
+code_enroll: 可能是学校的招生代码。
+colleges_level: 可能是学校的等级或级别。
+county_id 和 county_name: 学校所在县的ID和名称。
+department: 可能是学校的部门或学院。
+doublehigh: 可能表示学校是否是双一流高校。
+dual_class 和 dual_class_name: 可能表示学校是否是双一流学科，以及双一流学科的名称。
+f211 和 f985: 可能表示学校是否是211工程或985工程的高校。
+hightitle: 可能是学校的高级标题或名称。
+inner_rate: 可能是学校的内部评级或排名。
+is_recruitment: 可能表示学校是否正在招生。
+level 和 level_name: 学校的级别或等级，以及级别或等级的名称。
+name: 学校的名称。
+school_image: 学校的图片。
+nature 和 nature_name: 学校的性质（如公立或私立），以及性质的名称。
+outer_rate: 可能是学校的外部评级或排名。
+province_id 和 province_name: 学校所在省份的ID和名称。
+rank 和 rank_type: 学校的排名，以及排名的类型。
+rate: 可能是学校的评级或评分。
+school_id: 学校的ID。
+school_type: 学校的类型（如大学或高中）。
+tag_name: 可能是学校的标签或关键词。
+type 和 type_name: 学校的类型，以及类型的名称。
+view_month, view_total, view_total_number, view_week: 可能是关于学校的浏览量或访问量的信息。
+short: 可能是学校的简称。
+old_name: 学校的旧名称。
+proid: 可能是学校的产品ID或项目ID。
+school_website: 学校的网站URL。
+"""
