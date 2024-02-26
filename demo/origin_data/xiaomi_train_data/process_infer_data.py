@@ -3,7 +3,9 @@ from process_train_data_for_Qwen import mean_pooling, encoder_decoder_1, model, 
 import sqlite3
 import os
 
+
 def process_infer_data(infer_origin_data, instruction):
+    means_list = ['学校的招生信息', '招生办网址(官方招生咨询平台)', '学校属于哪个组织或机构', '']
     prompts = []
     for line_dict in infer_origin_data:
         question = line_dict["question"]
@@ -75,10 +77,6 @@ def process_infer_data(infer_origin_data, instruction):
         conn.close()
 
     return prompts
-
-
-
-
 
 
 if __name__ == '__main__':
