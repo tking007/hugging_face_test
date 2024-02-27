@@ -5,7 +5,18 @@ import os
 
 
 def process_infer_data(infer_origin_data, instruction):
-    means_list = ['学校的招生信息', '招生办网址(官方招生咨询平台)', '学校属于哪个组织或机构', '']
+    means_dict = {'admissions': '强基计划', 'answerurl': '招生办网址(官方招生咨询平台)', 'belong': '隶属(学校属于哪个组织或机构)',
+                    'central': '中央部委', 'city_id': '学校所在城市的ID', 'city_name': '学校所在城市的名称', 'code_enroll': '招生代码',
+                    'colleges_level': '学校层次,(省级示范、国家级骨干等)', 'county_id': '学校所在区县的ID', 'county_name': '学校所在区县的名称',
+                    'department': '学校所在部门', 'doublehigh': '双高计划', 'dual_class': '双一流代码(38000(一流学科建设高校)38001(一流大学建设高校A类) 38002(一流大学建设高校B类))',
+                    'dual_class_name': '双一流学科名称', 'f211': '211工程', 'f985': '985工程', 'hightitle': '高校名称', 'inner_rate': '内部排名', 'is_recruitment': '是否招生',
+                    'level': '教育等级, "普通本科":2001, "专科（高职）": 2002', 'level_name': '办学层次名称', 'name': '学校名称', 'school_image': '学校图片',
+                    'nature': '办学类型，36000: "公办", 36001: "民办"', 'nature_name': '办学类型名称', 'outer_rate': '外部排名', 'province_id': '学校所在省份的ID',
+                    'province_name': '学校所在省份的名称', 'rank': '学校排名', 'rank_type': '学校排名类型', 'rate': '学校评分', 'school_id': '学校ID',
+                    'school_type': '办学类型："普通本科": "6000","专科（高职)": , 6002: "独立学院", 6003: "中外合作办学", 6007: "其他"',
+                    'tag_name': '学校类型名称', 'type': '学校类型', 'type_name': '学校的类型，以及类型的名称',
+                    'view_month': '学校浏览量(月)', 'view_total': '学校浏览量(总)', 'view_total_number': '学校浏览量(总数)', 'view_week': '学校浏览量(周)', 'short': '学校简称',
+                    'old_name': '学校旧名称', 'proid': '学校项目ID', 'school_website': '学校网址'}
     prompts = []
     for line_dict in infer_origin_data:
         question = line_dict["question"]
@@ -60,7 +71,8 @@ def process_infer_data(infer_origin_data, instruction):
                 # print("@@@", highest_matching_column_info)
 
             column_name_original = column_name.replace("_", " ")
-            schema_column += f"The {column_name} field of {table_names[0]} means {column_name_original} and has possible values as: {highest_matching_column_info}.\n"
+            means_str = means_dict.get(f'{column_name}', f"{column_name_original}")
+            schema_column += f"The {column_name} field of {table_names[0]} means {means_str} and has possible values as: {highest_matching_column_info}.\n"
 
         schema_info = f"""
         {schema_column}

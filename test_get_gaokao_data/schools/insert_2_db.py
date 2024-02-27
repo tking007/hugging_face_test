@@ -98,12 +98,12 @@ admissions: 是否是强基计划。
 answerurl: 招生办网址(官方招生咨询平台)。
 belong: 学校可能属于哪个部门。
 central: 表示学校是否属于中央部委。
-city_id: 学校所在城市的名称. 
-city_name: 学校所在城市的ID。
+city_id: 学校所在城市的ID. 
+city_name: 学校所在城市的名称。
 code_enroll: 学校的招生代码。
 colleges_level: 表示院校级别，有省级示范、国家级骨干等。
 county_id: 学校所在区县的ID。
-county_name: 学校所在区县的I名称。
+county_name: 学校所在区县的名称。
 department: 是否教育部直属。
 doublehigh: 是否是双高计划。
 dual_class: 38000(一流学科建设高校)38001(一流大学建设高校A类) 38002(一流大学建设高校B类)。
@@ -113,7 +113,7 @@ f985: 是否985工程的高校。
 hightitle: 学校名称。
 inner_rate: 内部排名。
 is_recruitment: 表示学校是否正在招生。
-level: 普通本科": 教育等级，2001, "专科（高职）": 2002。
+level: 教育等级, "普通本科":2001, "专科（高职）": 2002。
 level_name: 教育等级名称。
 name: 学校的名称。
 school_image: 学校的图片。
