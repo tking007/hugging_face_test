@@ -94,36 +94,48 @@ conn.close()
 
 
 """
-admissions: 可能是关于学校的招生信息。
+admissions: 是否是强基计划。
 answerurl: 招生办网址(官方招生咨询平台)。
-belong: 学校可能属于哪个组织或机构。
-central: 可能表示学校是否属于中央直辖。
-city_id 和 city_name: 学校所在城市的ID和名称。
-code_enroll: 可能是学校的招生代码。
-colleges_level: 可能是学校的等级或级别。
-county_id 和 county_name: 学校所在县的ID和名称。
-department: 可能是学校的部门或学院。
-doublehigh: 可能表示学校是否是双一流高校。
-dual_class 和 dual_class_name: 可能表示学校是否是双一流学科，以及双一流学科的名称。
-f211 和 f985: 可能表示学校是否是211工程或985工程的高校。
-hightitle: 可能是学校的高级标题或名称。
-inner_rate: 可能是学校的内部评级或排名。
-is_recruitment: 可能表示学校是否正在招生。
-level 和 level_name: 学校的级别或等级，以及级别或等级的名称。
+belong: 学校可能属于哪个部门。
+central: 表示学校是否属于中央部委。
+city_id: 学校所在城市的ID. 
+city_name: 学校所在城市的名称。
+code_enroll: 学校的招生代码。
+colleges_level: 表示院校级别，有省级示范、国家级骨干等。
+county_id: 学校所在区县的ID。
+county_name: 学校所在区县的名称。
+department: 是否教育部直属。
+doublehigh: 是否是双高计划。
+dual_class: 38000(一流学科建设高校)38001(一流大学建设高校A类) 38002(一流大学建设高校B类)。
+dual_class_name: 双一流学科的名称。
+f211: 是否是211工程高校。
+f985: 是否985工程的高校。
+hightitle: 学校名称。
+inner_rate: 内部排名。
+is_recruitment: 表示学校是否正在招生。
+level: 教育等级, "普通本科":2001, "专科（高职）": 2002。
+level_name: 教育等级名称。
 name: 学校的名称。
 school_image: 学校的图片。
-nature 和 nature_name: 学校的性质（如公立或私立），以及性质的名称。
-outer_rate: 可能是学校的外部评级或排名。
-province_id 和 province_name: 学校所在省份的ID和名称。
-rank 和 rank_type: 学校的排名，以及排名的类型。
-rate: 可能是学校的评级或评分。
+nature: 办学类型，36000: "公办", 36001: "民办"。
+nature_name: 办学类型名称。
+outer_rate: 外部排名。
+province_id: 学校所在省份的ID。
+province_name: 学校所在省份的I名称。
+rank: 学校的排名。
+rank_type: 学校的排名类型。
+rate: 学校的评分。
 school_id: 学校的ID。
-school_type: 学校的类型（如大学或高中）。
-tag_name: 可能是学校的标签或关键词。
-type 和 type_name: 学校的类型，以及类型的名称。
-view_month, view_total, view_total_number, view_week: 可能是关于学校的浏览量或访问量的信息。
-short: 可能是学校的简称。
+school_type: 办学类型："普通本科": "6000","专科（高职)": , 6002: "独立学院", 6003: "中外合作办学", 6007: "其他"。
+tag_name: 学校的标签或关键词。
+type: 学校的类型。
+type_name: 学校的类型，以及类型的名称。
+view_month: 学校的月浏览量。
+view_total: 学校的总浏览量缩略形式。
+view_total_number: 学校的总浏览量数字形式。
+view_week: 学校周浏览量。
+short: 学校的简称。
 old_name: 学校的旧名称。
-proid: 可能是学校的产品ID或项目ID。
+proid: 学校的项目ID。
 school_website: 学校的网站URL。
 """
