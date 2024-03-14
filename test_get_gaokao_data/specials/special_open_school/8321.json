@@ -23,7 +23,9 @@
                 "ruanke_rank": "13",
                 "school_id": 1801,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "13",
                 "school_id": 3094,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "16",
                 "school_id": 2498,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -89,7 +95,9 @@
                 "ruanke_rank": "17",
                 "school_id": 2604,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -111,7 +119,9 @@
                 "ruanke_rank": "18",
                 "school_id": 692,
                 "tag_name": "",
-                "type_name": "财经类"
+                "type_name": "财经类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -133,7 +143,9 @@
                 "ruanke_rank": "19",
                 "school_id": 339,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -155,7 +167,9 @@
                 "ruanke_rank": "20",
                 "school_id": 2093,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -177,7 +191,9 @@
                 "ruanke_rank": "20",
                 "school_id": 340,
                 "tag_name": "",
-                "type_name": "财经类"
+                "type_name": "财经类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -199,29 +215,33 @@
                 "ruanke_rank": "22",
                 "school_id": 1179,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
                 "central": "2",
-                "city_name": "杭州市",
+                "city_name": "济南市",
                 "department": "2",
                 "doublehigh": "0",
                 "dual_class": "38003",
                 "dual_class_name": "",
                 "f211": 2,
                 "f985": 2,
-                "id": "gkspecialschool8321/2394",
+                "id": "gkspecialschool8321/2966",
                 "is_top": 2,
                 "level_name": "普通本科",
-                "name": "浙江工商大学杭州商学院",
+                "name": "山东财经大学燕山学院",
                 "nature_name": "民办",
-                "province_name": "浙江",
+                "province_name": "山东",
                 "ruanke_level": "B",
                 "ruanke_rank": "23",
-                "school_id": 2394,
+                "school_id": 2966,
                 "tag_name": "",
-                "type_name": "财经类"
+                "type_name": "财经类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 59

@@ -23,7 +23,9 @@
                 "ruanke_rank": "11",
                 "school_id": 219,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": "19",
+                "xueke_rank_score": "B"
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "12",
                 "school_id": 283,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "13",
                 "school_id": 530,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": "39",
+                "xueke_rank_score": "C+"
             },
             {
                 "admissions": "2",
@@ -89,7 +95,9 @@
                 "ruanke_rank": "14",
                 "school_id": 158,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": "35",
+                "xueke_rank_score": "C+"
             },
             {
                 "admissions": "2",
@@ -111,7 +119,9 @@
                 "ruanke_rank": "",
                 "school_id": 518,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": "58",
+                "xueke_rank_score": "C-"
             },
             {
                 "admissions": "2",
@@ -126,14 +136,16 @@
                 "id": "gkspecialschool1219/1022",
                 "is_top": 2,
                 "level_name": "普通本科",
-                "name": "蚌埠医学院",
+                "name": "蚌埠医科大学",
                 "nature_name": "公办",
                 "province_name": "安徽",
                 "ruanke_level": "B",
                 "ruanke_rank": "15",
                 "school_id": 1022,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": "55",
+                "xueke_rank_score": "C-"
             },
             {
                 "admissions": "2",
@@ -155,7 +167,9 @@
                 "ruanke_rank": "17",
                 "school_id": 271,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": "28",
+                "xueke_rank_score": "B-"
             },
             {
                 "admissions": "2",
@@ -177,7 +191,9 @@
                 "ruanke_rank": "18",
                 "school_id": 429,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -199,7 +215,9 @@
                 "ruanke_rank": "",
                 "school_id": 234,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": "42",
+                "xueke_rank_score": "C+"
             },
             {
                 "admissions": "2",
@@ -221,7 +239,9 @@
                 "ruanke_rank": "",
                 "school_id": 274,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 38

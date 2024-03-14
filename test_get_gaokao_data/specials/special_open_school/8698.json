@@ -23,7 +23,9 @@
                 "ruanke_rank": "",
                 "school_id": 325,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "",
                 "school_id": 498,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "",
                 "school_id": 2489,
                 "tag_name": "",
-                "type_name": "财经类"
+                "type_name": "财经类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -89,7 +95,9 @@
                 "ruanke_rank": "",
                 "school_id": 1243,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -111,7 +119,9 @@
                 "ruanke_rank": "",
                 "school_id": 2135,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -133,7 +143,9 @@
                 "ruanke_rank": "",
                 "school_id": 2546,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 16

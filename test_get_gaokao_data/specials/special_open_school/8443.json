@@ -6,24 +6,26 @@
             {
                 "admissions": "2",
                 "central": "2",
-                "city_name": "廊坊市",
+                "city_name": "西安市",
                 "department": "2",
                 "doublehigh": "0",
                 "dual_class": "38003",
                 "dual_class_name": "",
                 "f211": 2,
                 "f985": 2,
-                "id": "gkspecialschool8443/1539",
+                "id": "gkspecialschool8443/382",
                 "is_top": 2,
                 "level_name": "普通本科",
-                "name": "河北东方学院",
-                "nature_name": "民办",
-                "province_name": "河北",
+                "name": "西安美术学院",
+                "nature_name": "公办",
+                "province_name": "陕西",
                 "ruanke_level": "",
                 "ruanke_rank": "",
-                "school_id": 1539,
+                "school_id": 382,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "艺术类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "",
                 "school_id": 95,
                 "tag_name": "",
-                "type_name": "艺术类"
+                "type_name": "艺术类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "",
                 "school_id": 2844,
                 "tag_name": "",
-                "type_name": "艺术类"
+                "type_name": "艺术类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 13

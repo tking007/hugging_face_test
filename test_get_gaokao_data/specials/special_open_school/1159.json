@@ -23,7 +23,9 @@
                 "ruanke_rank": "",
                 "school_id": 1061,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "",
                 "school_id": 1092,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "",
                 "school_id": 1457,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -89,7 +95,9 @@
                 "ruanke_rank": "",
                 "school_id": 2406,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 14

@@ -3,7 +3,7 @@ import sqlite3
 import json
 
 # 读取 JSON 文件
-with open('school_detail.json', 'r') as f:
+with open('school_detail.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # 提取 'data' 部分
@@ -17,3 +17,4 @@ df.to_sql('school_detail', conn, if_exists='replace', index=False)
 
 # 关闭数据库连接
 conn.close()
+print("Done!")

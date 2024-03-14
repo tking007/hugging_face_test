@@ -23,7 +23,9 @@
                 "ruanke_rank": "",
                 "school_id": 2380,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -38,14 +40,16 @@
                 "id": "gkspecialschool1153/246",
                 "is_top": 2,
                 "level_name": "普通本科",
-                "name": "浙江科技学院",
+                "name": "浙江科技大学",
                 "nature_name": "公办",
                 "province_name": "浙江",
                 "ruanke_level": "",
                 "ruanke_rank": "",
                 "school_id": 246,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "",
                 "school_id": 1026,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -89,7 +95,9 @@
                 "ruanke_rank": "",
                 "school_id": 3061,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -111,7 +119,9 @@
                 "ruanke_rank": "",
                 "school_id": 3064,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -133,7 +143,9 @@
                 "ruanke_rank": "",
                 "school_id": 2499,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 16

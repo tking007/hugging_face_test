@@ -23,7 +23,9 @@
                 "ruanke_rank": "14",
                 "school_id": 166,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "15",
                 "school_id": 63,
                 "tag_name": "教育部直属",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "16",
                 "school_id": 417,
                 "tag_name": "教育部直属",
-                "type_name": "农林类"
+                "type_name": "农林类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -89,7 +95,9 @@
                 "ruanke_rank": "18",
                 "school_id": 50,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -111,7 +119,9 @@
                 "ruanke_rank": "19",
                 "school_id": 572,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -133,12 +143,14 @@
                 "ruanke_rank": "20",
                 "school_id": 232,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
                 "central": "2",
-                "city_name": "雅安市",
+                "city_name": "成都市",
                 "department": "2",
                 "doublehigh": "0",
                 "dual_class": "38000",
@@ -155,7 +167,9 @@
                 "ruanke_rank": "21",
                 "school_id": 100,
                 "tag_name": "",
-                "type_name": "农林类"
+                "type_name": "农林类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -177,7 +191,9 @@
                 "ruanke_rank": "22",
                 "school_id": 32,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -199,7 +215,9 @@
                 "ruanke_rank": "23",
                 "school_id": 357,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -221,7 +239,9 @@
                 "ruanke_rank": "23",
                 "school_id": 465,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 74

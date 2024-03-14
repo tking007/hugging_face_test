@@ -23,7 +23,9 @@
                 "ruanke_rank": "",
                 "school_id": 202,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "",
                 "school_id": 276,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "",
                 "school_id": 64,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -82,14 +88,16 @@
                 "id": "gkspecialschool8423/195",
                 "is_top": 2,
                 "level_name": "普通本科",
-                "name": "赣南医学院",
+                "name": "赣南医科大学",
                 "nature_name": "公办",
                 "province_name": "江西",
                 "ruanke_level": "",
                 "ruanke_rank": "",
                 "school_id": 195,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -111,7 +119,9 @@
                 "ruanke_rank": "",
                 "school_id": 3194,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -133,7 +143,9 @@
                 "ruanke_rank": "",
                 "school_id": 1033,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -155,7 +167,9 @@
                 "ruanke_rank": "",
                 "school_id": 2348,
                 "tag_name": "",
-                "type_name": "医药类"
+                "type_name": "医药类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 17

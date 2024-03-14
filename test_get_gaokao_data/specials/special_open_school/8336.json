@@ -23,7 +23,9 @@
                 "ruanke_rank": "",
                 "school_id": 1297,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "",
                 "school_id": 2133,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,10 +71,36 @@
                 "ruanke_rank": "",
                 "school_id": 2833,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
+            },
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "成都市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool8336/2495",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "成都银杏酒店管理学院",
+                "nature_name": "民办",
+                "province_name": "四川",
+                "ruanke_level": "",
+                "ruanke_rank": "",
+                "school_id": 2495,
+                "tag_name": "",
+                "type_name": "财经类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
-        "numFound": 13
+        "numFound": 14
     },
     "location": "",
     "encrydata": ""

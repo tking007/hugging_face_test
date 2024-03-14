@@ -23,7 +23,9 @@
                 "ruanke_rank": "13",
                 "school_id": 356,
                 "tag_name": "",
-                "type_name": "财经类"
+                "type_name": "财经类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "",
                 "school_id": 343,
                 "tag_name": "",
-                "type_name": "农林类"
+                "type_name": "农林类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "",
                 "school_id": 1256,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -89,7 +95,9 @@
                 "ruanke_rank": "",
                 "school_id": 355,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -111,7 +119,9 @@
                 "ruanke_rank": "",
                 "school_id": 1252,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -133,7 +143,9 @@
                 "ruanke_rank": "",
                 "school_id": 2364,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -155,7 +167,9 @@
                 "ruanke_rank": "",
                 "school_id": 2521,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -170,14 +184,16 @@
                 "id": "gkspecialschool67/2497",
                 "is_top": 2,
                 "level_name": "普通本科",
-                "name": "四川外国语大学成都学院",
+                "name": "成都外国语学院",
                 "nature_name": "民办",
                 "province_name": "四川",
                 "ruanke_level": "",
                 "ruanke_rank": "",
                 "school_id": 2497,
                 "tag_name": "",
-                "type_name": "语言类"
+                "type_name": "语言类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -199,7 +215,9 @@
                 "ruanke_rank": "",
                 "school_id": 1223,
                 "tag_name": "",
-                "type_name": "军事类"
+                "type_name": "军事类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -221,7 +239,9 @@
                 "ruanke_rank": "",
                 "school_id": 2370,
                 "tag_name": "",
-                "type_name": "民族类"
+                "type_name": "民族类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 22

@@ -23,7 +23,9 @@
                 "ruanke_rank": "",
                 "school_id": 533,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 11

@@ -23,7 +23,9 @@
                 "ruanke_rank": "14",
                 "school_id": 99,
                 "tag_name": "教育部直属",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "1",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "14",
                 "school_id": 73,
                 "tag_name": "教育部直属",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": "29",
+                "xueke_rank_score": "B+"
             },
             {
                 "admissions": "1",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "16",
                 "school_id": 60,
                 "tag_name": "教育部直属",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "1",
@@ -89,7 +95,9 @@
                 "ruanke_rank": "18",
                 "school_id": 138,
                 "tag_name": "教育部直属",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -111,7 +119,9 @@
                 "ruanke_rank": "19",
                 "school_id": 115,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "1",
@@ -133,7 +143,9 @@
                 "ruanke_rank": "20",
                 "school_id": 44,
                 "tag_name": "教育部直属",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "1",
@@ -155,7 +167,9 @@
                 "ruanke_rank": "21",
                 "school_id": 97,
                 "tag_name": "教育部直属",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": "45",
+                "xueke_rank_score": "B+"
             },
             {
                 "admissions": "2",
@@ -177,7 +191,9 @@
                 "ruanke_rank": "22",
                 "school_id": 420,
                 "tag_name": "教育部直属",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -199,7 +215,9 @@
                 "ruanke_rank": "23",
                 "school_id": 934,
                 "tag_name": "教育部直属",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "1",
@@ -221,7 +239,9 @@
                 "ruanke_rank": "",
                 "school_id": 34,
                 "tag_name": "",
-                "type_name": "理工类"
+                "type_name": "理工类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 51

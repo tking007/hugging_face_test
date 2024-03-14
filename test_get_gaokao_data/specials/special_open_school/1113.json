@@ -23,7 +23,9 @@
                 "ruanke_rank": "",
                 "school_id": 2068,
                 "tag_name": "",
-                "type_name": "政法类"
+                "type_name": "政法类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "",
                 "school_id": 611,
                 "tag_name": "",
-                "type_name": "政法类"
+                "type_name": "政法类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 12

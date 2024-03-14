@@ -23,7 +23,9 @@
                 "ruanke_rank": "15",
                 "school_id": 360,
                 "tag_name": "",
-                "type_name": "艺术类"
+                "type_name": "艺术类",
+                "xueke_rank": "27",
+                "xueke_rank_score": "B-"
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "19",
                 "school_id": 284,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "20",
                 "school_id": 293,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": "43",
+                "xueke_rank_score": "C"
             },
             {
                 "admissions": "2",
@@ -89,7 +95,9 @@
                 "ruanke_rank": "22",
                 "school_id": 327,
                 "tag_name": "",
-                "type_name": "艺术类"
+                "type_name": "艺术类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -111,7 +119,9 @@
                 "ruanke_rank": "23",
                 "school_id": 2840,
                 "tag_name": "",
-                "type_name": "财经类"
+                "type_name": "财经类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -133,7 +143,9 @@
                 "ruanke_rank": "24",
                 "school_id": 833,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": "40",
+                "xueke_rank_score": "C"
             },
             {
                 "admissions": "2",
@@ -155,7 +167,9 @@
                 "ruanke_rank": "25",
                 "school_id": 167,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -177,7 +191,9 @@
                 "ruanke_rank": "26",
                 "school_id": 324,
                 "tag_name": "",
-                "type_name": "体育类"
+                "type_name": "体育类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -199,7 +215,9 @@
                 "ruanke_rank": "26",
                 "school_id": 231,
                 "tag_name": "",
-                "type_name": "民族类"
+                "type_name": "民族类",
+                "xueke_rank": "48",
+                "xueke_rank_score": "C-"
             },
             {
                 "admissions": "2",
@@ -221,7 +239,9 @@
                 "ruanke_rank": "28",
                 "school_id": 1062,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 68

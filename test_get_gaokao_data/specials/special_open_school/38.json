@@ -23,7 +23,9 @@
                 "ruanke_rank": "17",
                 "school_id": 58,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": "21",
+                "xueke_rank_score": "B"
             },
             {
                 "admissions": "2",
@@ -45,7 +47,9 @@
                 "ruanke_rank": "18",
                 "school_id": 142,
                 "tag_name": "教育部直属",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": "17",
+                "xueke_rank_score": "B"
             },
             {
                 "admissions": "2",
@@ -67,7 +71,9 @@
                 "ruanke_rank": "19",
                 "school_id": 344,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": "38",
+                "xueke_rank_score": "C+"
             },
             {
                 "admissions": "2",
@@ -89,7 +95,9 @@
                 "ruanke_rank": "20",
                 "school_id": 622,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": "27",
+                "xueke_rank_score": "B-"
             },
             {
                 "admissions": "2",
@@ -111,7 +119,9 @@
                 "ruanke_rank": "23",
                 "school_id": 595,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": "24",
+                "xueke_rank_score": "B-"
             },
             {
                 "admissions": "2",
@@ -133,7 +143,9 @@
                 "ruanke_rank": "25",
                 "school_id": 174,
                 "tag_name": "",
-                "type_name": "师范类"
+                "type_name": "师范类",
+                "xueke_rank": "35",
+                "xueke_rank_score": "C+"
             },
             {
                 "admissions": "2",
@@ -155,7 +167,9 @@
                 "ruanke_rank": "25",
                 "school_id": 2189,
                 "tag_name": "",
-                "type_name": "体育类"
+                "type_name": "体育类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -177,7 +191,33 @@
                 "ruanke_rank": "27",
                 "school_id": 471,
                 "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
+            },
+            {
+                "admissions": "2",
+                "central": "2",
+                "city_name": "株洲市",
+                "department": "2",
+                "doublehigh": "0",
+                "dual_class": "38003",
+                "dual_class_name": "",
+                "f211": 2,
+                "f985": 2,
+                "id": "gkspecialschool38/398",
+                "is_top": 2,
+                "level_name": "普通本科",
+                "name": "湖南工业大学",
+                "nature_name": "公办",
+                "province_name": "湖南",
+                "ruanke_level": "B",
+                "ruanke_rank": "28",
+                "school_id": 398,
+                "tag_name": "",
+                "type_name": "综合类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             },
             {
                 "admissions": "2",
@@ -199,29 +239,9 @@
                 "ruanke_rank": "",
                 "school_id": 167,
                 "tag_name": "",
-                "type_name": "师范类"
-            },
-            {
-                "admissions": "2",
-                "central": "2",
-                "city_name": "银川市",
-                "department": "2",
-                "doublehigh": "0",
-                "dual_class": "38000",
-                "dual_class_name": "双一流",
-                "f211": 1,
-                "f985": 2,
-                "id": "gkspecialschool38/544",
-                "is_top": 2,
-                "level_name": "普通本科",
-                "name": "宁夏大学",
-                "nature_name": "公办",
-                "province_name": "宁夏",
-                "ruanke_level": "",
-                "ruanke_rank": "",
-                "school_id": 544,
-                "tag_name": "",
-                "type_name": "综合类"
+                "type_name": "师范类",
+                "xueke_rank": 9999,
+                "xueke_rank_score": ""
             }
         ],
         "numFound": 40
