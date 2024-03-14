@@ -153,7 +153,7 @@ cursor.execute('''
         school_id TEXT,
         PRIMARY KEY (major_id, school_id),
         FOREIGN KEY (major_id) REFERENCES majors (major_id),
-        FOREIGN KEY (school_id) REFERENCES schools (school_id)
+        FOREIGN KEY (school_id) REFERENCES school_detail (school_id)
     )
 ''')
 
@@ -171,19 +171,29 @@ school_main_path = 'special_open_school'
 for category_id, category_items in category_data['data'].items():
     for item in category_items['item']:
         cursor.execute('''
-            INSERT INTO major_categories (special_id, name, code)
-            VALUES (?, ?,?)
-        ''', (item['spe_id'], item['name'], item['code']))
+            SELECT special_id FROM major_categories WHERE special_id = ?
+        ''', (item['spe_id'],))
+        result = cursor.fetchone()
+        if result is None:
+            cursor.execute('''
+                INSERT INTO major_categories (special_id, name, code)
+                VALUES (?, ?,?)
+            ''', (item['spe_id'], item['name'], item['code']))
 
 # 插入专业信息
 for major in major_data['data']:
     cursor.execute('''
-        INSERT INTO majors (major_id, major_name, degree, limit_year, rank, salaryavg, category_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ''', (
-        major['id'], major['name'], major['degree'], major['limit_year'],
-        major['rank'], major['salaryavg'], major['special_id']
-    ))
+        SELECT major_id FROM majors WHERE major_id = ?
+    ''', (major['id'],))
+    result = cursor.fetchone()
+    if result is None:
+        cursor.execute('''
+            INSERT INTO majors (major_id, major_name, degree, limit_year, rank, salaryavg, category_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            major['id'], major['name'], major['degree'], major['limit_year'],
+            major['rank'], major['salaryavg'], major['special_id']
+        ))
 
     special_id = major.get('special_id')
     school_info_path = os.path.join(school_main_path, f'{special_id}.json')
@@ -210,9 +220,14 @@ for major in major_data['data']:
 
         # 插入专业和学校的关联信息
         cursor.execute('''
-            INSERT INTO major_school (major_id, school_id)
-            VALUES (?, ?)
+            SELECT major_id, school_id FROM major_school WHERE major_id = ? AND school_id = ?
         ''', (major['id'], school['school_id']))
+        result = cursor.fetchone()
+        if result is None:
+            cursor.execute('''
+                INSERT INTO major_school (major_id, school_id)
+                VALUES (?, ?)
+            ''', (major['id'], school['school_id']))
 
 # 提交更改并关闭数据库连接
 conn.commit()
