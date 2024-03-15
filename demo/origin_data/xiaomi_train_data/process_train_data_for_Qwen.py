@@ -355,11 +355,11 @@ def convert_to_training_data(input_data, instruction, output_format):
         cursor = conn.cursor()
 
         # Get the filename that is connected above
-        filename = conn.cursor().execute("PRAGMA database_list;").fetchall()[0][2]
+        # filename = conn.cursor().execute("PRAGMA database_list;").fetchall()[0][2]
         # print("filename:", filename)
 
         # Extract file name from file path
-        database_name = os.path.basename(filename).split('.')[0]
+        # database_name = os.path.basename(filename).split('.')[0]
 
         # print("@@", tables_name)
 
@@ -397,11 +397,11 @@ def convert_to_training_data(input_data, instruction, output_format):
                 possible_values = [str(row[0]) for row in cursor.fetchall()]
 
                 if len(possible_values) == 0 or possible_values == ['']:
-                    highest_matching_column_info = ''
+                    # highest_matching_column_info = ''
                     highest_matching_column_info_2 = ''
                 else:
                     # print("sss", possible_values)
-                    highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model)[:5]
+                    # highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model)[:5]
                     highest_matching_column_info_2 = gte_large_zh(query_sentence, possible_values, tokenizer_1, model_1)[:5]
                     # print(highest_matching_column_info)
                     # print(highest_matching_column_info_2)
