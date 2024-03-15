@@ -2,7 +2,7 @@
 {"db_id": "school_detail", "question": " 想了解一下成都市都有哪些大学？"}
 {"db_id": "school_detail", "question": " 我想知道成都大学隶属哪个部门？"}
 {"db_id": "school_detail", "question": "想了解下成都东软学院？"}
-{"db_id": "school_detail", "question": " 成都东软学院隶属那么部门？"}
+{"db_id": "school_detail", "question": " 成都东软学院隶属那个部门？"}
 {"db_id": "school_detail", "question": " 成都东软学院是985或是211吗？"}
 {"db_id": "school_detail", "question": " 成都东软学院是民办还是公办？"}
 {"db_id": "school_detail", "question": " 成都东软学院的简称是什么？"}

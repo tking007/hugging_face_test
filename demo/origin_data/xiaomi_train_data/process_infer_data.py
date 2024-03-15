@@ -1,5 +1,6 @@
 import json
 from process_train_data_for_Qwen import mean_pooling, encoder_decoder_1, model, tokenizer
+from process_train_data_for_Qwen import gte_large_zh, model_1, tokenizer_1
 import sqlite3
 import os
 
@@ -16,11 +17,16 @@ def process_infer_data(infer_origin_data, instruction):
                     'school_type': '办学类型："普通本科": "6000","专科（高职)": , 6002: "独立学院", 6003: "中外合作办学", 6007: "其他"',
                     'tag_name': '学校类型名称', 'type': '学校类型', 'type_name': '学校的类型，以及类型的名称',
                     'view_month': '学校浏览量(月)', 'view_total': '学校浏览量(总)', 'view_total_number': '学校浏览量(总数)', 'view_week': '学校浏览量(周)', 'short': '学校简称',
-                    'old_name': '学校旧名称', 'proid': '学校项目ID', 'school_website': '学校网址'}
+                    'old_name': '学校旧名称', 'proid': '学校项目ID', 'school_website': '学校网址', 'special_id': '专业类别ID', 'special_name': '专业类别名称',
+                    'code': '专业类别带代码', 'major_id': '专业ID', 'major_name': '专业名称', 'degree': '专业学位', 'limit_year': '学制', 'major_rank': '专业排名', 'salaryavg': '专业平均工资',
+                    'category_id': '专业分类ID', 'ruanke_level': '软科等级', 'ruanke_rank': '软科排名', 'school_name': '学校名称'}
+    tables_meas = {'major_categories': '专业分类', 'major_school': '专业和学校关联表', 'majors': '专业详情', 'school_detail': '学校详情', 'schools': '专业开设学校'}
+
     prompts = []
     for line_dict in infer_origin_data:
         question = line_dict["question"]
         db_id = line_dict["db_id"]
+        print(db_id)
 
         schema_info = f""
 
@@ -40,39 +46,64 @@ def process_infer_data(infer_origin_data, instruction):
 
         # print(table_names)
 
-        column_names = []
+        # Get column names and contents for each table
+        table_to_score = {}
         for table_name in table_names:
-            cursor.execute(f"PRAGMA table_info(`{table_name}`);")
-            table_column_names = [column_info[1] for column_info in cursor.fetchall()]
-            # 处理列名中的下划线，替换为空格
-            # table_column_names = [column_name.replace("_", " ") for column_name in table_column_names]
-            column_names.extend(table_column_names)
+            cursor.execute(f"SELECT * FROM `{table_name}` LIMIT 1")
+            table_column_names = [description[0] for description in cursor.description]
+            # print("111", table_column_names)
+            table_contents = cursor.fetchone()
+            table_description = tables_meas.get(table_name, table_name)
+            table_column_contents = [f"{table_description} - {name}:{content}" for name, content in zip(table_column_names, table_contents)]
+            # print("222", table_column_contents)
 
-            # print(table_column_names)
+            # Find the highest matching score for this table
+            highest_matching_score = gte_large_zh(question, table_column_contents, tokenizer_1, model_1)
+            # print("333", highest_matching_score)
+
+            # Record the highest matching score for this table
+            table_to_score[table_name] = highest_matching_score
+
+        # Find the table with the highest matching score
+        highest_matching_table_name = max(table_to_score, key=table_to_score.get)
+        print(f"The highest matching table name is: {highest_matching_table_name}")
+
+        # for table_name in table_names:
+        cursor.execute(f"PRAGMA table_info(`{highest_matching_table_name}`);")
+        table_column_names = [column_info[1] for column_info in cursor.fetchall()]
+        print(table_column_names)
+        # 处理列名中的下划线，替换为空格
+        # table_column_names = [column_name.replace("_", " ") for column_name in table_column_names]
+        # column_names.extend(table_column_names)
+
+        # print(table_column_names)
         # print(column_names)
 
         # highest_matching_table_name, highest_matching_table_column_names = encoder_decoder_1(
         #     question, table_names, tokenizer, model, cursor)
 
         schema_column = ""
+        # print(table_names, column_names)
 
-        for column_name in column_names:
+        for column_name in table_column_names:
             # print(column_name_original, table_name_original, column_type)
-            cursor.execute(f"SELECT  DISTINCT `{column_name}` FROM `{table_names[0]}` LIMIT 100")
+            cursor.execute(f"SELECT  DISTINCT `{column_name}` FROM `{highest_matching_table_name}` LIMIT 100")
             # print(column_name_original, table_name_original, db_id)
             possible_values = [str(row[0]) for row in cursor.fetchall()]
             # print(possible_values)
 
             if len(possible_values) == 0 or possible_values == ['']:
                 highest_matching_column_info = ''
+                highest_matching_column_info_2 = ''
             else:
                 # print("sss", possible_values)
-                highest_matching_column_info = encoder_decoder_1(question, possible_values, tokenizer, model, cursor)[:5]
+                highest_matching_column_info = encoder_decoder_1(question, possible_values, tokenizer, model)[:5]
+                highest_matching_column_info_2 = gte_large_zh(question, possible_values, tokenizer_1, model_1)[:5]
                 # print("@@@", highest_matching_column_info)
 
             column_name_original = column_name.replace("_", " ")
             means_str = means_dict.get(f'{column_name}', f"{column_name_original}")
-            schema_column += f"The {column_name} field of {table_names[0]} means {means_str} and has possible values as: {highest_matching_column_info}.\n"
+            schema_column += f"The {column_name} field of {highest_matching_table_name} means {means_str} and has possible values as: {highest_matching_column_info_2}.\n"
 
         schema_info = f"""
         {schema_column}

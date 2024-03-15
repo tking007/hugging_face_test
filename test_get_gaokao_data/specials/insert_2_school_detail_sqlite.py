@@ -111,7 +111,7 @@ cursor = conn.cursor()
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS major_categories (
         special_id TEXT PRIMARY KEY,
-        name TEXT,
+        special_name TEXT,
         code TEXT
     )
 ''')
@@ -123,7 +123,7 @@ cursor.execute('''
         major_name TEXT,
         degree TEXT,
         limit_year TEXT,
-        rank INTEGER,
+        major_rank INTEGER,
         salaryavg REAL,
         category_id TEXT,
         FOREIGN KEY (category_id) REFERENCES major_categories (category_id)
