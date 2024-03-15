@@ -79,6 +79,8 @@ import json
 from hashlib import md5
 import pandas as pd
 
+from torch import Tensor
+
 pd.set_option('display.max_columns', 200)  # 设置显示列数
 pd.set_option('display.max_rows', 100)  # 设置显示行数
 
@@ -126,6 +128,10 @@ def translate(query):
 # Load model from HuggingFace Hub
 tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
 model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
+
+# Load model outside the function
+tokenizer_1 = AutoTokenizer.from_pretrained("thenlper/gte-large-zh")
+model_1 = AutoModel.from_pretrained("thenlper/gte-large-zh")
 
 
 def get_db_schemas(all_db_infos):
@@ -285,22 +291,17 @@ def encoder_decoder_1(query_sentence, columns_info, tokenizer, model):
     # return highest_matching_table_name, highest_matching_table_column_names
     return most_similar_columns_info
 
-def gte_large_zh(query_sentence, possible_values):
-    import torch.nn.functional as F
-    from torch import Tensor
-    from transformers import AutoTokenizer, AutoModel
+
+def gte_large_zh(query_sentence, possible_values, tokenizer_1, model_1):
 
     input_texts = [query_sentence] + possible_values
     # print(input_texts)
     # print(query_sentence)
 
-    tokenizer = AutoTokenizer.from_pretrained("thenlper/gte-large-zh")
-    model = AutoModel.from_pretrained("thenlper/gte-large-zh")
-
     # Tokenize the input texts
-    batch_dict = tokenizer(input_texts, max_length=512, padding=True, truncation=True, return_tensors='pt')
+    batch_dict = tokenizer_1(input_texts, max_length=512, padding=True, truncation=True, return_tensors='pt')
 
-    outputs = model(**batch_dict)
+    outputs = model_1(**batch_dict)
     embeddings = outputs.last_hidden_state[:, 0]
 
     # (Optionally) normalize embeddings
@@ -319,7 +320,7 @@ def gte_large_zh(query_sentence, possible_values):
     # Get the texts of the top five pairs
     top_five_texts = [text for text, score in sorted_text_score_pairs[:5]]
 
-    print(top_five_texts)
+    # print(top_five_texts)
 
     return top_five_texts
 
@@ -346,8 +347,8 @@ def convert_to_training_data(input_data, instruction, output_format):
             continue
 
         # Connect to the database for each item
-        # db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
-        db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        # db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
         # db_path = f"/content/drive/MyDrive/database/{db_id}/{db_id}.sqlite"
         # print(db_path)
         conn = sqlite3.connect(db_path)
@@ -391,7 +392,7 @@ def convert_to_training_data(input_data, instruction, output_format):
             schema_column = ""
             for column_name_original, column_name, column_type in zip(column_names_original, column_names, column_types):
                 # print(column_name_original, table_name_original, column_type)
-                cursor.execute(f"SELECT  DISTINCT `{column_name_original}` FROM `{table_name_original}` LIMIT 100")
+                cursor.execute(f"SELECT  DISTINCT `{column_name_original}` FROM `{table_name_original}` LIMIT 50")
                 # print(column_name_original, table_name_original, db_id)
                 possible_values = [str(row[0]) for row in cursor.fetchall()]
 
@@ -401,8 +402,8 @@ def convert_to_training_data(input_data, instruction, output_format):
                 else:
                     # print("sss", possible_values)
                     highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model)[:5]
-                    highest_matching_column_info_2 = gte_large_zh(query_sentence, possible_values)[:5]
-                    print(highest_matching_column_info)
+                    highest_matching_column_info_2 = gte_large_zh(query_sentence, possible_values, tokenizer_1, model_1)[:5]
+                    # print(highest_matching_column_info)
                     # print(highest_matching_column_info_2)
                     # print("@@@", highest_matching_column_info)
 
