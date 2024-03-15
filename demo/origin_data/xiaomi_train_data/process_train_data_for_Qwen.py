@@ -238,7 +238,7 @@ def mean_pooling(model_output, attention_mask):
     return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
 
 
-def encoder_decoder_1(query_sentence, columns_info, tokenizer, model, cursor):
+def encoder_decoder_1(query_sentence, columns_info, tokenizer, model):
     # Tokenize query sentence, table names
     query_sentence_encoded = tokenizer([query_sentence], padding=True, truncation=True, return_tensors='pt')
     columns_info_encoded = tokenizer(columns_info, padding=True, truncation=True, return_tensors='pt')
@@ -285,6 +285,44 @@ def encoder_decoder_1(query_sentence, columns_info, tokenizer, model, cursor):
     # return highest_matching_table_name, highest_matching_table_column_names
     return most_similar_columns_info
 
+def gte_large_zh(query_sentence, possible_values):
+    import torch.nn.functional as F
+    from torch import Tensor
+    from transformers import AutoTokenizer, AutoModel
+
+    input_texts = [query_sentence] + possible_values
+    # print(input_texts)
+    # print(query_sentence)
+
+    tokenizer = AutoTokenizer.from_pretrained("thenlper/gte-large-zh")
+    model = AutoModel.from_pretrained("thenlper/gte-large-zh")
+
+    # Tokenize the input texts
+    batch_dict = tokenizer(input_texts, max_length=512, padding=True, truncation=True, return_tensors='pt')
+
+    outputs = model(**batch_dict)
+    embeddings = outputs.last_hidden_state[:, 0]
+
+    # (Optionally) normalize embeddings
+    embeddings = F.normalize(embeddings, p=2, dim=1)
+    scores = (embeddings[:1] @ embeddings[1:].T) * 100
+    # print(scores.tolist())
+
+    # Combine the input_texts and scores into a list of tuples
+    text_score_pairs = list(zip(input_texts[1:], scores.tolist()[0]))
+    # print(text_score_pairs)
+
+    # Sort the list of tuples by the score (the second element of each tuple)
+    sorted_text_score_pairs = sorted(text_score_pairs, key=lambda x: x[1], reverse=True)
+    # print(sorted_text_score_pairs)
+
+    # Get the texts of the top five pairs
+    top_five_texts = [text for text, score in sorted_text_score_pairs[:5]]
+
+    print(top_five_texts)
+
+    return top_five_texts
+
 
 def convert_to_training_data(input_data, instruction, output_format):
     all_db_infos = json.load(open("tables.json", "r", encoding="utf-8"))
@@ -308,8 +346,8 @@ def convert_to_training_data(input_data, instruction, output_format):
             continue
 
         # Connect to the database for each item
-        db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
-        # db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        # db_path = f"/home/susu/下载/c_question/prep_c_train_data/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
+        db_path = f"D:/c_question/prep_c_train_data/data/database/{db_id}/{db_id}.sqlite"
         # db_path = f"/content/drive/MyDrive/database/{db_id}/{db_id}.sqlite"
         # print(db_path)
         conn = sqlite3.connect(db_path)
@@ -359,12 +397,16 @@ def convert_to_training_data(input_data, instruction, output_format):
 
                 if len(possible_values) == 0 or possible_values == ['']:
                     highest_matching_column_info = ''
+                    highest_matching_column_info_2 = ''
                 else:
                     # print("sss", possible_values)
-                    highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model, cursor)[:5]
+                    highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model)[:5]
+                    highest_matching_column_info_2 = gte_large_zh(query_sentence, possible_values)[:5]
+                    print(highest_matching_column_info)
+                    # print(highest_matching_column_info_2)
                     # print("@@@", highest_matching_column_info)
 
-                schema_column += f"The {column_name_original} field of {table_name_original} means {column_name} and has possible values as: {highest_matching_column_info}.\n"
+                schema_column += f"The {column_name_original} field of {table_name_original} means {column_name} and has possible values as: {highest_matching_column_info_2}.\n"
 
             schema_info += f"""
             CREATE TABLE {table_name_original} ({', '.join([f'{name} {column_type}' for name, column_type in zip(column_names_original, column_types)])});
@@ -427,8 +469,8 @@ def convert_to_training_data(input_data, instruction, output_format):
 
 if __name__ == '__main__':
     origin_data = []
-    with open("train.txt", "r", encoding="utf-8") as f:
     # with open("/content/hugging_face_test/demo/origin_data/xiaomi_train_data/train.txt", "r", encoding="utf-8") as f:
+    with open("train.txt", "r", encoding="utf-8") as f:
         for line in f:
             origin_data.append(json.loads(line))
 
