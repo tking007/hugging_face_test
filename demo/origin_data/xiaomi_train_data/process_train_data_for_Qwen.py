@@ -80,6 +80,7 @@ from hashlib import md5
 import pandas as pd
 
 from torch import Tensor
+import gc
 
 pd.set_option('display.max_columns', 200)  # 设置显示列数
 pd.set_option('display.max_rows', 100)  # 设置显示行数
@@ -292,36 +293,59 @@ def encoder_decoder_1(query_sentence, columns_info, tokenizer, model):
     return most_similar_columns_info
 
 
-def gte_large_zh(query_sentence, possible_values, tokenizer_1, model_1):
+# def gte_large_zh(query_sentence, possible_values, tokenizer_1, model_1):
+#
+#     input_texts = [query_sentence] + possible_values
+#     # print(input_texts)
+#     # print(query_sentence)
+#
+#     # Tokenize the input texts
+#     batch_dict = tokenizer_1(input_texts, max_length=512, padding=True, truncation=True, return_tensors='pt')
+#
+#     outputs = model_1(**batch_dict)
+#     embeddings = outputs.last_hidden_state[:, 0]
+#
+#     # (Optionally) normalize embeddings
+#     embeddings = F.normalize(embeddings, p=2, dim=1)
+#     scores = (embeddings[:1] @ embeddings[1:].T) * 100
+#     # print(scores.tolist())
+#
+#     # Combine the input_texts and scores into a list of tuples
+#     text_score_pairs = list(zip(input_texts[1:], scores.tolist()[0]))
+#     # print(text_score_pairs)
+#
+#     # Sort the list of tuples by the score (the second element of each tuple)
+#     sorted_text_score_pairs = sorted(text_score_pairs, key=lambda x: x[1], reverse=True)
+#     # print(sorted_text_score_pairs)
+#
+#     # Get the texts of the top five pairs
+#     top_five_texts = [text for text, score in sorted_text_score_pairs[:5]]
+#
+#     # print(top_five_texts)
+#
+#     return top_five_texts
 
+def gte_large_zh(query_sentence, possible_values, tokenizer_1, model_1, batch_size=100):
     input_texts = [query_sentence] + possible_values
-    # print(input_texts)
-    # print(query_sentence)
+    scores = []
+    for i in range(0, len(input_texts), batch_size):
+        batch_texts = input_texts[i:i+batch_size]
+        batch_dict = tokenizer_1(batch_texts, max_length=512, padding=True, truncation=True, return_tensors='pt')
+        outputs = model_1(**batch_dict)
+        embeddings = outputs.last_hidden_state[:, 0]
+        embeddings = F.normalize(embeddings, p=2, dim=1)
+        batch_scores = (embeddings[:1] @ embeddings[1:].T) * 100
+        scores.extend(batch_scores.tolist()[0])
 
-    # Tokenize the input texts
-    batch_dict = tokenizer_1(input_texts, max_length=512, padding=True, truncation=True, return_tensors='pt')
+        # Delete variables that are no longer needed to free up memory
+        del batch_texts, batch_dict, outputs, embeddings, batch_scores
 
-    outputs = model_1(**batch_dict)
-    embeddings = outputs.last_hidden_state[:, 0]
+        # Call the garbage collector
+        gc.collect()
 
-    # (Optionally) normalize embeddings
-    embeddings = F.normalize(embeddings, p=2, dim=1)
-    scores = (embeddings[:1] @ embeddings[1:].T) * 100
-    # print(scores.tolist())
-
-    # Combine the input_texts and scores into a list of tuples
-    text_score_pairs = list(zip(input_texts[1:], scores.tolist()[0]))
-    # print(text_score_pairs)
-
-    # Sort the list of tuples by the score (the second element of each tuple)
+    text_score_pairs = list(zip(input_texts[1:], scores))
     sorted_text_score_pairs = sorted(text_score_pairs, key=lambda x: x[1], reverse=True)
-    # print(sorted_text_score_pairs)
-
-    # Get the texts of the top five pairs
     top_five_texts = [text for text, score in sorted_text_score_pairs[:5]]
-
-    # print(top_five_texts)
-
     return top_five_texts
 
 
