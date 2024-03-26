@@ -421,17 +421,17 @@ def convert_to_training_data(input_data, instruction, output_format):
                 possible_values = [str(row[0]) for row in cursor.fetchall()]
 
                 if len(possible_values) == 0 or possible_values == ['']:
-                    # highest_matching_column_info = ''
-                    highest_matching_column_info_2 = ''
+                    highest_matching_column_info = ''
+                    # highest_matching_column_info_2 = ''
                 else:
                     # print("sss", possible_values)
-                    # highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model)[:5]
-                    highest_matching_column_info_2 = gte_large_zh(query_sentence, possible_values, tokenizer_1, model_1)[:5]
+                    highest_matching_column_info = encoder_decoder_1(query_sentence, possible_values, tokenizer, model)[:5]
+                    # highest_matching_column_info_2 = gte_large_zh(query_sentence, possible_values, tokenizer_1, model_1)[:5]
                     # print(highest_matching_column_info)
                     # print(highest_matching_column_info_2)
                     # print("@@@", highest_matching_column_info)
 
-                schema_column += f"The {column_name_original} field of {table_name_original} means {column_name} and has possible values as: {highest_matching_column_info_2}.\n"
+                    schema_column += f"The {column_name_original} field of {table_name_original} means {column_name} and has possible values as: {highest_matching_column_info}.\n"
 
             schema_info += f"""
             CREATE TABLE {table_name_original} ({', '.join([f'{name} {column_type}' for name, column_type in zip(column_names_original, column_types)])});
@@ -459,7 +459,7 @@ def convert_to_training_data(input_data, instruction, output_format):
 
         conversation = f"""
         "Question": {question}
-        "SQLQuery": {query}
+        "SQLQuery": 
         """
 
         # training_item = {
