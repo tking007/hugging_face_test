@@ -123,10 +123,10 @@ def process_infer_data(infer_origin_data, instruction):
 
 
 if __name__ == '__main__':
-    infer_origin_data = []
-    with open("infer.txt", "r", encoding='utf-8') as f:
-        for line in f:
-            infer_origin_data.append(json.loads(line))
+    # infer_origin_data = []
+    # with open("infer.txt", "r", encoding='utf-8') as f:
+    #     for line in f:
+    #         infer_origin_data.append(json.loads(line))
         # for line in f:
         #     line_dict = json.loads(line)
         #     question = line_dict["question"]
@@ -159,11 +159,13 @@ if __name__ == '__main__':
         /*The table school_detail description is: '学校详情'.
     """
 
-    # Convert to training data
-    infer_data = process_infer_data(infer_origin_data, instruction)
+    # # Convert to training data
+    # infer_data = process_infer_data(infer_origin_data, instruction)
+    #
+    # # Write the training data to a new JSON file
+    # with open("infer_data_for_Qwen.json", "w", encoding="utf-8") as f:
+    #     json.dump(infer_data, f, ensure_ascii=False, indent=2)
+    #
+    # print("Done!")
 
-    # Write the training data to a new JSON file
-    with open("infer_data_for_Qwen.json", "w", encoding="utf-8") as f:
-        json.dump(infer_data, f, ensure_ascii=False, indent=2)
-
-    print("Done!")
+    process_infer_data(input_text, instruction)
