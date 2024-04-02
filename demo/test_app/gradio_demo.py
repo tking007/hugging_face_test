@@ -2,7 +2,7 @@ from modelscope import AutoTokenizer, AutoModelForCausalLM
 import gradio as gr
 from loguru import logger
 import sqlite3
-import demo.origin_data.xiaomi_train_data.process_infer_data.process_infer_data as pid
+from ..origin_data.xiaomi_train_data.process_infer_data import process_infer_data
 
 
 def load_model():
@@ -33,7 +33,7 @@ def predict(input, chatbot, history):
     try:
         logger.info("Generating response...")
         chatbot.append((input, ""))
-        prompt = pid(input)
+        prompt = process_infer_data(input)
         response, history = model.chat(tokenizer, prompt, history)
         sql_query = response
         result = execute_sql(sql_query)

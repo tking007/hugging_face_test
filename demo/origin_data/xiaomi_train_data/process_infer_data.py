@@ -5,7 +5,35 @@ import sqlite3
 import os
 
 
-def process_infer_data(infer_origin_data, instruction):
+def process_infer_data(infer_origin_data):
+
+    instruction = """You are a MySQL expert. Given an input question, first create a syntactically correct SQL
+    Query to run, then look at the results of the query and return the answer to the input question.
+    You must query only the columns that are needed to answer the question.
+    Pay attention to use only the column names you can see in the tables below. Be careful to not query for columns that do not exist.
+    pay attention to which columns is in which table.
+    Pay attention to that the constraint variables are case sensitive and must match the columns name.
+    Pay attention to return an executable sql query.
+    Pay attention to that the values of variables need to be enclosed in quotation marks, for example: it should be ' SELECT col_1 FROM Table_69d3e454334311e9831e542696d6e445
+    WHERE col_7 < abc ' instead of 'SELECT col_1 FROM Table_69d3e454334311e9831e542696d6e445 WHERE col_7 < "abc"'.
+    Pay attention to that SQL tables need to be given aliases when using join, for example: it should be 'SELECT a.name FROM actor AS a JOIN cast AS c ON a.aid = c.aid JOIN
+    movie AS m ON c.msid = m.mid WHERE m.title = '霸王别姬" AND c.role = '程蝶衣'' instead of 'SELECT actor.name FROM actor JOIN cast ON actor.aid = cast.aid JOIN
+    movie ON cast.msid = movie.mid WHERE movie.title = '霸王别姬' AND cast.role = '程蝶衣''.
+
+    Output the final SQL query only.
+
+    Use the following format:
+    SQLQuery:  SQL Query here.
+    Only use the following tables:
+
+    CREATE TABLE "school_detail" ("admissions" TEXT, "answerurl" TEXT, "belong" TEXT, "central" TEXT, "city_id" TEXT, "city_name" TEXT, "code_enroll" TEXT,
+        "colleges_level" TEXT, "county_id" TEXT, "county_name" TEXT, "department" TEXT, "doublehigh" TEXT, "dual_class" TEXT, "dual_class_name" TEXT, "f211" INTEGER,
+        "f985" INTEGER, "hightitle" TEXT, "inner_rate" TEXT, "is_recruitment" TEXT, "level" TEXT, "level_name" TEXT, "name" TEXT, "nature" TEXT, "nature_name" TEXT,
+        "outer_rate" TEXT, "province_id" TEXT, "province_name" TEXT, "rank" TEXT, "rank_type" TEXT, "rate" TEXT, "school_id" INTEGER, "school_type" TEXT, "tag_name" TEXT,
+        "type" TEXT, "type_name" TEXT, "view_month" TEXT, "view_total" TEXT, "view_total_number" TEXT, "view_week" TEXT, "short" TEXT, "old_name" TEXT, "proid" TEXT);
+        /*The table school_detail description is: '学校详情'.
+    """
+
     means_dict = {'admissions': '强基计划', 'answerurl': '招生办网址(官方招生咨询平台)', 'belong': '隶属(学校属于哪个组织或机构)',
                     'central': '中央部委', 'city_id': '学校所在城市的ID', 'city_name': '学校所在城市的名称', 'code_enroll': '招生代码',
                     'colleges_level': '学校层次,(省级示范、国家级骨干等)', 'county_id': '学校所在区县的ID', 'county_name': '学校所在区县的名称',
@@ -132,33 +160,6 @@ if __name__ == '__main__':
         #     question = line_dict["question"]
         #     db_id = line_dict["db_id"]
 
-    instruction = """You are a MySQL expert. Given an input question, first create a syntactically correct SQL
-    Query to run, then look at the results of the query and return the answer to the input question.
-    You must query only the columns that are needed to answer the question.
-    Pay attention to use only the column names you can see in the tables below. Be careful to not query for columns that do not exist.
-    pay attention to which columns is in which table.
-    Pay attention to that the constraint variables are case sensitive and must match the columns name.
-    Pay attention to return an executable sql query.
-    Pay attention to that the values of variables need to be enclosed in quotation marks, for example: it should be ' SELECT col_1 FROM Table_69d3e454334311e9831e542696d6e445
-    WHERE col_7 < abc ' instead of 'SELECT col_1 FROM Table_69d3e454334311e9831e542696d6e445 WHERE col_7 < "abc"'.
-    Pay attention to that SQL tables need to be given aliases when using join, for example: it should be 'SELECT a.name FROM actor AS a JOIN cast AS c ON a.aid = c.aid JOIN
-    movie AS m ON c.msid = m.mid WHERE m.title = '霸王别姬" AND c.role = '程蝶衣'' instead of 'SELECT actor.name FROM actor JOIN cast ON actor.aid = cast.aid JOIN
-    movie ON cast.msid = movie.mid WHERE movie.title = '霸王别姬' AND cast.role = '程蝶衣''.
-
-    Output the final SQL query only.
-    
-    Use the following format:
-    SQLQuery:  SQL Query here.
-    Only use the following tables:
-    
-    CREATE TABLE "school_detail" ("admissions" TEXT, "answerurl" TEXT, "belong" TEXT, "central" TEXT, "city_id" TEXT, "city_name" TEXT, "code_enroll" TEXT,
-        "colleges_level" TEXT, "county_id" TEXT, "county_name" TEXT, "department" TEXT, "doublehigh" TEXT, "dual_class" TEXT, "dual_class_name" TEXT, "f211" INTEGER,
-        "f985" INTEGER, "hightitle" TEXT, "inner_rate" TEXT, "is_recruitment" TEXT, "level" TEXT, "level_name" TEXT, "name" TEXT, "nature" TEXT, "nature_name" TEXT,
-        "outer_rate" TEXT, "province_id" TEXT, "province_name" TEXT, "rank" TEXT, "rank_type" TEXT, "rate" TEXT, "school_id" INTEGER, "school_type" TEXT, "tag_name" TEXT,
-        "type" TEXT, "type_name" TEXT, "view_month" TEXT, "view_total" TEXT, "view_total_number" TEXT, "view_week" TEXT, "short" TEXT, "old_name" TEXT, "proid" TEXT);
-        /*The table school_detail description is: '学校详情'.
-    """
-
     # # Convert to training data
     # infer_data = process_infer_data(infer_origin_data, instruction)
     #
@@ -168,4 +169,4 @@ if __name__ == '__main__':
     #
     # print("Done!")
 
-    process_infer_data(input_text, instruction)
+    process_infer_data(input_text)

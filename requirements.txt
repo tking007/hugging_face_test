@@ -1,0 +1,3 @@
+modelscope
+gradio>4.0.0,<=4.21.0
+loguru
