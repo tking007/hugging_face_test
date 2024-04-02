@@ -1,2 +1,4 @@
 .idea!/demo/origin_data/xiaomi_train_data/openai_key.env
 .idea
+demo/origin_data/xiaomi_train_data/openai_key.env
+demo/origin_data/xiaomi_train_data/train_data_for_Qwen.json
