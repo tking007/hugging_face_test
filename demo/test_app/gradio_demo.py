@@ -65,32 +65,26 @@ def create_app_interface():
     # https: // qianwen - res.oss - cn - beijing.aliyuncs.com / logo_qwen.jpg
     with gr.Blocks() as demo:
         gr.Markdown("""\
-        <p align="center"><img src="https://i.postimg.cc/7hVDxvDR/0.avif" style="height: 80px"/><p>""")
-        gr.Markdown("""<center><font size=8>基于Text-to-SQL的高考志愿填报辅助系统</center>""")
+        <p align="center"><img src="https://i.postimg.cc/gJ1sP6nj/image.png" style="height: 120px"/><p>""")
+        # gr.Markdown("""<center><font size=8>基于Text-to-SQL的高考志愿填报辅助系统</center>""")
+        gr.Markdown("""<center><b><font size=6 face='Sans-serif'>🎓🎓基于Text-to-SQL的高考志愿填报辅助系统🎓🎓</font></b></center>""")
         gr.Markdown(
             """\
-        <center><font size=3>This WebUI is based on Qwen-Chat, developed by Alibaba Cloud. \
+        <center><font size=3>(This WebUI is based on Qwen-Chat, developed by Alibaba Cloud. \
         (本WebUI基于Qwen-Chat打造，实现聊天机器人功能。)</center>""")
         gr.Markdown("""\
-        <center><font size=4>
-        Qwen-7B <a href="https://modelscope.cn/models/qwen/Qwen-7B/summary">🤖 </a> | 
-        <a href="https://huggingface.co/Qwen/Qwen-7B">🤗</a>&nbsp ｜ 
-        Qwen-7B-Chat <a href="https://modelscope.cn/models/qwen/Qwen-7B-Chat/summary">🤖 </a> | 
-        <a href="https://huggingface.co/Qwen/Qwen-7B-Chat">🤗</a>&nbsp ｜ 
-        Qwen-14B <a href="https://modelscope.cn/models/qwen/Qwen-14B/summary">🤖 </a> | 
-        <a href="https://huggingface.co/Qwen/Qwen-14B">🤗</a>&nbsp ｜ 
-        Qwen-14B-Chat <a href="https://modelscope.cn/models/qwen/Qwen-14B-Chat/summary">🤖 </a> | 
-        <a href="https://huggingface.co/Qwen/Qwen-14B-Chat">🤗</a>&nbsp ｜ 
-        &nbsp<a href="https://github.com/QwenLM/Qwen">Github</a></center>""")
+        <center><font size=4>💝💝💝  
+        &nbsp<a href="https://github.com/tking007/hugging_face_test.git">Github</a></center>""")
 
-        chatbot = gr.Chatbot(label='Qwen-Chat', elem_classes="control-height")
+        # chatbot = gr.Chatbot(label='💋💋💋', elem_classes="control-height")
+        chatbot = gr.Chatbot(label='💋💋💋', height=300)
         query = gr.Textbox(lines=2, label='Input')
         task_history = gr.State([])
 
         with gr.Row():
             empty_btn = gr.Button("🧹 Clear History (清除历史)")
             submit_btn = gr.Button("🚀 Submit (发送)")
-            regen_btn = gr.Button("🤔️ Regenerate (重试)")
+            regen_btn = gr.Button("🤔 Regenerate (重试)")
 
         submit_btn.click(predict, [query, chatbot, task_history], [chatbot], show_progress=True)
         submit_btn.click(reset_user_input, [], [query])
@@ -98,11 +92,9 @@ def create_app_interface():
         regen_btn.click(regenerate, [chatbot, task_history], [chatbot], show_progress=True)
 
         gr.Markdown("""\
-        <font size=2>Note: This demo is governed by the original license of Qwen. \
-        We strongly advise users not to knowingly generate or allow others to knowingly generate harmful content, \
-        including hate speech, violence, pornography, deception, etc. \
-        (注：本演示受Qwen的许可协议限制。我们强烈建议，用户不应传播及不应允许他人传播以下内容，\
-        包括但不限于仇恨言论、暴力、色情、欺诈相关的有害信息。)""")
+        <font size=2>
+        (☝️☝️☝️注：本应用程序使用的大模型可能存在一些局限性，包括但不限于对某些问题的理解和回答可能不准确。我们建议用户在得到错误答案时，尝试以不同的方式提问，或者用更具体的方式描述问题，以帮助模型更好地理解和回答。同时，我们强烈建议，用户不应传播及不应允许他人传播以下内容，包括但不限于:🚫⛔仇恨言论、暴力、色情、欺诈相关的有害信息。)
+        """)
 
     return demo
 
