@@ -11,7 +11,7 @@ def process_infer_data(infer_origin_data):
     Query to run, then look at the results of the query and return the answer to the input question.
     You must query only the columns that are needed to answer the question.
     Pay attention to use only the column names you can see in the tables below. Be careful to not query for columns that do not exist.
-    pay attention to which columns is in which table.
+    Pay attention to which columns is in which table.
     Pay attention to that the constraint variables are case sensitive and must match the columns name.
     Pay attention to return an executable sql query.
     Pay attention to that the values of variables need to be enclosed in quotation marks, for example: it should be ' SELECT col_1 FROM Table_69d3e454334311e9831e542696d6e445
@@ -151,22 +151,20 @@ def process_infer_data(infer_origin_data):
 
 
 if __name__ == '__main__':
-    # infer_origin_data = []
-    # with open("infer.txt", "r", encoding='utf-8') as f:
-    #     for line in f:
-    #         infer_origin_data.append(json.loads(line))
+    infer_origin_data = []
+    with open("infer.txt", "r", encoding='utf-8') as f:
+        for line in f:
+            infer_origin_data.append(json.loads(line))
         # for line in f:
         #     line_dict = json.loads(line)
         #     question = line_dict["question"]
         #     db_id = line_dict["db_id"]
 
-    # # Convert to training data
-    # infer_data = process_infer_data(infer_origin_data, instruction)
-    #
-    # # Write the training data to a new JSON file
-    # with open("infer_data_for_Qwen.json", "w", encoding="utf-8") as f:
-    #     json.dump(infer_data, f, ensure_ascii=False, indent=2)
-    #
-    # print("Done!")
+    # Convert to training data
+    infer_data = process_infer_data(infer_origin_data)
 
-    process_infer_data(input_text)
+    # Write the training data to a new JSON file
+    with open("infer_data_for_Qwen.json", "w", encoding="utf-8") as f:
+        json.dump(infer_data, f, ensure_ascii=False, indent=2)
+
+    print("Done!")

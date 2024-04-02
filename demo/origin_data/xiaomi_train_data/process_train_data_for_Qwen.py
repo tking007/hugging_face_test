@@ -504,7 +504,7 @@ if __name__ == '__main__':
     query to run, then look at the results of the query and return the answer to the input question.
     You must query only the columns that are needed to answer the question.
     Pay attention to use only the column names you can see in the tables below. Be careful to not query for columns that do not exist.
-    pay attention to which columns is in which table.
+    Pay attention to which columns is in which table.
     Pay attention to that the constraint variables are case sensitive and must match the columns name.
     Pay attention to return an executable sql query.
     Pay attention to that the values of variables need to be enclosed in quotation marks, for example: it should be ' SELECT col_1 FROM Table_69d3e454334311e9831e542696d6e445
