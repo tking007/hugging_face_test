@@ -5,7 +5,7 @@ import sqlite3
 import torch
 from get_prompt import process_prompt
 
-device = "cuda"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 tokenizer = AutoTokenizer.from_pretrained("j869903116/mrking_qwn1.5_7B_chat_text_to_sql", revision='master')
 model = AutoModelForCausalLM.from_pretrained("j869903116/mrking_qwn1.5_7B_chat_text_to_sql", revision='master',
                                              device_map="auto", torch_dtype="auto").eval()
@@ -24,22 +24,24 @@ def execute_sql(sql_query):
 
 def predict(input, chatbot, history):
     try:
-        chatbot.append((input, ""))
+        chatbot.append((input, "Processing..."))
         prompt = process_prompt(input)
         model_inputs = tokenizer([prompt], return_tensors="pt").to(device)
         generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=512)
         response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
         sql_query = response
         result = execute_sql(sql_query)
-        if not result:
-            response = model.chat(tokenizer, input, history)
+        if not result or result == "[]":
+            model_inputs = tokenizer([input], return_tensors="pt").to(device)
+            generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=512)
+            response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
         else:
-            response = model.chat(tokenizer, str(result), history)
-        chatbot[-1] = (input, response)
-        return chatbot, history
+            response = "你的提问方式似乎存在问题哦，请换种方式提问试试。"
+        chatbot[-1] = (str(input), str(response))  # Ensure chatbot is a list of tuples of strings
     except Exception as e:
         logger.error(f"Error in generating response: {str(e)}")
-        return chatbot, history
+        chatbot[-1] = (str(input), "An error occurred while processing your request.")
+    return chatbot, history
 
 
 def reset_user_input():
@@ -73,11 +75,11 @@ def create_app_interface():
         <center><font size=3>(This WebUI is based on Qwen-Chat, developed by Alibaba Cloud. \
         (本WebUI基于Qwen-Chat打造，实现聊天机器人功能。)</center>""")
         gr.Markdown("""\
-        <center><font size=4>💝💝💝  
+        <center><font size=4>💝💝💝  Github
         &nbsp<a href="https://github.com/tking007/hugging_face_test.git">Github</a></center>""")
 
         # chatbot = gr.Chatbot(label='💋💋💋', elem_classes="control-height")
-        chatbot = gr.Chatbot(label='💋💋💋', height=300)
+        chatbot = gr.Chatbot(label='answer', height=300)
         query = gr.Textbox(lines=2, label='Input')
         task_history = gr.State([])
 
@@ -101,4 +103,4 @@ def create_app_interface():
 
 if __name__ == "__main__":
     demo = create_app_interface()
-    demo.queue().launch(server_name="0.0.0.0", server_port=None, share=True, inbrowser=True)
+    demo.queue().launch(server_name="0.0.0.0", server_port=None, share=True, inbrowser=True, debug=True)
