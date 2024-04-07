@@ -1,4 +1,6 @@
 modelscope
-gradio>4.0.0,<=4.21.0
+gradio
 loguru
+accelerate
+jinja2>=3.0.0
 accelerate

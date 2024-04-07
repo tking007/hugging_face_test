@@ -69,11 +69,13 @@ def process_prompt(input_text):
     The outer_rate field of school_detail means 外部排名 and has possible values as: ['0', '11.99', '6.99', '9.00', '5.51'].
     The province_id field of school_detail means 学校所在省份的ID and has possible values as: ['51', '21', '82', '62', '64'].
     The province_name field of school_detail means 学校所在省份的名称 and has possible values as: ['北京', '河北', '黑龙江', '天津', '辽宁'].
-    The rank field of school_detail means 学校排名 and has possible values as: .\nThe rank_type field of school_detail means 学校排名类型 and has possible values as: .
+    The rank field of school_detail means 学校排名 and has possible values as: .
+    The rank_type field of school_detail means 学校排名类型 and has possible values as: .
     The rate field of school_detail means 学校评分 and has possible values as: ['0', '93.99', '97.43', '93.98', '83.69'].
     The school_type field of school_detail means 办学类型：\"普通本科\": \"6000\",\"专科（高职)\": , 6002: \"独立学院\", 6003: \"中外合作办学\", 6007: \"其他\" and has possible values as: ['6000', '6001'].
     The tag_name field of school_detail means 学校类型名称 and has possible values as: ['教育部直属', '中央部委院', ''].
-    The type field of school_detail means 学校类型 and has possible values as: ['0', '5000', '5008', '5011', '5012'].\nThe type_name field of school_detail means 学校的类型，以及类型的名称 and has possible values as: ['理工类', '财经类', '艺术类', '师范类', '体育类'].
+    The type field of school_detail means 学校类型 and has possible values as: ['0', '5000', '5008', '5011', '5012'].
+    The type_name field of school_detail means 学校的类型，以及类型的名称 and has possible values as: ['理工类', '财经类', '艺术类', '师范类', '体育类'].
     The view_month field of school_detail means 学校浏览量(月) and has possible values as: ['9852', '8421', '6717', '8298', '16317'].
     The view_total field of school_detail means 学校浏览量(总) and has possible values as: ['1848.2w', '365.5w', '1882.2w', '666.1w', '233.1w'].
     The view_total_number field of school_detail means 学校浏览量(总数) and has possible values as: ['18240400', '18822155', '13361474', '21135078', '13385154'].
