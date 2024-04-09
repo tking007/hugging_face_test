@@ -106,8 +106,11 @@ def _chat_stream(model, tokenizer, query, history):
     return full_response
 
 
-def new_result(result):
-    new_result = f"  {result}  这是我的SQL查询结果。请帮我重新组织一下，以便我更好地理解。"
+def new_result(query, result, response):
+    new_result = f"  {query} 这是我的问题，{response} 这是模型生成的SQL查询语句 \
+    {result}  这是在本地的数据库中执行SQL查询语句得到的结果。请帮我重新组织一下语言，更好的回答：{query} 这个问题。\
+    如果SQL查询的结果为空或者不符合实际,请帮我回答这个问题{query}。\
+    "
     return new_result
 
 
@@ -127,40 +130,23 @@ def _launch_demo(args, model, tokenizer):
         full_response = ""
         response = ""
         new_query = process_prompt(_query)
-        full_response = _chat_stream(model, tokenizer, new_query, history=_task_history)
-        result = execute_sql(full_response)
+        new_response = _chat_stream(model, tokenizer, new_query, history=_task_history)
+        result = execute_sql(new_response)
+        _chatbot.append((new_response, ""))
+        _chatbot[-1] = (new_response, str(result))  # Convert the result to a string
         print("result: ", result)
-        print(f"full_response: {_chat_stream(model, tokenizer, new_query, history=_task_history)}")
-        # if result:  # if the result is not empty
-        #     new_res = new_result(result)
-        #     model_inputs = tokenizer([new_res], return_tensors="pt").to(device)
-        #     generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=512)
-        #     response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-        # else:  # if the result is empty
-        #     model_inputs = tokenizer([_query], return_tensors="pt").to(device)
-        #     generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=512)
-        #     response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-        # _chatbot[-1] = (_query, response)
-        for new_text in _chat_stream(model, tokenizer, new_query, history=_task_history):
-            response += new_text
-        _chatbot[-1] = (_query, response)
-        sql_query = response
-        print("sql_query: ", sql_query)
-        result = execute_sql(sql_query)  # execute_sql is your function to execute the SQL query
-        print("result: ", result)
-        if result:  # if the result is not empty
-            new_res = _query + new_result(result)
+        print(f"new_response: {new_response}")  # Use the result from the previous _chat_stream call
+
+        if isinstance(result, list) or result != []:  # if the result is not empty
+            new_res = new_result(_query, result, new_response)
             response = _chat_stream(model, tokenizer, new_res, history=_task_history)
+            _chatbot.append((new_res, ""))
+            _chatbot[-1] = (_query, response)
             print("***", new_res)
             print("###", response)
-            # model_inputs = tokenizer([new_res], return_tensors="pt").to(device)
-            # generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=512)
-            # response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
         else:  # if the result is empty
             response = _chat_stream(model, tokenizer, _query, history=_task_history)
-            # model_inputs = tokenizer([_query], return_tensors="pt").to(device)
-            # generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=512)
-            # response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+            _chatbot.append((response, ""))
             _chatbot[-1] = (_query, response)
 
         yield _chatbot
@@ -199,7 +185,7 @@ def _launch_demo(args, model, tokenizer):
 <center><font size=4>💝💝💝  Github
 &nbsp<a href="https://github.com/tking007/hugging_face_test.git">Github</a></center>""")
 
-        chatbot = gr.Chatbot(label='answer', elem_classes="control-height")
+        chatbot = gr.Chatbot(label='Answer', elem_classes="control-height")
         query = gr.Textbox(lines=2, label='Input')
         task_history = gr.State([])
 
