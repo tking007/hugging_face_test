@@ -123,16 +123,25 @@ def _gc():
 
 def _launch_demo(args, model, tokenizer):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    first_interaction = gr.State(True)
 
     def predict(_query, _chatbot, _task_history):
+        nonlocal first_interaction
         print(f"User: {_query}")
         _chatbot.append((_query, ""))
+
+        if first_interaction.value:
+            welcome_message = "I’m powered by AI, so surprises and mistakes are possible. \
+            Make sure to verify any generated suggestions, and share feedback so that we can learn and improve."
+            _chatbot.append((welcome_message, ""))
+            first_interaction.value = False
+
         full_response = ""
         response = ""
         new_query = process_prompt(_query)
         new_response = _chat_stream(model, tokenizer, new_query, history=_task_history)
         result = execute_sql(new_response)
-        _chatbot.append((new_response, ""))
+        _chatbot.append(("SQL语句：" + new_response, ""))
         _chatbot[-1] = (new_response, str(result))  # Convert the result to a string
         print("result: ", result)
         print(f"new_response: {new_response}")  # Use the result from the previous _chat_stream call
@@ -140,13 +149,13 @@ def _launch_demo(args, model, tokenizer):
         if isinstance(result, list) or result != []:  # if the result is not empty
             new_res = new_result(_query, result, new_response)
             response = _chat_stream(model, tokenizer, new_res, history=_task_history)
-            _chatbot.append((new_res, ""))
+            _chatbot.append(("SQL查询结果：" + new_res, ""))
             _chatbot[-1] = (_query, response)
             print("***", new_res)
             print("###", response)
         else:  # if the result is empty
             response = _chat_stream(model, tokenizer, _query, history=_task_history)
-            _chatbot.append((response, ""))
+            _chatbot.append(("数据库暂无数据，由Qwen提供回答：" + response, ""))
             _chatbot[-1] = (_query, response)
 
         yield _chatbot
@@ -182,7 +191,7 @@ def _launch_demo(args, model, tokenizer):
 <center><font size=3>This WebUI is based on Text-to-SQL, developed by Mrking. \
 (本WebUI基于人工智能大模型打造，实现聊天机器人功能。)</center>""")
         gr.Markdown("""\
-<center><font size=4>💝💝💝  Github
+<center><font size=4>💝💝💝
 &nbsp<a href="https://github.com/tking007/hugging_face_test.git">Github</a></center>""")
 
         chatbot = gr.Chatbot(label='Answer', elem_classes="control-height")
