@@ -152,12 +152,12 @@ def _launch_demo(args, model, tokenizer):
             _chatbot.append(("SQL查询结果：" + new_res, ""))
             _chatbot[-1] = (_query, response)
             # print("***", new_res)
-            print("星星", response)
+            print("@@", response)
         else:  # if the result is empty
             response = _chat_stream(model, tokenizer, _query, history=_task_history)
             _chatbot.append(("数据库暂无数据，由Qwen提供回答：" + response, ""))
             _chatbot[-1] = (_query, response)
-            print("点点", response)
+            print("##", response)
 
         yield _chatbot
         full_response = response

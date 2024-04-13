@@ -1,25 +1,14 @@
-from typing import List
+from sympy import symbols, Eq, solve
 
+# 定义变量
+x, y = symbols('x y')
 
-import bisect
+# 设置等式
+eq1 = Eq(x + y, 40)
+eq2 = Eq(x, 2/3 * y)
 
-class Solution:
-    def minOperations(self, nums: List[int]) -> int:
-        nums = sorted(set(nums))
-        l = len(nums)
-        longest_subsequence = 1
-        current_length = 1
-        for i in range(1, l):
-            if nums[i] == nums[i-1] + 1:
-                current_length += 1
-                longest_subsequence = max(longest_subsequence, current_length)
-            else:
-                current_length = 1
-        return l - longest_subsequence
+# 解决等式
+solution = solve((eq1,eq2), (x, y))
 
-
-def test_minOperations():
-    solution = Solution()
-    print(solution.minOperations([8,10,16,18,10,10,16,13,13,16]))
-
-test_minOperations()
+# 输出凯琳的钱
+print(f"凯琳有 £{solution[x]}")
