@@ -1,14 +1,22 @@
-from sympy import symbols, Eq, solve
+import pywifi
+from pywifi import const
 
-# 定义变量
-x, y = symbols('x y')
+# 创建一个无线对象
+wifi = pywifi.PyWiFi()
 
-# 设置等式
-eq1 = Eq(x + y, 40)
-eq2 = Eq(x, 2/3 * y)
+# 获取第一个无线网卡
+iface = wifi.interfaces()[0]
 
-# 解决等式
-solution = solve((eq1,eq2), (x, y))
+# 打印网卡的名称，确认我们获取的是正确的网卡
+print(iface.name())
 
-# 输出凯琳的钱
-print(f"凯琳有 £{solution[x]}")
+# 尝试将网卡设置为监听模式
+iface.disconnect()  # 如果有连接，先断开
+mode = iface.mode()  # 获取当前模式
+try:
+    iface.mode(const.IFACE_MONITOR)  # 尝试设置为监听模式
+    print("无线网卡支持监听模式")
+except Exception as e:
+    print("无线网卡不支持监听模式")
+finally:
+    iface.mode(mode)  # 恢复原来的模式
