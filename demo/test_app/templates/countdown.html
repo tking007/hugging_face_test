@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Countdown</title>
+    <style>
+        #countdown {
+            font-size: 25px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    </style>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div id="countdown"></div>
+
+    <script>
+    var gaokaoDate = new Date("2024-06-07").getTime();
+
+    var countdownFunction = setInterval(function() {
+        var now = new Date().getTime();
+        var distance = gaokaoDate - now;
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML = days + "天 " + hours + "小时"
+        + minutes + "分钟" + seconds + "秒";
+
+        if (distance < 0) {
+            clearInterval(countdownFunction);
+            document.getElementById("countdown").innerHTML = "EXPIRED";
+        }
+    }, 1000);
+    </script>
+</body>
+</html>
