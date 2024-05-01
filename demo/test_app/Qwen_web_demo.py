@@ -15,11 +15,31 @@ from modelscope import AutoModelForCausalLM, AutoTokenizer
 from transformers import TextIteratorStreamer
 from get_prompt import process_prompt
 import sqlite3
+import time
+import os
+import subprocess
+
+
+from accelerate import Accelerator
+accelerator = Accelerator(cpu=True)
+
+
 
 DEFAULT_CKPT_PATH = 'j869903116/mrking_qwn1.5_7B_chat_text_to_sql'  # modelscope库
 
 
 # DEFAULT_CKPT_PATH = 'jtjt520j/mrking_Qwen1.5_7B_chat_text_to_sql'  # huggingface库
+
+
+def start_django():
+    print("Starting Django server...")  # Add a print statement for debugging
+    os.chdir("./recommend_system_version2")
+    subprocess.Popen("python manage.py runserver", shell=True)
+    time.sleep(5)
+    # feedback = gr.Markdown("""\
+    # <p id="link"><a href="http://127.0.0.1:8000/">🔗 高考志愿推荐系统</a></p>
+    # """)
+    print("Django server started successfully.")  # Add a print statement for debugging
 
 
 def execute_sql(sql_query):
@@ -43,7 +63,7 @@ def _get_args():
                         help="Create a publicly shareable link for the interface.")
     parser.add_argument("--inbrowser", action="store_true", default=False,
                         help="Automatically launch the interface in a new tab on the default browser.")
-    parser.add_argument("--server_port", type=int, default=8000,
+    parser.add_argument("--server_port", type=int, default=5000,
                         help="Demo server port.")
     parser.add_argument("--server_name", type=str, default="127.0.0.1",
                         help="Demo server name.")
@@ -185,15 +205,14 @@ def _launch_demo(args, model, tokenizer):
 
     with gr.Blocks() as demo:
         gr.Markdown("""\
-<p align="center"><img src="https://i.postimg.cc/gJ1sP6nj/image.png" style="height: 120px"/><p>""")
+            <p align="center"><img src="https://i.postimg.cc/gJ1sP6nj/image.png" style="height: 120px"/><p>""")
         gr.Markdown("""<center><b><font size=6 face='Sans-serif'>🎓🎓基于Text-to-SQL的高考志愿填报辅助系统🎓🎓</font></b></center>""")
-        gr.Markdown(
-            """\
-<center><font size=3>This WebUI is based on Text-to-SQL, developed by Mrking. \
-(本WebUI基于人工智能大模型打造，实现聊天机器人功能。)</center>""")
         gr.Markdown("""\
-<center><font size=4>💝💝💝
-&nbsp<a href="https://github.com/tking007/hugging_face_test.git">Github</a></center>""")
+            <center><font size=3>This WebUI is based on Text-to-SQL, developed by Mrking. \
+            (本WebUI基于人工智能大模型打造，实现聊天机器人功能。)</center>""")
+        gr.Markdown("""\
+            <center><font size=4>🚀点击此处进入🔗 
+            &nbsp<a href="http://127.0.0.1:8000/">高考志愿推荐系统</a></center>""")
 
         chatbot = gr.Chatbot(label='Answer', elem_classes="control-height")
         query = gr.Textbox(lines=2, label='Input')
@@ -210,11 +229,11 @@ def _launch_demo(args, model, tokenizer):
         regen_btn.click(regenerate, [chatbot, task_history], [chatbot], show_progress=True)
 
         gr.Markdown("""\
-<font size=2>
-(☝️☝️☝️注：本应用程序使用的大模型可能存在一些局限性，包括但不限于对某些问题的理解和回答可能不准确。\
-我们建议用户在得到错误答案时，尝试以不同的方式提问，或者用更具体的方式描述问题，以帮助模型更好地理解和回答。\
-同时，我们强烈建议，用户不应传播及不应允许他人传播以下内容，包括但不限于:🚫⛔仇恨言论、暴力、色情、欺诈相关的有害信息。)
-""")
+            <font size=2>
+            (☝️☝️☝️注：本应用程序使用的大模型可能存在一些局限性，包括但不限于对某些问题的理解和回答可能不准确。\
+            我们建议用户在得到错误答案时，尝试以不同的方式提问，或者用更具体的方式描述问题，以帮助模型更好地理解和回答。\
+            同时，我们强烈建议，用户不应传播及不应允许他人传播以下内容，包括但不限于:🚫⛔仇恨言论、暴力、色情、欺诈相关的有害信息。)
+            """)
 
     demo.queue().launch(
         share=args.share,
@@ -233,4 +252,5 @@ def main():
 
 
 if __name__ == '__main__':
+    start_django()
     main()

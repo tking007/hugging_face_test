@@ -1,0 +1,47 @@
+{# 继承 base.html #}
+{% extends "base.html" %}
+
+{# 替换title #}
+{% block title %}
+{{ title }}
+{% endblock %}
+
+
+{# 替换内容 #}
+{% block content %}
+                <div class="carousel slide col-md-8 col-md-offset-2" id="carousel-851425">
+                  <ol class="carousel-indicators">
+                    <li class="" data-slide-to="0" data-target="#carousel-851425"></li>
+                    <li data-slide-to="1" data-target="#carousel-851425" class="active"></li>
+                    <li data-slide-to="2" data-target="#carousel-851425" class=""></li>
+                  </ol>
+                  <div class="carousel-inner">
+                    <div class="item active"> <img height="100%" width="100%" alt="" src="./static/image/清华大学.jpg">
+                      <div class="carousel-caption" contenteditable="true">
+                        <h4>自强不息、厚德载物</h4>
+                        <p> 愿你以自强不息的精神，厚德载物的胸怀，书写属于自己的辉煌篇章，勇敢追求梦想，成就非凡未来！</p>
+                      </div>
+                    </div>
+                    <div class="item"> <img height="100%" width="100%" alt="" src="./static/image/武汉大学.jpg">
+                      <div class="carousel-caption" contenteditable="true">
+                        <h4>自强、弘毅、求是、拓新</h4>
+                        <p>愿你以自强之心，弘毅之志，求是之行，拓新之勇气，开启求学之路，书写青春华章，成就卓越未来！</p>
+                      </div>
+                    </div>
+                    <div class="item"> <img height="100%" width="100%" alt="" src="./static/image/北京大学.jpg">
+                      <div class="carousel-caption" contenteditable="true">
+                        <h4>爱国、进步、民主、科学</h4>
+                        <p>愿你以爱国之心，进步之志，民主之魂，科学之光，引领青春梦想，书写人生华章，为国家的未来贡献智慧和力量！</p>
+                      </div>
+                    </div>
+                      <div class="item"> <img height="100%" width="100%" alt="" src="./static/image/国防科技大学.jpg">
+                      <div class="carousel-caption" contenteditable="true">
+                        <h4>厚德博学，强军兴国</h4>
+                        <p>愿你以厚德博学的品格，强军兴国的使命，勇敢追求卓越，为国家的繁荣和民族的复兴贡献青春力量！</p>
+                      </div>
+                    </div>
+                  </div>
+                    <a data-slide="prev" href="#carousel-851425" class="right carousel-control">‹</a> <a data-slide="next" href="#carousel-851425" class="right carousel-control">›</a>
+                  <a data-slide="prev" href="#carousel-851425" class="left carousel-control">‹</a> <a data-slide="next" href="#carousel-851425" class="right carousel-control">›</a> </div>
+
+{% endblock %}
