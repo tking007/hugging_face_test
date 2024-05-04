@@ -6,20 +6,28 @@
 {{ title }}
 {% endblock %}
 
+{% load static %}
+
 
 {# 替换内容 #}
 {% block content %}
 <div class="container">
+    <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.css' %}" rel="stylesheet" xmlns="http://www.w3.org/1999/html">
+         <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
     <div class="row" >
-        <div class="col-md-6 col-md-offset-3"
-        style="background-color: #dedef8;box-shadow:
-        inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-        <p>您已完成性格测试,请查看为您<a href="../recommend_profession/">推荐的专业</a>吧</p>
+<!--        <div class="col-md-6 col-md-offset-3"-->
+<!--        style="background-color: #dedef8;box-shadow:-->
+<!--        inset 1px -1px 1px #444, inset -1px 1px 1px #444;">-->
+        <p>
+            <br>
+            <br>
+        </p>
+        <p class="custom-text">您已完成性格测试,请查看为您<a href="../recommend_profession/">推荐的专业</a>吧</p>
         </div>
     <div class="col-md-6 col-md-offset-5">
     <br/>
     <a href="/test/01/*/">
-        <button type="button" class="btn btn-primary btn-lg">
+        <button type="button" class="btn btn-retest btn-lg">
         <span class="glyphicon glyphicon-pencil"></span> 重新测试
         </button>
     </a>

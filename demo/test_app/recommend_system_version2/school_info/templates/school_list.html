@@ -6,12 +6,20 @@
 {{ title }}
 {% endblock %}
 
+{% load static %}
+
 
 {# 替换内容 #}
 {% block content %}
 <div class="col-sm-offset-1" style="width: 80%">
+        <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.css' %}" rel="stylesheet" xmlns="http://www.w3.org/1999/html">
+         <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <p>
+            <br>
+            <br>
+    </p>
 <div id="select_school">
-    <form class="form-inline" action="" method="post" novalidate>
+    <form class="form-inline form-font-size" action="" method="post" novalidate>
         {% csrf_token %}
         {% for foo in school_form %}
             <div class="form-group">
@@ -19,8 +27,12 @@
                 {{ foo }}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary">提交</button>
+        <button type="submit" class="btn custom-button-size">提交</button>
     </form>
+    <p>
+        <br>
+        <br>
+    </p>
 </div>
 <table class="table table-bordered table-hover table-striped ">
     <tr><th>院校名称</th><th>院校排名</th><th>省份</th><th>城市</th><th>985</th><th>211</th><th>自招</th>

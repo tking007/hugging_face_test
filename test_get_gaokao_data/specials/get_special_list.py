@@ -9,7 +9,7 @@ for i in range(1, 28):
     url = 'https://api.eol.cn/web/api/?keyword=&level1=1&level2=&level3=&page=' + str(i) + '&size=30&sort=&uri=apidata/api/gkv3/special/lists&signsafe=f5dd409955e7466945d1ea8145fc348e'
 
     headers = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',  # 自定义 User-Agent
+        'user-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',  # 自定义 user-Agent
     }
 
     response = requests.post(url, headers=headers)

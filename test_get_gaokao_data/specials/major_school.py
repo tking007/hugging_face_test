@@ -10,7 +10,7 @@ for major in data['data']:
     special_url = 'https://api.eol.cn/web/api/?is_single=2&local_province_id=11&page=2&province_id=&request_type=1&size=10&special_id=' + str(special_id) + '&type=&uri=apidata/api/gk/special/school&signsafe=d60d8a19b7c074516d6f7ff8caa95e4f'
 
     headers = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',  # 自定义 User-Agent
+        'user-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',  # 自定义 user-Agent
     }
 
     response = requests.post(special_url, headers=headers)

@@ -145,7 +145,7 @@ def _launch_demo(args, model, tokenizer):
 
     def predict(_query, _chatbot, _task_history):
         nonlocal first_interaction
-        print(f"User: {_query}")
+        print(f"user: {_query}")
         _chatbot.append((_query, ""))
 
         if first_interaction.value:
@@ -210,9 +210,9 @@ def _launch_demo(args, model, tokenizer):
         gr.Markdown("""\
             <center><font size=3>This WebUI is based on Text-to-SQL, developed by Mrking. \
             (本WebUI基于人工智能大模型打造，实现聊天机器人功能。)</center>""")
-        gr.Markdown("""\
-            <center><font size=4>🚀点击此处进入🔗 
-            &nbsp<a href="http://127.0.0.1:8000/">高考志愿推荐系统</a></center>""")
+        # gr.Markdown("""\
+        #     <center><font size=4>🚀点击此处进入🔗
+        #     &nbsp<a href="http://127.0.0.1:8000/">高考志愿推荐系统</a></center>""")
 
         chatbot = gr.Chatbot(label='Answer', elem_classes="control-height")
         query = gr.Textbox(lines=2, label='Input')
@@ -252,5 +252,5 @@ def main():
 
 
 if __name__ == '__main__':
-    start_django()
+    # start_django()
     main()

@@ -8,7 +8,7 @@ for i in range(1, 146):
     url = 'https://api.eol.cn/web/api/?keyword=&page=' + str(i) + '&province_id=&ranktype=&request_type=1&size=20&type=&uri=apidata/api/gkv3/school/lists&signsafe=7a170fd6718c262d86a3ccff132cbdeb'
 
     headers = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',  # 自定义 User-Agent
+        'user-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',  # 自定义 user-Agent
     }
 
     response = requests.post(url, headers=headers)

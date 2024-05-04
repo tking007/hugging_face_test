@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center">管理员界面</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Sex</th>
+                <th>Province</th>
+                <th>Subject</th>
+                <th>Score</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.password }}</td>
+                <td>{{ user.sex }}</td>
+                <td>{{ user.province }}</td>
+                <td>{{ user.subject }}</td>
+                <td>{{ user.score }}</td>
+                <td>
+                    <!-- Add forms here to allow admin actions -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="username" value="{{ user.username }}">
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

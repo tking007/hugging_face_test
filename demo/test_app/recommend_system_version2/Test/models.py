@@ -5,7 +5,7 @@ class Question(models.Model):
     question = models.CharField(max_length=300)
 
     def __str__(self):
-        return "问题" + self.id
+        return "问题" + str(self.id)
 
     class Meta:
         ordering = ["id"]

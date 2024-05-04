@@ -140,7 +140,7 @@ class MicroBlog(object):
     def get_nickname(self):
         """ 获取用户昵称 """
         try:
-            # print('------Get User’s Name------')
+            # print('------Get user’s Name------')
             url = self.user_url + str(self.user_id) + '/info'
             selector = self.deal_html(url)
             # nickname: the user's name

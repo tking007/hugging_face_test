@@ -9,11 +9,61 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {#   网页标题    #}
-    <title>{% block title %}高考推荐系统{% endblock %}</title>
+    <title>{% block title %}高考志愿填报辅助系统{% endblock %}</title>
     <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
     {#  网页样式   #}
     {% block css %}{% endblock %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            margin: 10px 0;
+        }
+
+        .btn-primary:hover {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .add-row {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .add-row p {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .form-group div {
+            width: 80px;  /* 调整这个值来改变标题的宽度 */
+            text-align: left;  /* 让标题左对齐 */
+            font-size: 18px;  /* 调整这个值来改变字体大小 */
+        }
+
+        .form-group input, .form-group select {
+            font-size: 18px;  /* 调整这个值来改变字体大小 */
+        }
+    </style>
   </head>
+</html>
 
    {# 导航栏 #}
   <body>
@@ -26,7 +76,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">高考推荐系统</a>
+          <a class="navbar-brand" href="/">高考志愿填报辅助系统</a>
         </div>
 
         <div class="collapse navbar-collapse" id="my-nav">
@@ -36,6 +86,7 @@
               <li class="active"><a href="/school_info">普通院校信息查询</a></li>
               <li class="active"><a href="/recommend_school/">学校推荐</a></li>
               <li class="active"><a href="/recommend_profession/">专业推荐</a></li>
+              <li class="active"><a href="/admin/">管理员</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
               {% if request.session.is_login %}

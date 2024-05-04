@@ -6,22 +6,38 @@
 {{ title }}
 {% endblock %}
 
+{% load static %}
+
 {% block content %}
  <div class="container">
+     <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.css' %}" rel="stylesheet" xmlns="http://www.w3.org/1999/html">
+     <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
         <div class="col-md-4 col-md-offset-4">
           <form class='form-register' action="" method="post">
               {% if message %}
                   <div class="alert alert-warning">{{ message }}</div>
               {% endif %}
 
-              <h2 class="text-center">修改个人信息</h2>
-                {% for item in student_form %}
-                    <div class="form-group">
-                        {{ item.label_tag }}
-                        {{ item }}
-                    </div>
-                {% endfor %}
-              <button type="submit" class="btn btn-primary pull-right">确认</button>
+            <h2 class="news_title">修改个人信息</h2>
+            <br>
+            <br>
+            <br>
+            <br>
+            {% for item in student_form %}
+                <div class="form-group" style="display: flex; justify-content: center; align-items: center;">  <!-- 添加 display: flex; justify-content: center; align-items: center; -->
+                    <div style="margin-right: 10px;">{{ item.label_tag }}</div>  <!-- 添加 margin-right: 10px; 来给标题和选项框之间添加一些空间 -->
+                    {% if item.field.widget.input_type == 'select' %}
+                        <select id="{{ item.auto_id }}" class="form-control short-select" name="{{ item.name }}">
+                            {% for choice in item.field.choices %}
+                                <option value="{{ choice.0 }}" {% if choice.0 == item.value %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <input id="{{ item.auto_id }}" type="{{ item.field.widget.input_type }}" class="form-control short-select" name="{{ item.name }}" value="{{ item.value|default_if_none:'' }}">
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-retest pull-right">确认</button>
           </form>
         </div>
     </div>
