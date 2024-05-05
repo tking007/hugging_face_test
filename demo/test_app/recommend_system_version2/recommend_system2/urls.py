@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('recommend_school.urls')),
     path('', include('recommend_profession.urls')),
     path('admin/', admin.site.urls),
+    path('Qwen_Chatbot/', include('Chatbot.urls')),
 ]

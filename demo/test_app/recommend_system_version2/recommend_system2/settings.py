@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'school_info',
     'recommend_profession',
     'recommend_school',
+    'Chatbot',
 ]
 
 MIDDLEWARE = [
@@ -58,8 +59,7 @@ ROOT_URLCONF = 'recommend_system2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'Chatbot')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

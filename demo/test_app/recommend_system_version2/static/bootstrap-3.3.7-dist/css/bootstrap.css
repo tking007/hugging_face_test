@@ -6251,7 +6251,7 @@ button.close {
 .carousel-inner > .item {
   position: relative;
   display: none;
-  -webkit-transition: .6s ease-in-out left;
+  -webkit-transition: .6cds ease-in-out left;
        -o-transition: .6s ease-in-out left;
           transition: .6s ease-in-out left;
 }
@@ -6773,6 +6773,18 @@ button.close {
     margin: auto;
     display: block;
 }
+.news_title2{
+    float: none;
+    width: 200px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    background: #007bff;
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    margin-left: 20px;  /* 添加这行 */
+}
 .ttNews{
 	float: left;
 	width: 355px;
@@ -6810,9 +6822,10 @@ button.close {
 }
 .tt-cont a{
 	font-size: 14px;
-	color: #666666;
+	color: #0170e7;
 	line-height: 22px;
-	margin-right:10px ;
+	margin-right:10px;
+	white-space:nowrap;
 }
 .tt-cont a:hover{
 	color: #E50113;
@@ -6835,7 +6848,7 @@ button.close {
     /*margin: auto;  !* 添加这行来使元素居中 *!*/
 }
 .form-group div, .form-group input, .form-group select {
-    font-size: 16px;  /* 调整这个值来改变字体大小 */
+    font-size: 14px;  /* 调整这个值来改变字体大小 */
 }
 .form-group div {
     width: 80px;  /* 调整这个值来改变标题的宽度 */
@@ -6860,8 +6873,8 @@ button.close {
 }
 
 .btn-retest:hover {
-    background-color: #0170e7;  /* 你的更深的颜色 */
-    border-color: #0170e7;  /* 你的更深的颜色 */
+    background-color: #007bff;  /* 你的更深的颜色 */
+    border-color: #007bff;  /* 你的更深的颜色 */
     color: white;
 }
 .form-font-size {
@@ -6869,8 +6882,11 @@ button.close {
 }
 .custom-button-size {
     padding: 30px 30px; /* 调整这个值来改变按钮的大小 */
-    background-color: #0170e7;  /* 你的更深的颜色 */
+    background-color: #007bff;  /* 你的更深的颜色 */
     border-color: #0170e7;  /* 你的更深的颜色 */
     color: white;
+}
+.custom-font-size {
+    font-size: 16px; /* 你想要的字体大小 */
 }
 /*# sourceMappingURL=bootstrap.css.map */

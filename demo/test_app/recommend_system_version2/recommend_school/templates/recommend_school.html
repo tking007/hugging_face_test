@@ -6,10 +6,18 @@
 {{ title }}
 {% endblock %}
 
+{% load static %}
+
 
 {# 替换内容 #}
 {% block content %}
-<div class="container">
+<div class="col-sm-offset-1" style="width: 80%">
+            <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.css' %}" rel="stylesheet" xmlns="http://www.w3.org/1999/html">
+         <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+        <p>
+            <br>
+            <br>
+    </p>
 <div id="select_school">
     <form class="form-inline" action="" method="post" novalidate>
         {% csrf_token %}
@@ -19,8 +27,14 @@
                 {{ foo }}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary">提交</button>
+        <button type="submit" class="btn custom-button-size">提交</button>
     </form>
+
+        <p>
+        <br>
+        <br>
+    </p>
+
 </div>
 <table class="table table-bordered table-hover table-striped ">
     <tr><th>院校名称</th><th>院校排名</th><th>省份</th><th>城市</th><th>985</th><th>211</th><th>自招</th>
@@ -41,5 +55,9 @@
     {% endfor %}
 </table>
 </div>
-    <div class="col-md-offset-2">推荐的学校分数与您相差较大？前往<a href="../student_info/"> 个人信息 </a>修改您的高考分数</div>
+<p>
+    <br>
+    <br>
+</p>
+    <div class="col-sm-offset-1 custom-font-size">推荐的学校分数与您相差较大？前往<a href="../student_info/"> 个人信息 </a>修改您的高考分数</div>
 {% endblock %}

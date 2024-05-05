@@ -214,8 +214,8 @@ def _launch_demo(args, model, tokenizer):
         #     <center><font size=4>🚀点击此处进入🔗
         #     &nbsp<a href="http://127.0.0.1:8000/">高考志愿推荐系统</a></center>""")
 
-        chatbot = gr.Chatbot(label='Answer', elem_classes="control-height")
-        query = gr.Textbox(lines=2, label='Input')
+        chatbot = gr.Chatbot(label='Answer', elem_classes="control-height", height=300, placeholder="所有的问题都必将会有答案！")
+        query = gr.Textbox(lines=2, label='Input', elem_classes="control-height", placeholder="尽管向我提问哦！")
         task_history = gr.State([])
 
         with gr.Row():
@@ -240,6 +240,7 @@ def _launch_demo(args, model, tokenizer):
         inbrowser=args.inbrowser,
         server_port=args.server_port,
         server_name=args.server_name,
+        debug=True,
     )
 
 

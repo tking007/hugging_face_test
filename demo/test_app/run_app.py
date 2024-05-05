@@ -2,9 +2,11 @@
 import subprocess
 import os
 
+
+print(os.getcwd())
 # 启动Gradio应用
 # os.chdir("../")  # 切换到Gradio应用的目录
-gradio_process = subprocess.Popen("python Qwen_web_demo.py", shell=True)
+gradio_process = subprocess.Popen("D:\\python\\python.exe Qwen_web_demo.py", shell=True)
 
 # 启动Django应用
 os.chdir("./recommend_system_version2")
