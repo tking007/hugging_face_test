@@ -67,7 +67,7 @@ def one_school(request, school_name):
     art_message = models.One_School.objects.filter(profession_name__contains=profession_name, school_name=school_name, student_type='文科')
     one_school_form = forms.one_school_form()
     province = models.School_info.objects.filter(school_name=school_name)[0].school_province
-    if province != '广东':
+    if province != '四川':
         province = '全国'
     recommend_school_list = views_function.running(school_name, province=province)
     return render(request, 'one_school.html', locals())
