@@ -4,3 +4,4 @@ loguru
 accelerate
 jinja2>=3.0.0
 accelerate
+django
